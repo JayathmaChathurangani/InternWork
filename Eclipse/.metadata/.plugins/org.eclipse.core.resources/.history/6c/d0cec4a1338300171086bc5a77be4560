@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="addLicense" name="Add License" isExecutable="true">
+    <startEvent id="startAddLicense" name="Start Add License"></startEvent>
+    <userTask id="usertask1" name="Add a License" activiti:async="true">
+      <extensionElements>
+        <activiti:formProperty id="LICENSE_KEY" name="License Key" type="String" variable="LICENSE_KEY" required="true"></activiti:formProperty>
+        <activiti:formProperty id="LICENSE_NAME" name="License Name" type="String" variable="LICENSE_NAME" required="true"></activiti:formProperty>
+        <activiti:formProperty id="LICENSE_VERSION" name="License Version" type="String" variable="LICENSE_VERSION"></activiti:formProperty>
+        <activiti:formProperty id="LICENSE_YEAR" name="License Year" type="int" variable="LICENSE_YEAR"></activiti:formProperty>
+        <activiti:formProperty id="LICENSE_SOURCE" name="License Source" type="String" variable="LICENSE_SOURCE"></activiti:formProperty>
+        <activiti:formProperty id="LICENSE_URL" name="License URL" type="String" variable="LICENSE_URL"></activiti:formProperty>
+        <activiti:formProperty id="LICENSE_CONTENT" name="License Content" type="String" variable="LICENSE_CONTENT"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow1" sourceRef="startAddLicense" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask2" name="Update a License"></userTask>
+    <sequenceFlow id="flow2" sourceRef="startAddLicense" targetRef="usertask2"></sequenceFlow>
+    <userTask id="usertask3" name="Delete a License"></userTask>
+    <sequenceFlow id="flow3" sourceRef="startAddLicense" targetRef="usertask3"></sequenceFlow>
+    <userTask id="usertask4" name="View a License"></userTask>
+    <sequenceFlow id="flow4" sourceRef="startAddLicense" targetRef="usertask4"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_addLicense">
+    <bpmndi:BPMNPlane bpmnElement="addLicense" id="BPMNPlane_addLicense">
+      <bpmndi:BPMNShape bpmnElement="startAddLicense" id="BPMNShape_startAddLicense">
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="340.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="75.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="57.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="57.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="57.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="57.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="287.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="57.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="57.0" y="367.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="367.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

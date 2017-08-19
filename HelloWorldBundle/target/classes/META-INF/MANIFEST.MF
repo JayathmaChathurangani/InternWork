@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-Description: A Simple Bundle which print "Hello World" and "Goo
+ dbye World"
+Bundle-SymbolicName: org.wso2.mbp.helloworldbundle
+Built-By: buddhi
+Bundle-ManifestVersion: 2
+Bnd-LastModified: 1501943558788
+Import-Package: org.osgi.framework
+Tool: Bnd-0.0.238
+Bundle-Name: Sample01
+Bundle-Version: 1.0.0.SNAPSHOT
+Private-Package: org.wso2.mbp.helloworldbundle
+Bundle-Activator: org.wso2.mbp.helloworldbundle.HelloActivator
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.8.0_144
+

@@ -1,0 +1,3 @@
+org/wso2/mbp/helloworldbundle/HelloActivator.class
+org/wso2/mbp/helloworldbundle/FirstServiceImpl.class
+org/wso2/mbp/helloworldbundle/FirstServiceInterface.class

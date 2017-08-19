@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1502125473686
+Build-Jdk: 1.8.0_144
+Built-By: buddhi
+Bundle-Activator: org.wso2.mbp.helloworldbundle.HelloActivator
+Bundle-Description: A Simple Bundle which print "Hello World" and "Goodb
+ ye World"
+Bundle-ManifestVersion: 2
+Bundle-Name: sample01
+Bundle-SymbolicName: org.wso2.Hello
+Bundle-Version: 0.0.1.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: org.wso2.mbp.helloworldbundle;uses:="org.osgi.framework"
+ ;version="0.0.1.SNAPSHOT"
+Import-Package: org.osgi.framework;version="[1.5,2)"
+Tool: Bnd-1.50.0

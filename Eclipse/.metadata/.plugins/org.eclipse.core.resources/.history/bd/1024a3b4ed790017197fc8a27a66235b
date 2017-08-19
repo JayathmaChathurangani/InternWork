@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.test</groupId>
+  <artifactId>maven.demo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <packaging>bundle</packaging>
+  <name>sample01</name>
+  
+<description>A Simple Bundle which print "Hello World" and "Goodbye World"</description>
+    <url>http://www.wso2.org</url>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.equinox</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>1.4.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${project.name}</Bundle-Name>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Bundle-Activator>maven.demo.HelloActivator</Bundle-Activator>
+                        <Private-Package>maven.demo.helloworldbundle</Private-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>1.4.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+  
+
+</project>
