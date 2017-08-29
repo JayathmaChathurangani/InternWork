@@ -12,7 +12,7 @@ licenseAndGitHubManager/
 				RejectButton.js
 
 		scenes/
-			components/
+			component/
 				RequestComponent.js
 				AcceptRequest.js
 				ShowComponent.js

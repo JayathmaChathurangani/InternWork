@@ -12,7 +12,7 @@ licenseAndGitHubManager/
 				RejectButton.js
 
 		scenes/
-			components/
+			component/
 				RequestComponent.js
 				AcceptRequest.js
 				ShowComponent.js
@@ -46,3 +46,20 @@ licenseAndGitHubManager
 	databaseService.bal
 	buildLicenseService.bal
 	gitHubRepositoryService.bal
+
+
+###########################################################################################################################################################
+import React,{Component} from 'react';
+
+class Header extends Component{
+  render(){
+
+    return(
+      
+    )
+
+  }
+}
+
+export default Header;
+
