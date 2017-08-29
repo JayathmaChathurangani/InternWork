@@ -1,100 +1,48 @@
 licenseAndGitHubManager/
 
-	app/
-		shared/
-			sidebar/
-				sidebarView.jag
-			headers/
-				headerView.jag
-				footerView.jag
-
+	src/
 		components/
+			navs/
+				LeftNav.js
+			layouts/
+				Header.js
+				Footer.js
+			buttons/
+				AcceptButton.js
+				RejectButton.js
 
-			licenseManager/
-				views/
-					addLicenseView.jag
-					updateLicenseView.jag
-					deleteLicenseView.jag
-					showLicenseView.jag
-				models/
-					addLicenseModel.jag
-					updateLicenseModel.jag
-					deleteLicenseModel.jag
-					showLicenseModel.jag
-				controllers/
-					addLicenseController.jag
-					updateLicenseController.jag
-					deleteLicenseController.jag
-					showLicenseController.jag
-
-			componentManager/
-				views/
-					newComponentRequestView.jag
-					newComponentAcceptView.jag
-					updateComponentView.jag
-					deleteComponentView.jag
-					showComponentView.jag
-				models/
-					newComponentModel.jag
-					updateComponentModel.jag
-					deleteComponentModel.jag
-					showComponentModel.jag
-				controllers/
-					newComponentController.jag
-					updateComponentController.jag
-					deleteComponentController.jag
-					showComponentController.jag
-
-			libraryManager/
-				views/
-					newLibraryRequestView.jag
-					newLibraryAcceptView.jag
-					updateLibraryView.jag
-					deleteLibraryView.jag
-					showLibraryView.jag
-				models/
-					addLibraryModel.jag
-					updateLibraryModel.jag
-					deleteLibraryModel.jag
-					showLibraryModel.jag
-				controllers/
-					addLibraryController.jag
-					updateLibraryController.jag
-					deleteLibraryController.jag
-					showLibraryController.jag
-
-			buildLicense/
-				views/
-					uploadProjectView.jag
-					nameAndVersionSeperatorView.jag
-					setMissingLicenseView.jag
-				models/
-					uplaodProjectModel.jag
-					nameAndVersionSeperatorModel.jag
-					setMissingLicenseModel.jag
-				controllers/
-					uploadProjectController.jag
-					nameAndVersionSeperatorController.jag
-					setMisssingLicenseController.jag
-
-			
-		appRoutes.jag
-
-
-	assets/
-
-		img/
-		css/
-		boostrap/
-		js/
-		jags/
+		scenes/
+			components/
+				RequestComponent.js
+				AcceptRequest.js
+				ShowComponent.js
+				UpdateComponent.js
+				DeleteComponent.js
+				SearchComponent.js
+			library/
+				RequestLibrary.js
+				AcceptLibrary.js
+				ShowLibrary.js
+				UpdateLibrary.js
+				DeleteLibrary.js
+				SearchLibrary.js
+			license/
+				AddLicense.js
+				ShowLicense.js
+				UpdateLicense.js
+				DeleteLicense.js
+				SearchLibrary.js
+			package/
+				UploadPackage.js
+				AddNameAndVersion.js
+				MissingLicense.js
+				ConfirmLicenseGeneration.js
+		services/
 
 
 ##########################################################################################################################################################
 
 licenseAndGitHubManager
-	licenseDatabaseService.bal
+	databaseService.bal
 	buildLicenseService.bal
 	gitHubRepositoryService.bal
-
-
