@@ -53,3 +53,7 @@
   color: red;
 }
 /*form elements end*/
+
+#mainIcons{
+  align-items: center !important;
+}

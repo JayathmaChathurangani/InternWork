@@ -2,23 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f5f605d-1372-40fd-9100-00cb86fbac90" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Mocups.odp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/deletelibraryview.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/newlibraryrequestview.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/showlibraryview.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/updatelibraryview.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/Component/deletecomponentview.png" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/Component/deletecomponentview.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/Component/editcomponentview.png" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/Component/editcomponentview.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/Component/newcomponentrequestview.png" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/Component/newcomponentrequestview.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/Component/showcomponentview.png" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/Component/showcomponentview.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/addlicenseview.png" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/addlicenseview.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/deletelicenseview.png" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/deletelicenseview.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/showlicenseview.png" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/showlicenseview.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/updatelicenseview.png" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/License/updatelicenseview.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/licneseManager.epgz" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/licneseManager.epgz" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../FirstBallerina/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../../FirstBallerina/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../GitHubAuthentication/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../../GitHubAuthentication/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/.~lock.Mocups.odp#" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/databaseService.bal" afterPath="$PROJECT_DIR$/src/databaseService.bal" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/package-lock.json" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/package-lock.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/package.json" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/public/index.html" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/public/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/src/scenes/component/RequestComponent.js" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/src/scenes/component/RequestComponent.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/src/services/database/LM_COMPONENT.js" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/src/services/database/LM_COMPONENT.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/structure.txt" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/structure.txt" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -37,8 +28,8 @@
       <file leaf-file-name="databaseService.bal" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/databaseService.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="638">
-              <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+            <state relative-caret-position="389">
+              <caret line="47" column="22" lean-forward="false" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -91,7 +82,7 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -108,8 +99,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -245,9 +236,9 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5902256" sideWeight="0.50737655" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42481202" sideWeight="0.32007697" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5902256" sideWeight="0.49262348" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42481202" sideWeight="0.679923" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -358,8 +349,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/databaseService.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="638">
-          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/databaseService.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="389">
+          <caret line="47" column="22" lean-forward="false" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
           <folding />
         </state>
       </provider>

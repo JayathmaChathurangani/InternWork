@@ -63,3 +63,16 @@ class Header extends Component{
 
 export default Header;
 
+#############################################################################################################################################################
+axios.post('http://www.localdom.lk:9090/databaseService/insertData', [{
+    'firstName': 'Fred',
+    'lastName': 'Flintstone'
+
+    }])
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
