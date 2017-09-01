@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f5f605d-1372-40fd-9100-00cb86fbac90" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/mailService.bal" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/Project/.~lock.Mocups.odp#" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../FirstBallerina/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../../FirstBallerina/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../FirstBallerina/src/helloWorld/helloworld.bal" afterPath="$PROJECT_DIR$/../../FirstBallerina/src/helloWorld/helloworld.bal" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../FirstBallerina/src/helloWorld/secondservice.bal" afterPath="$PROJECT_DIR$/../../FirstBallerina/src/helloWorld/secondservice.bal" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/databaseService.bal" afterPath="$PROJECT_DIR$/src/databaseService.bal" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/package-lock.json" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/package-lock.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/package.json" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/public/index.html" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/public/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/src/scenes/component/RequestComponent.js" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/src/scenes/component/RequestComponent.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/src/services/database/LM_COMPONENT.js" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/src/services/database/LM_COMPONENT.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../React/license-and-github-manager/src/scenes/Main.js" afterPath="$PROJECT_DIR$/../../React/license-and-github-manager/src/scenes/Main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Reference/LicenseManager/structure.txt" afterPath="$PROJECT_DIR$/../../Reference/LicenseManager/structure.txt" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -25,11 +24,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="databaseService.bal" pinned="false" current-in-tab="true">
+      <file leaf-file-name="databaseService.bal" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/databaseService.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="389">
-              <caret line="47" column="22" lean-forward="false" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
+            <state relative-caret-position="108">
+              <caret line="6" column="27" lean-forward="false" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mailService.bal" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/mailService.bal">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="181">
+              <caret line="36" column="54" lean-forward="false" selection-start-line="36" selection-start-column="54" selection-end-line="36" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -56,6 +65,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/databaseService.bal" />
+        <option value="$PROJECT_DIR$/src/mailService.bal" />
       </list>
     </option>
   </component>
@@ -81,8 +91,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -93,13 +102,14 @@
             <path>
               <item name="licenseAndGitHubManager" type="b2602c69:ProjectViewProjectNode" />
               <item name="licenseAndGitHubManager" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -118,16 +128,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Ballerina.ServiceRun">
-    <configuration name="ServiceRun" type="BallerinaApplicationRunConfiguration" factoryName="Ballerina">
-      <output_file path="$PROJECT_DIR$" />
-      <module name="licenseAndGitHubManager" />
-      <working_directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/src/databaseService.bal" />
-      <myRunKind value="SERVICE" />
-      <kind value="SERVICE" />
-      <package value="src" />
-    </configuration>
+  <component name="RunManager" selected="Ballerina.runMailService">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
@@ -209,6 +210,28 @@
       <properties />
       <listeners />
     </configuration>
+    <configuration name="runDatabaseService" type="BallerinaApplicationRunConfiguration" factoryName="Ballerina">
+      <output_file path="$PROJECT_DIR$" />
+      <module name="licenseAndGitHubManager" />
+      <working_directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/src/databaseService.bal" />
+      <myRunKind value="SERVICE" />
+      <kind value="SERVICE" />
+      <package value="src" />
+    </configuration>
+    <configuration name="runMailService" type="BallerinaApplicationRunConfiguration" factoryName="Ballerina">
+      <output_file path="$PROJECT_DIR$" />
+      <module name="licenseAndGitHubManager" />
+      <working_directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/src/mailService.bal" />
+      <myRunKind value="SERVICE" />
+      <kind value="SERVICE" />
+      <package value="src" />
+    </configuration>
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="Ballerina.runDatabaseService" />
+      <item index="1" class="java.lang.String" itemvalue="Ballerina.runMailService" />
+    </list>
   </component>
   <component name="SbtLocalSettings">
     <option name="externalProjectsViewState">
@@ -229,16 +252,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="121" y="16" width="1561" height="912" extended-state="6" />
+    <frame x="41" y="-4" width="1559" height="904" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42481202" sideWeight="0.32007697" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4235589" sideWeight="0.18345094" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42481202" sideWeight="0.679923" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4235589" sideWeight="0.81654906" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -269,8 +293,16 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/databaseService.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="108">
+          <caret line="6" column="27" lean-forward="false" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mailService.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -357,8 +389,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/databaseService.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="47" column="22" lean-forward="false" selection-start-line="47" selection-start-column="22" selection-end-line="47" selection-end-column="22" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/databaseService.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/databaseService.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="27" lean-forward="false" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mailService.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="36" column="54" lean-forward="false" selection-start-line="36" selection-start-column="54" selection-end-line="36" selection-end-column="54" />
           <folding />
         </state>
       </provider>

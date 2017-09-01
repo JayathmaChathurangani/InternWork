@@ -13,138 +13,74 @@ class Main extends Component{
           </div>
 
         </div>
-        <br />
+        <br /><br/>
         <div className="row">
 
           <div className="row">
             <div className="col-md-1">
             </div>
-            <div className="col-md-3">
+            <div className="col-md-5">
 
-              <Link to="root">
-                <div className="panel panel-primary">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Component Manager Click Here</h3>
-                  </div>
-                  <div className="panel-body">
-                    <ul>
-
-                      <li>You can request GitHub repository</li>
-                      <li>You can view component details</li>
-                      <li>You can seach components</li>
-
-                    </ul>
-
-                  </div>
-                </div>
+              <Link to="root" className="btn btn-info btn-lg btn-block">
+                <span><i  className="fa fa-folder-open fa-1x"></i></span>&nbsp;&nbsp;&nbsp;<b>Component Manager</b>
               </Link>
               
             </div>
 
-            <div className="col-md-3">
+            <div className="col-md-5">
 
-              <Link to="root">
-                <div className="panel panel-primary">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Component Manager Click Here</h3>
-                  </div>
-                  <div className="panel-body">
-                    <ul>
-
-                      <li>You can request GitHub repository</li>
-                      <li>You can view component details</li>
-                      <li>You can seach components</li>
-
-                    </ul>
-
-                  </div>
-                </div>
+              <Link to="root" className="btn btn-info btn-lg btn-block">
+                <span><i className="fa fa-book fa-1x"></i></span>&nbsp;&nbsp;&nbsp;<b>Library Manager</b>
               </Link>
 
             </div>
-            <div className="col-md-3">
+            
+          </div>
+          <br/>
 
-              <Link to="root">
-                <div className="panel panel-primary">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Component Manager Click Here</h3>
-                  </div>
-                  <div className="panel-body">
-                    <ul>
+          <div className="row">
+            <div className="col-md-1">
+            </div>
 
-                      <li>You can request GitHub repository</li>
-                      <li>You can view component details</li>
-                      <li>You can seach components</li>
+            <div className="col-md-5">
 
-                    </ul>
+              <Link to="root" className="btn btn-info btn-lg btn-block">
+                <span><i className="fa fa-briefcase"></i></span>&nbsp;&nbsp;&nbsp;<b>Package Manager</b>
+              </Link>
+              
+            </div>
 
-                  </div>
-                </div>
-            </Link>
+            <div id="mainIcons" className="col-md-5">
+
+              <Link to="root" className="btn btn-info btn-lg btn-block">
+                <span><i className="fa fa-id-card-o"></i></span>&nbsp;&nbsp;&nbsp;<b>License Manager</b>
+              </Link>
+
+            </div>
+          
+          </div>
+
+          <br/><br/>
+          <div className="row">
+            <div className="col-md-1">
+            </div>
+
+            <div className="col-md-5">
+
+              <Link to="root" className="btn btn-success btn-lg btn-block">
+                <span><i className="fa fa-github fa-1x"></i></span>&nbsp;&nbsp;&nbsp;<b>Request GitHub Repository</b>
+              </Link>
+              
+            </div>
+
+            <div id="mainIcons" className="col-md-5">
+
+              <Link to="root" className="btn btn-success btn-lg btn-block">
+                <span><i className="fa fa-address-book-o fa-1x"></i></span>&nbsp;&nbsp;&nbsp;<b>Request 3rd party Library</b>
+              </Link>
 
             </div>
           </div>
-          <div className="row">
-          <div className="col-md-1">
-          </div>
-          <div className="col-md-3">
-
-            <Link to="root">
-              <div className="panel panel-primary">
-                <div className="panel-heading">
-                  <h3 className="panel-title">Component Manager Click Here</h3>
-                </div>
-                <div className="panel-body">
-                  <ul>
-
-                    <li>You can request GitHub repository</li>
-                    <li>You can view component details</li>
-                    <li>You can seach components</li>
-
-                  </ul>
-
-                </div>
-              </div>
-            </Link>
-            
-          </div>
-
-          <div id="mainIcons" className="col-md-3">
-
-            <Link  to="root">
-              <div className="panel panel-primary">
-                <div className="panel-heading">
-                  <h3  className="panel-title">Component Manager Click Here</h3>
-                </div>
-                <div  className="panel-body">
-                    <i  className="fa fa-folder-open fa-5x"></i>
-                </div>
-              </div>
-            </Link>
-
-          </div>
-          <div className="col-md-3">
-
-            <Link to="root">
-              <div className="panel panel-primary">
-                <div className="panel-heading">
-                  <h3 className="panel-title">Component Manager Click Here</h3>
-                </div>
-                <div className="panel-body">
-                  <ul>
-
-                    <li>You can request GitHub repository</li>
-                    <li>You can view component details</li>
-                    <li>You can seach components</li>
-
-                  </ul>
-
-                </div>
-              </div>
-          </Link>
-
-          </div>
-        </div>
         </div>
       </div>
     )
