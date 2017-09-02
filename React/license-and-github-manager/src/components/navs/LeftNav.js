@@ -8,6 +8,30 @@ class LeftNav extends Component{
     return(
       <ul className="nav nav-pills nav-stacked">
 
+        {/*Repository dropdown start*/}
+        <li className="dropdown">
+          <Link className="dropdown-toggle" data-toggle="dropdown" >
+            <span><i className="fa fa-files-o"></i></span>
+              &nbsp;&nbsp;Repository&nbsp;&nbsp;
+            <span className="caret"></span>
+            <br/>
+          </Link>
+          <ul className="dropdown-menu">
+            <li><Link to={"/root/requestRepository"}  ref="requestRepository"><span><i className="fa fa-plus-square-o" aria-hidden="true"></i></span>&nbsp;&nbsp;Request</Link></li>
+            <li className="divider"></li>
+            <li><Link to={"/root/showComponent"}><span><i className="fa fa-eye" aria-hidden="true"></i></span>&nbsp;&nbsp;Show</Link></li>
+            <li className="divider"></li>
+            <li><Link ><span><i className="fa fa-search" aria-hidden="true"></i></span>&nbsp;&nbsp;Search</Link></li>
+            <li className="divider"></li>
+            <li><Link ><span><i className="fa fa-pencil" aria-hidden="true"></i></span>&nbsp;&nbsp;Edit</Link></li>
+            <li className="divider"></li>
+            <li><Link ><span><i className="fa fa-trash-o" aria-hidden="true"></i></span>&nbsp;&nbsp;Delete</Link></li>
+          </ul>
+
+        </li>
+
+        {/*Repository dropdown ends*/}
+
         {/*Component dropdown start*/}
         <li className="dropdown">
           <Link className="dropdown-toggle" data-toggle="dropdown" >
@@ -17,7 +41,7 @@ class LeftNav extends Component{
             <br/>
           </Link>
           <ul className="dropdown-menu">
-            <li><Link to={"/requestComponent"}  ref="requestComponent"><span><i className="fa fa-plus-square-o" aria-hidden="true"></i></span>&nbsp;&nbsp;Request</Link></li>
+            <li><Link to={"/root/requestComponent"}  ref="requestComponent"><span><i className="fa fa-plus-square-o" aria-hidden="true"></i></span>&nbsp;&nbsp;Request</Link></li>
             <li className="divider"></li>
             <li><Link to={"/showComponent"}><span><i className="fa fa-eye" aria-hidden="true"></i></span>&nbsp;&nbsp;Show</Link></li>
             <li className="divider"></li>
