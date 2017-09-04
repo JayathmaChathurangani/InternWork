@@ -1,7 +1,17 @@
 import React,{Component} from 'react';
-import LM_COMPONENT from '../../services/database/LM_COMPONENT'
+import LM_COMPONENT from '../../services/database/LM_COMPONENT';
+import Common from '../../services/github/Common';
 
 class RequestRepository extends Component{
+  
+  constructor(){
+    super();
+    this.state = {
+      languages:Common.getAllLanguages()
+    }
+    
+    console.log(this.state.languages);
+  }
 
   /* Validation functions*/
   validateInputRepositoryName(e){
@@ -89,10 +99,7 @@ class RequestRepository extends Component{
             <label htmlFor="inputLanguage" className="col-lg-2 control-label">Language</label>
             <div className="col-lg-10">
             <select className="form-control" id="inputLanguage">
-                <option>Ballerina</option>
-                <option>Java</option>
-                <option>Go</option>
-                <option>React</option>
+               
                 
               </select>
             </div>
@@ -117,7 +124,7 @@ class RequestRepository extends Component{
           <div className="form-group">
             <label htmlFor="textDescription" className="col-lg-2 control-label">Description</label>
             <div className="col-lg-10">
-              <textarea className="form-control" rows="3" id="textDescription" placeholder="description for README"></textarea>
+              <textarea className="form-control" rows="3" id="textDescription" placeholder="Description for README"></textarea>
             </div>
           </div>
 

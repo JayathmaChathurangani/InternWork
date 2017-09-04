@@ -12,8 +12,10 @@ licenseAndGitHubManager/
 				RejectButton.js
 
 		scenes/
+			repository/
+				RequestRepository.js
 			component/
-				RequestComponent.js
+				
 				AcceptRequest.js
 				ShowComponent.js
 				UpdateComponent.js
@@ -75,4 +77,5 @@ axios.post('http://www.localdom.lk:9090/databaseService/insertData', [{
     .catch(function (error) {
       console.log(error);
     });
+################################################################################################################################################################
 

@@ -22,6 +22,7 @@ service<http> mailService {
 }
 
 function sendMail(){
+
     string clientId = "1072671897981-3gi0mlt4f7nlqdird9knbgoeoj8ulf5s.apps.googleusercontent.com";
     string clientSecret = "NcimadTUT67Xi6AZlU8D5ojw";
     string userId = "buddhik@wso2.com";
@@ -40,11 +41,12 @@ function sendMail(){
     message gmailResponse;
     json gmailJSONResponse;
 
-    gmail:ClientConnector.sendMail(gmailConnector,to,subject,from,messageBody,cc,bcc,id,threadId);
-    //gmailResponse = gmail:ClientConnector.getUserProfile(gmailConnector);
+    gmailResponse = gmailConnector.sendMail(to, subject, from, messageBody, cc, bcc, id, threadId);
+    ////gmailResponse = gmailConnector.sendMail(to,subject,from,messageBody,cc,bcc,id,threadId);
 
-    //gmailResponse = gmailConnector.getUserProfile();
+    //gmailJSONResponse = messages:getJsonPayload(gmailResponse);
 
-    //gmailResponse = gmailConnector.sendMail(to,subject,from,messageBody,cc,bcc,id,threadId);
-    //gmail:
+
+    //system:println(gmailJSONResponse);
+    //system:println("hello");
 }

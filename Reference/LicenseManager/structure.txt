@@ -12,9 +12,15 @@ licenseAndGitHubManager/
 				RejectButton.js
 
 		scenes/
+			repository/
+				RequestRepository.js
+				SearchRepository.js
+				ShowRepository.js
+				EditRepository.js
+				DeleteRepsitory.js
+				
 			component/
-				RequestComponent.js
-				AcceptRequest.js
+				AddComponent.js
 				ShowComponent.js
 				UpdateComponent.js
 				DeleteComponent.js

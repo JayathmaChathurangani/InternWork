@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import axios from 'axios';
-import MainData from './MainData';
+import MainData from '../MainData';
 
 class LM_COMPONENT extends Component{
 
@@ -38,6 +38,8 @@ class LM_COMPONENT extends Component{
 
     
   }
+
+ 
 }
 
 
