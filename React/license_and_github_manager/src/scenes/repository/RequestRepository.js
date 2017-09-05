@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import LM_COMPONENT from '../../services/database/LM_COMPONENT';
 import LM_LICENSE from '../../services/database/LM_LICENSE';
+import LM_REPOSITORYTYPE from '../../services/database/LM_REPOSITORYTYPE';
+import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
 import Common from '../../services/github/Common';
 
 class RequestRepository extends Component{
@@ -9,11 +11,34 @@ class RequestRepository extends Component{
     super();
     this.state = {
       languages:[],
-      licenseNames:[]
+      licenseNames:[],
+      repositoryTypes:[],
+      organizations:[]
     }
   }
 
+  /* component did mount */
   componentDidMount(){
+
+    {/*get all organizations types from database*/}
+    LM_ORGANIZATION.getAllOrganizations().then(function(response){
+      this.setState(function(){
+        return {
+          organizations:response
+        }
+      })
+    }.bind(this));
+    {/*get all organizations types from database*/}
+
+    {/*get all repository types from database*/}
+    LM_REPOSITORYTYPE.getAllRepositoryTypes().then(function(response){
+      this.setState(function(){
+        return {
+          repositoryTypes:response
+        }
+      })
+    }.bind(this))
+    {/*get all repository types from database end*/}
 
     {/*get all languages from github api*/}
     Common.getAllLanguages().then(function(response){
@@ -36,6 +61,7 @@ class RequestRepository extends Component{
     {/* get all license from database*/}
 
   }
+   /* component did mount ends*/
 
   /* Validation functions*/
   validateInputRepositoryName(e){
@@ -74,12 +100,7 @@ class RequestRepository extends Component{
             <label htmlFor="selectProduct" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Type</label>
             <div className="col-lg-10">
               <select className="form-control" id="selectProduct" >
-                <option>Component(Carbon)</option>
-                <option>Product</option>
-                <option>Forked Repository</option>
-                <option>Extensions</option>
-                <option>WSO2 Components</option>
-                <option>Other</option>
+                {this.state.repositoryTypes.map((repositoryType,i)=> <option key={i}>{repositoryType.REPOSITORYTYPE_NAME}</option>)}
               </select>
             </div>
           </div>
@@ -88,12 +109,8 @@ class RequestRepository extends Component{
             <label htmlFor="inputProductName" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Organization</label>
             <div className="col-lg-10">
               <select className="form-control" id="selectProduct" >
-                  <option>WSO2</option>
-                  <option>WSO2 Extensions</option>
-                  <option>WSO2 Incubator</option>
-                  <option>Ballerinalang</option>
-                  <option>WSO2 Support</option>
-                </select>
+                {this.state.organizations.map((organization,i)=> <option key={i}>{organization.ORGANIZATION_NAME}</option>)}
+              </select>
             </div>
           </div>
 
