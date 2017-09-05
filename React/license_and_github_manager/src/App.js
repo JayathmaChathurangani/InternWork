@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Router, Route, browserHistory, IndexRoute} from 'react-router';
 import Root from './scenes/Root';
 import Main from './scenes/Main';
-
+import './App.css';
 import RequestRepository from './scenes/repository/RequestRepository';
 
 import RequestComponent from './scenes/component/RequestComponent';

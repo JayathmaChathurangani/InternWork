@@ -16,7 +16,7 @@ function main (string[] args) {
     string refreshToken = "1/lq-I6zdb8qO98cPX2-Sbk2Wftw1nY8jvPxHZ2ExircAoptbwkmD7S_KTHXulGRqT";
     gmail:ClientConnector gmailConnector = create gmail:ClientConnector(userId,accessToken,refreshToken,clientId,clientSecret);
 
-    string to = "ishika@wso2.com";
+    string to = "buddhik@wso2.com";
     string subject = "Test Mail";
     string from = "b.wathsala.bw@gmail.com";
     string messageBody = "Hello Ishi!!";

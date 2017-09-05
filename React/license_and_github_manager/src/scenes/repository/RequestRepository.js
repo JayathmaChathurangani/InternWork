@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import LM_COMPONENT from '../../services/database/LM_COMPONENT';
+import LM_LICENSE from '../../services/database/LM_LICENSE';
 import Common from '../../services/github/Common';
 
 class RequestRepository extends Component{
@@ -7,10 +8,33 @@ class RequestRepository extends Component{
   constructor(){
     super();
     this.state = {
-      languages:Common.getAllLanguages()
+      languages:[],
+      licenseNames:[]
     }
-    
-    console.log(this.state.languages);
+  }
+
+  componentDidMount(){
+
+    {/*get all languages from github api*/}
+    Common.getAllLanguages().then(function(response){
+      this.setState(function(){
+        return {
+          languages:response
+        }
+      })
+    }.bind(this));
+    {/*get all languages from github api ends*/}
+
+    {/* get all license from database*/}
+    LM_LICENSE.getAllLicenseNames().then(function(response){
+      this.setState(function(){
+        return{
+          licenseNames:response
+        }
+      })
+    }.bind(this));
+    {/* get all license from database*/}
+
   }
 
   /* Validation functions*/
@@ -86,11 +110,7 @@ class RequestRepository extends Component{
             <label htmlFor="selectLicense" className="col-lg-2 control-label">&nbsp;License</label>
             <div className="col-lg-10">
               <select className="form-control" id="selectLicense">
-                <option>apache2</option>
-                <option>apache1</option>
-                <option>lgpl2</option>
-                <option>bsd</option>
-                <option>gpl2</option>
+                {this.state.licenseNames.map((license,i)=> <option key={i}>{license.LICENSE_NAME}</option>)}
               </select>
             </div>
           </div>
@@ -99,7 +119,8 @@ class RequestRepository extends Component{
             <label htmlFor="inputLanguage" className="col-lg-2 control-label">Language</label>
             <div className="col-lg-10">
             <select className="form-control" id="inputLanguage">
-               
+              
+              {this.state.languages.map((language,i)=> <option key={i}>{language}</option>)}
                 
               </select>
             </div>

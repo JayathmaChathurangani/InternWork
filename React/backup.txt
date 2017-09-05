@@ -1,0 +1,17 @@
+// module.exports = {
+  //   getAllLanguages:function(){
+  //     var url = MainData.ballerinaGitHubURL + "getAllLanguages";
+  //     var data = {};
+  //     var returnData = [];
+  //     return axios.get(
+  //       url,
+  //       data
+  //     )
+  //     .then(function (response) {
+        
+  //       return response.data;
+          
+  //     })
+  //   }
+
+  // }
