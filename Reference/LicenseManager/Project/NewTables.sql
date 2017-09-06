@@ -56,6 +56,9 @@ INSERT INTO LM_ORGANIZATION VALUES
 (5,"WSO2 Support");
 
 
-INSERT INTO LM_TEAM
+INSERT INTO LM_TEAM VALUES
+(1,"Analytics"),
+(2,"Internal Apps"),
+(3,"Platform Security");
 
 

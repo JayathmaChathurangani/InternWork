@@ -4,6 +4,7 @@ import LM_LICENSE from '../../services/database/LM_LICENSE';
 import LM_REPOSITORYTYPE from '../../services/database/LM_REPOSITORYTYPE';
 import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
 import LM_TEAM from '../../services/database/LM_TEAM';
+import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
 import Mail from '../../services/mail/Mail';
 
@@ -88,11 +89,34 @@ class RequestRepository extends Component{
 
     submitRequest(e){
       e.preventDefault();
-      var repositoryName = this.refs.inputRepositoryName.value;
-      var repositoryType = this.selectRepositoryType.value;
 
-      console.log(repositoryType);
-      //Mail.sendMail();
+      var repositoryName = this.refs.inputRepositoryName.value;
+      var repositoryType = this.refs.selectRepositoryType.value;
+      var organization = this.refs.selectOrganization.value;
+      var team = this.refs.selectTeam.value;
+      var license = this.refs.selectLicense.value;
+      var language = this.refs.selectLanguage.value;
+      var groupId = this.refs.inputGroupId.value;
+      var buildable = this.refs.inputBuildable.checked;
+      var isPrivate = this.refs.inputPrivate.checked;
+      var description = this.refs.textDescription.value;
+
+      var data = [
+        repositoryName,
+        language,
+        buildable,
+        isPrivate,
+        description,
+        groupId,
+        license,
+        team,
+        organization,
+        repositoryType
+      ];   
+
+      LM_REPOSITORY.insertData(data);
+      
+      
     }
     /* submit function ends*/
 
@@ -115,26 +139,26 @@ class RequestRepository extends Component{
           <div className="form-group">
             <label htmlFor="selectRepositoryType" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Type</label>
             <div className="col-lg-10">
-              <select className="form-control" name="selectRepositoryType" refs="selectRepositoryType" >
-                {this.state.repositoryTypes.map((repositoryType,i)=> <option key={i} value={repositoryType.REPOSITORYTYPE_ID}>{repositoryType.REPOSITORYTYPE_NAME}</option>)}
+              <select className="form-control" ref="selectRepositoryType" >
+                {this.state.repositoryTypes.map((repositoryType)=> <option key={repositoryType.REPOSITORYTYPE_ID} value={repositoryType.REPOSITORYTYPE_ID}>{repositoryType.REPOSITORYTYPE_NAME}</option>)}
               </select>
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputProductName" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Organization</label>
+            <label htmlFor="selectOrganization" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Organization</label>
             <div className="col-lg-10">
-              <select className="form-control" id="selectProduct" >
-                {this.state.organizations.map((organization,i)=> <option key={i}>{organization.ORGANIZATION_NAME}</option>)}
+              <select className="form-control" ref="selectOrganization" >
+                {this.state.organizations.map((organization)=> <option key={organization.ORGANIZATION_ID} value={organization.ORGANIZATION_ID}>{organization.ORGANIZATION_NAME}</option>)}
               </select>
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputTeam" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Team Name</label>
+            <label htmlFor="selectTeam" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Team Name</label>
             <div className="col-lg-10">
-              <select className="form-control" id="inputTeam" >
-                {this.state.teams.map((team,i)=> <option key={i}>{team.TEAM_NAME}</option>)}
+              <select className="form-control" ref="selectTeam" >
+                {this.state.teams.map((team,i)=> <option key={team.TEAM_NAME} value={team.TEAM_NAME} >{team.TEAM_NAME}</option>)}
               </select>
             </div>
           </div>
@@ -142,18 +166,18 @@ class RequestRepository extends Component{
           <div className="form-group">
             <label htmlFor="selectLicense" className="col-lg-2 control-label">&nbsp;License</label>
             <div className="col-lg-10">
-              <select className="form-control" id="selectLicense">
-                {this.state.licenseNames.map((license,i)=> <option key={i}>{license.LICENSE_NAME}</option>)}
+              <select className="form-control" ref="selectLicense">
+                {this.state.licenseNames.map((license)=> <option key={license.LICENSE_ID} value={license.LICENSE_ID}>{license.LICENSE_NAME}</option>)}
               </select>
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputLanguage" className="col-lg-2 control-label">Language</label>
+            <label htmlFor="selectLanguage" className="col-lg-2 control-label">Language</label>
             <div className="col-lg-10">
-            <select className="form-control" id="inputLanguage">
+            <select className="form-control" ref="selectLanguage">
               
-              {this.state.languages.map((language,i)=> <option key={i}>{language}</option>)}
+              {this.state.languages.map((language,i)=> <option key={i} value={language}>{language}</option>)}
                 
               </select>
             </div>
@@ -171,11 +195,11 @@ class RequestRepository extends Component{
             <div className="col-lg-10">
               <div className="checkbox">
                 <label>
-                  <input type="checkbox" /> Component Buildable
+                  <input type="checkbox"  ref="inputBuildable"/> Component Buildable
                 </label>
                 <br/><br/>
                 <label>
-                  <input type="checkbox" /> Make Private Repository
+                  <input type="checkbox" ref="inputPrivate"/> Make Private Repository
                 </label>
               </div>
             </div>
@@ -185,7 +209,7 @@ class RequestRepository extends Component{
           <div className="form-group">
             <label htmlFor="textDescription" className="col-lg-2 control-label">Description</label>
             <div className="col-lg-10">
-              <textarea className="form-control" rows="3" id="textDescription" placeholder="Description for README"></textarea>
+              <textarea className="form-control" rows="3" ref="textDescription" placeholder="Description for README"></textarea>
             </div>
           </div>
 

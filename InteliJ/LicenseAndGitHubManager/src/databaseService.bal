@@ -6,6 +6,7 @@ import ballerina.data.sql;
 
 import ballerina.lang.system;
 import ballerina.lang.jsons;
+import ballerina.lang.strings;
 
 
 
@@ -78,10 +79,26 @@ service<http> databaseService {
     @http:Path {value:"/insertData"}
     resource insertData(message m){
 
-        //json data = messages:getJsonPayload(m);
-        //string[] ar = jsons:getKeys(data.parameters);
-        //string tableName = jsons:toString(data.tableName);
-        //system:println(tableName);
+        json data = messages:getJsonPayload(m);
+
+        string columns = jsons:toString(data.columns);
+        columns = strings:replace(columns,"\""," ");
+        columns = strings:replace(columns,"]",")");
+        columns = strings:replace(columns,"[","(");
+
+        string inputData = jsons:toString(data.data);
+        inputData = strings:replace(inputData,"[","(");
+        inputData = strings:replace(inputData,"]",")");
+        inputData = strings:replace(inputData,"\"","\'");
+
+        string tableName = jsons:toString(data.tableName);
+
+        string query = "INSERT INTO " + tableName + columns + " VALUES " + inputData;
+
+        system:println(query);
+        sql:Parameter[] parametersArray = [];
+        int rowCount = connection.update(query,parametersArray);
+        system:println(rowCount);
         reply m;
     }
 }
