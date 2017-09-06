@@ -7,6 +7,7 @@ import LM_TEAM from '../../services/database/LM_TEAM';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
 import Mail from '../../services/mail/Mail';
+import '../../App.css';
 
 class RequestRepository extends Component{
   
@@ -17,7 +18,10 @@ class RequestRepository extends Component{
       licenseNames:[],
       repositoryTypes:[],
       organizations:[],
-      teams:[]
+      teams:[],
+
+      validateRepository:" ",
+      buttonState:false
     }
   }
 
@@ -79,8 +83,24 @@ class RequestRepository extends Component{
   /* Validation functions*/
   validateInputRepositoryName(e){
     var inputRepositoryName = this.refs.inputRepositoryName.value;
-    
-    //LM_COMPONENT.selectComponentFromName(inputRepositoryName);
+    LM_REPOSITORY.selectDataFromName(inputRepositoryName).then(function(response){
+      if(response.length > 0){
+        this.setState(function(){
+          return{
+            validateRepository:"Sorry! This repository name already exists!",
+            buttonState:true
+          }
+        })
+      }else{
+        this.setState(function(){
+          return{
+            validateRepository:" ",
+            buttonState:true
+          }
+        })
+      }
+    }.bind(this));;
+  
 
   }
     /* Validation functions end*/
@@ -114,7 +134,7 @@ class RequestRepository extends Component{
         repositoryType
       ];   
 
-      LM_REPOSITORY.insertData(data);
+      //LM_REPOSITORY.insertData(data);
       
       
     }
@@ -132,7 +152,8 @@ class RequestRepository extends Component{
           <div className="form-group">
             <label htmlFor="inputRepositoryName" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Name</label>
             <div className="col-lg-10">
-              <input onChange={this.validateInputRepositoryName.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="carbon-identity-framework" />
+              <input onChange={this.validateInputRepositoryName.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="carbon-identity-framework" required />
+              <span className="validate" id="validateInputRepositoryName">{this.state.validateRepository}</span>
             </div>
           </div>
 
@@ -158,7 +179,7 @@ class RequestRepository extends Component{
             <label htmlFor="selectTeam" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Team Name</label>
             <div className="col-lg-10">
               <select className="form-control" ref="selectTeam" >
-                {this.state.teams.map((team,i)=> <option key={team.TEAM_NAME} value={team.TEAM_NAME} >{team.TEAM_NAME}</option>)}
+                {this.state.teams.map((team,i)=> <option key={team.TEAM_NAME} value={team.TEAM_ID} >{team.TEAM_NAME}</option>)}
               </select>
             </div>
           </div>
@@ -218,7 +239,7 @@ class RequestRepository extends Component{
             <div className="col-lg-10 col-lg-offset-2">
               <button type="reset" className="btn btn-default">Cancel</button>
               &nbsp;
-              <button type="submit" className="btn btn-info" id="form-horizontal" onClick={this.submitRequest.bind(this)}>Request</button>
+              <button type="submit" className="btn btn-info" id="form-horizontal" onSubmit={this.submitRequest.bind(this)} disabled={this.state.buttonState} >Request</button>
             </div>
           </div>
         </fieldset>

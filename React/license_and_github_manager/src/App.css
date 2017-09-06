@@ -57,3 +57,8 @@
 #mainIcons{
   align-items: center !important;
 }
+
+.validate{
+  color: red !important;
+  
+}

@@ -41,7 +41,18 @@ service<http> databaseService {
         string tableName = jsons:toString(requestDataJSON.tableName);
         string select = jsons:toString(requestDataJSON.select);
 
-        string query = "SELECT " + select + " FROM " + tableName;
+        string query;
+
+        if(requestDataJSON.condition == null){
+            query = "SELECT " + select + " FROM " + tableName;
+        }else{
+            string condition = jsons:toString(requestDataJSON.condition);
+            query = "SELECT " + select + " FROM " + tableName + " " + condition;
+            system:println(query);
+        }
+
+
+
 
         sql:Parameter[] parametersArray = [];
         datatable lm_library = connection.select(query ,parametersArray);
@@ -56,10 +67,10 @@ service<http> databaseService {
 
         message response = {};
 
-        //json requestDataJSON = messages:getJsonPayload(m);
+        json requestDataJSON = messages:getJsonPayload(m);
 
-        //string tableName = jsons:toString(requestDataJSON.tableName);
-        //string select = jsons:toString(requestDataJSON.select);
+        string tableName = jsons:toString(requestDataJSON.tableName);
+        string select = jsons:toString(requestDataJSON.select);
         //string condition = jsons:toString(requestDataJSON.condition);
         //string columnName = jsons:toString(requestDataJSON.parameters.column);
         //string sqlGivenType = jsons:toString(requestDataJSON.parameters.sqlType);

@@ -3,7 +3,7 @@ import axios from 'axios';
 import MainData from '../MainData';
 
 class LM_REPOSITORY extends Component{
-
+    
 /* insert into repository table */
     insertData(data){
         var url = MainData.ballerinaDatabaseURL + "insertData";
@@ -26,7 +26,7 @@ class LM_REPOSITORY extends Component{
         )
         .then(function (response) {
             
-        return(response.data) ;
+            return(response.data) ;
             
         })
         .catch(function (error) {
@@ -34,6 +34,26 @@ class LM_REPOSITORY extends Component{
         });
     }
 /*  insert into repository table ends*/
+
+    selectDataFromName(data){
+        var url = MainData.ballerinaDatabaseURL + "selectAll";
+        var select = "*";
+        var condition = "WHERE REPOSITORY_NAME ='" + data + "' ";
+        var requestData = {"tableName":"LM_REPOSITORY","select":select,"condition":condition};
+
+        return axios.post(
+            url,
+            requestData
+        )
+        .then(function (response) {
+            
+            return(response.data) ;
+            
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
 }
 
 
