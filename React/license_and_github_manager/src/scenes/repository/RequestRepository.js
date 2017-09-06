@@ -3,7 +3,9 @@ import LM_COMPONENT from '../../services/database/LM_COMPONENT';
 import LM_LICENSE from '../../services/database/LM_LICENSE';
 import LM_REPOSITORYTYPE from '../../services/database/LM_REPOSITORYTYPE';
 import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
+import LM_TEAM from '../../services/database/LM_TEAM';
 import Common from '../../services/github/Common';
+import Mail from '../../services/mail/Mail';
 
 class RequestRepository extends Component{
   
@@ -13,12 +15,22 @@ class RequestRepository extends Component{
       languages:[],
       licenseNames:[],
       repositoryTypes:[],
-      organizations:[]
+      organizations:[],
+      teams:[]
     }
   }
 
   /* component did mount */
   componentDidMount(){
+    {/* get all team details from database*/}
+    LM_TEAM.getAllTeams().then(function(response){
+      this.setState(function(){
+        return {
+          teams:response
+        }
+      })
+    }.bind(this));
+    {/* get all team details from database ends*/}
 
     {/*get all organizations types from database*/}
     LM_ORGANIZATION.getAllOrganizations().then(function(response){
@@ -67,7 +79,7 @@ class RequestRepository extends Component{
   validateInputRepositoryName(e){
     var inputRepositoryName = this.refs.inputRepositoryName.value;
     
-    LM_COMPONENT.selectComponentFromName(inputRepositoryName);
+    //LM_COMPONENT.selectComponentFromName(inputRepositoryName);
 
   }
     /* Validation functions end*/
@@ -76,7 +88,11 @@ class RequestRepository extends Component{
 
     submitRequest(e){
       e.preventDefault();
-      LM_COMPONENT.request();
+      var repositoryName = this.refs.inputRepositoryName.value;
+      var repositoryType = this.selectRepositoryType.value;
+
+      console.log(repositoryType);
+      //Mail.sendMail();
     }
     /* submit function ends*/
 
@@ -97,10 +113,10 @@ class RequestRepository extends Component{
           </div>
 
           <div className="form-group">
-            <label htmlFor="selectProduct" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Type</label>
+            <label htmlFor="selectRepositoryType" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Type</label>
             <div className="col-lg-10">
-              <select className="form-control" id="selectProduct" >
-                {this.state.repositoryTypes.map((repositoryType,i)=> <option key={i}>{repositoryType.REPOSITORYTYPE_NAME}</option>)}
+              <select className="form-control" name="selectRepositoryType" refs="selectRepositoryType" >
+                {this.state.repositoryTypes.map((repositoryType,i)=> <option key={i} value={repositoryType.REPOSITORYTYPE_ID}>{repositoryType.REPOSITORYTYPE_NAME}</option>)}
               </select>
             </div>
           </div>
@@ -115,11 +131,11 @@ class RequestRepository extends Component{
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputGroupId" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Group ID</label>
+            <label htmlFor="inputTeam" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Team Name</label>
             <div className="col-lg-10">
-              <select className="form-control" id="selectProduct" >
-                  
-                </select>
+              <select className="form-control" id="inputTeam" >
+                {this.state.teams.map((team,i)=> <option key={i}>{team.TEAM_NAME}</option>)}
+              </select>
             </div>
           </div>
 
@@ -140,6 +156,13 @@ class RequestRepository extends Component{
               {this.state.languages.map((language,i)=> <option key={i}>{language}</option>)}
                 
               </select>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="inputGroupId" className="col-lg-2 control-label">&nbsp;Group ID</label>
+            <div className="col-lg-10">
+              <input  type="text" className="form-control" ref="inputGroupId" id="inputRepositoryName" placeholder="org.wso2.example" />
             </div>
           </div>
 
