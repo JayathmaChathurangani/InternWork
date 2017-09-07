@@ -9,6 +9,7 @@ import Common from '../../services/github/Common';
 import Mail from '../../services/mail/Mail';
 import '../../App.css';
 
+var preventDefault = require('react-prevent-default');
 class RequestRepository extends Component{
   
   constructor(){
@@ -83,6 +84,16 @@ class RequestRepository extends Component{
   /* Validation functions*/
   validateInputRepositoryName(e){
     var inputRepositoryName = this.refs.inputRepositoryName.value;
+    
+    // if(inputRepositoryName.length == 0){
+    //   this.setState(function(){
+    //     console.log(inputRepositoryName.length);
+    //     return{
+    //       validateRepository:"Required",
+    //       buttonState:true
+    //     }
+    //   })
+    // }
     LM_REPOSITORY.selectDataFromName(inputRepositoryName).then(function(response){
       if(response.length > 0){
         this.setState(function(){
@@ -95,7 +106,7 @@ class RequestRepository extends Component{
         this.setState(function(){
           return{
             validateRepository:" ",
-            buttonState:true
+            buttonState:false
           }
         })
       }
@@ -109,6 +120,12 @@ class RequestRepository extends Component{
 
     submitRequest(e){
       e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+
+      if (confirm("Are you sure to request it?") == false ) {
+        return false ;
+     }
 
       var repositoryName = this.refs.inputRepositoryName.value;
       var repositoryType = this.refs.selectRepositoryType.value;
@@ -120,6 +137,7 @@ class RequestRepository extends Component{
       var buildable = this.refs.inputBuildable.checked;
       var isPrivate = this.refs.inputPrivate.checked;
       var description = this.refs.textDescription.value;
+      var requestedBy = "buddhik@wso2.com";
 
       var data = [
         repositoryName,
@@ -131,11 +149,12 @@ class RequestRepository extends Component{
         license,
         team,
         organization,
-        repositoryType
+        repositoryType,
+        requestedBy
       ];   
-
-      //LM_REPOSITORY.insertData(data);
       
+      //LM_REPOSITORY.insertData(data);
+      Mail.sendMail(data);
       
     }
     /* submit function ends*/
@@ -143,7 +162,7 @@ class RequestRepository extends Component{
   render(){
 
     return(
-      <form className="form-horizontal">
+      <form className="form-horizontal"  onSubmit={this.submitRequest.bind(this)}>
         <h2 className="text-center">Request GitHub Repository Here</h2>
         
         <fieldset>
@@ -152,7 +171,7 @@ class RequestRepository extends Component{
           <div className="form-group">
             <label htmlFor="inputRepositoryName" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Name</label>
             <div className="col-lg-10">
-              <input onChange={this.validateInputRepositoryName.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="carbon-identity-framework" required />
+              <input onChange={this.validateInputRepositoryName.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="carbon-identity-framework" required/>
               <span className="validate" id="validateInputRepositoryName">{this.state.validateRepository}</span>
             </div>
           </div>
@@ -239,7 +258,7 @@ class RequestRepository extends Component{
             <div className="col-lg-10 col-lg-offset-2">
               <button type="reset" className="btn btn-default">Cancel</button>
               &nbsp;
-              <button type="submit" className="btn btn-info" id="form-horizontal" onSubmit={this.submitRequest.bind(this)} disabled={this.state.buttonState} >Request</button>
+              <button type="submit" className="btn btn-info" id="form-horizontal" disabled={this.state.buttonState} >Request</button>
             </div>
           </div>
         </fieldset>

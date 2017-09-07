@@ -17,7 +17,8 @@ class LM_REPOSITORY extends Component{
             'REPOSITORY_LICENSE',
             'REPOSITORY_TEAM',
             'REPOSITORY_ORGANIZATION',
-            'REPOSITORY_TYPE'
+            'REPOSITORY_TYPE',
+            'REPOSITORY_REQUEST_BY'
         ];
         var requestData = {"tableName":"LM_REPOSITORY","columns":columns,"data":data};
         return axios.post(
@@ -26,7 +27,11 @@ class LM_REPOSITORY extends Component{
         )
         .then(function (response) {
             
-            return(response.data) ;
+            if(response.data.type !== "Error"){
+                alert(" Your request successfully send.");
+            }else{
+                alert(" Your request sending fails.");
+            }
             
         })
         .catch(function (error) {
@@ -36,7 +41,7 @@ class LM_REPOSITORY extends Component{
 /*  insert into repository table ends*/
 
     selectDataFromName(data){
-        var url = MainData.ballerinaDatabaseURL + "selectAll";
+        var url = MainData.ballerinaDatabaseURL + "select";
         var select = "*";
         var condition = "WHERE REPOSITORY_NAME ='" + data + "' ";
         var requestData = {"tableName":"LM_REPOSITORY","select":select,"condition":condition};

@@ -7,15 +7,31 @@ class Mail extends Component{
 /* send mail */
     sendMail(repositoryDetails){
         var url = MainData.ballerinaMailURL + "sendMail";
-        var data = {"tableName":"LM_TEAM","select":"*"};
-        var returnData = [];
+        var columns = [
+            'Repository Name',
+            'Language',
+            'Buildable',
+            'Is private',
+            'Description',
+            'Group ID',
+            'License',
+            'Team',
+            'Organization',
+            'Type',
+            'Requested By'
+        ];
+        var requestData = {"columns":columns,"data":repositoryDetails};
         return axios.post(
             url,
-            data
+            requestData
         )
         .then(function (response) {
             
-        console.log(response.data) ;
+            if(response.data.type == "done"){
+                alert(" Your request send for approval via E-mail.");
+            }else{
+                alert(" Your request sending fails.");
+            }
             
         })
         .catch(function (error) {
