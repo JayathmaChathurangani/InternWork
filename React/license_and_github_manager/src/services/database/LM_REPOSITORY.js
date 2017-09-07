@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import axios from 'axios';
 import MainData from '../MainData';
-
+import Mail from '../mail/Mail';
 class LM_REPOSITORY extends Component{
     
 /* insert into repository table */
@@ -28,7 +28,7 @@ class LM_REPOSITORY extends Component{
         .then(function (response) {
             
             if(response.data.type !== "Error"){
-                alert(" Your request successfully send.");
+                Mail.sendMail(data);
             }else{
                 alert(" Your request sending fails.");
             }

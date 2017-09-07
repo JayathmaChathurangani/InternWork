@@ -6,7 +6,6 @@ import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
 import LM_TEAM from '../../services/database/LM_TEAM';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
-import Mail from '../../services/mail/Mail';
 import '../../App.css';
 
 var preventDefault = require('react-prevent-default');
@@ -153,8 +152,8 @@ class RequestRepository extends Component{
         requestedBy
       ];   
       
-      //LM_REPOSITORY.insertData(data);
-      Mail.sendMail(data);
+      LM_REPOSITORY.insertData(data);
+  
       
     }
     /* submit function ends*/
