@@ -49,7 +49,6 @@ CREATE TABLE LM_USER(
 	USER_PERMISSION ENUM('ALL','ACCEPT','REMOVE','READ')
 );
 
-
 #########################################################################################################################################
 
 INSERT INTO LM_REPOSITORYTYPE VALUES

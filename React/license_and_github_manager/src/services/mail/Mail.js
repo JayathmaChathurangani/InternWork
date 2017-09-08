@@ -30,7 +30,7 @@ class Mail extends Component{
             if(response.data.type == "done"){
                 alert(" Your request send for approval via E-mail.");
             }else{
-                alert(" Your request sending fails.");
+                alert(" Your request sending fails." + response.data.message);
             }
             
         })

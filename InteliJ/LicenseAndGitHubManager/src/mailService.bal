@@ -32,6 +32,7 @@ service<http> mailService {
             message responseDataFromDb = {};
             json responseDataFromDbJson;
             string condition;
+            string description;
 
             string to = " ";
             string subject = "GitHub Repository Request";
@@ -103,6 +104,12 @@ service<http> mailService {
                     i = i + 1;
                     continue;
                 }
+
+                if(strings:trim(jsons:toString(requestDataJson.columns[i])) == "Description"){
+                    description = jsons:toString(requestDataJson.columns[i]) + " for README: " + jsons:toString(requestDataJson.data[i]) + "\n";
+                    i = i + 1;
+                    continue;
+                }
                 messageBody = messageBody + jsons:toString(requestDataJson.columns[i]) + " : " + jsons:toString(requestDataJson.data[i]) + "\n";
 
                 i = i + 1;
@@ -164,7 +171,7 @@ service<http> mailService {
             string mailBodyMessage = "Please note that, We need to create a GitHub repository according to following details \n\n\n";
             string acceptLink = " https://clickme.com";
             string mailLinkMessage = "\n\nNote: \nTo confirm request please click this link below \n\n Link : " + acceptLink + " \n\n\n Thank You!!";
-            messageBody = mailGreeting + " !" + "\n\n\n" + mailBodyMessage + messageBody + mailLinkMessage;
+            messageBody = mailGreeting + " !" + "\n\n\n" + mailBodyMessage + messageBody + description + mailLinkMessage;
 
             //set other mail content ends
             message gmailResponse;
