@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://wso2.org/bpmn/repositoryCreationProcess">
+  <process id="repositoryCreationProcess" name="Repository Creation Process" isExecutable="true">
+    <startEvent id="repositoryCreationStart" name="Start Repository Creation"></startEvent>
+    <serviceTask id="gitHubRepoRequestAddedIntoDbRestTask" name="GitHub Repository Request Added into Database" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask"></serviceTask>
+    <userTask id="approveGitHubREpositoryUserTask" name="Approve Repository Request"></userTask>
+    <serviceTask id="createGitHubRepositoryRestTask" name="Create GitHub Repository" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask"></serviceTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow1" sourceRef="repositoryCreationStart" targetRef="gitHubRepoRequestAddedIntoDbRestTask"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="approveGitHubREpositoryUserTask" targetRef="createGitHubRepositoryRestTask"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="createGitHubRepositoryRestTask" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="sendRequestForApprovalRestTask" name="Send Request for Approval via E-mail" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask"></serviceTask>
+    <sequenceFlow id="flow5" sourceRef="gitHubRepoRequestAddedIntoDbRestTask" targetRef="sendRequestForApprovalRestTask"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="sendRequestForApprovalRestTask" targetRef="approveGitHubREpositoryUserTask"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_repositoryCreationProcess">
+    <bpmndi:BPMNPlane bpmnElement="repositoryCreationProcess" id="BPMNPlane_repositoryCreationProcess">
+      <bpmndi:BPMNShape bpmnElement="repositoryCreationStart" id="BPMNShape_repositoryCreationStart">
+        <omgdc:Bounds height="35.0" width="35.0" x="0.0" y="162.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="gitHubRepoRequestAddedIntoDbRestTask" id="BPMNShape_gitHubRepoRequestAddedIntoDbRestTask">
+        <omgdc:Bounds height="82.0" width="121.0" x="100.0" y="139.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approveGitHubREpositoryUserTask" id="BPMNShape_approveGitHubREpositoryUserTask">
+        <omgdc:Bounds height="81.0" width="121.0" x="474.0" y="139.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="createGitHubRepositoryRestTask" id="BPMNShape_createGitHubRepositoryRestTask">
+        <omgdc:Bounds height="81.0" width="131.0" x="650.0" y="139.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="850.0" y="162.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendRequestForApprovalRestTask" id="BPMNShape_sendRequestForApprovalRestTask">
+        <omgdc:Bounds height="81.0" width="151.0" x="270.0" y="139.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="35.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="180.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="595.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="179.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="781.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="179.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="221.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="179.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="421.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="474.0" y="179.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

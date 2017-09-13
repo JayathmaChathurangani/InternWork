@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>HelloWorldBPMN</name>
+	<comment></comment>
+	<projects>
+		<project>HelloWorldServiceTask</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.wso2.developerstudio.eclipse.mavenmultimodule.project.nature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.activiti.designer.nature</nature>
+	</natures>
+</projectDescription>

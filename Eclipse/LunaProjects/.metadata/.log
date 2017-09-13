@@ -1,0 +1,186 @@
+!SESSION 2017-09-08 14:43:32.743 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_144
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.ui.browser 2 0 2017-09-08 14:45:24.558
+!MESSAGE Internal browser is not available: No more handles [Unknown Mozilla path (MOZILLA_FIVE_HOME not set)]
+!SESSION 2017-09-08 19:00:09.231 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_144
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.ui.browser 2 0 2017-09-08 19:00:32.595
+!MESSAGE Internal browser is not available: No more handles [Unknown Mozilla path (MOZILLA_FIVE_HOME not set)]
+
+!ENTRY org.eclipse.equinox.p2.operations 4 10053 2017-09-08 19:03:50.136
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 10053 2017-09-08 19:03:50.136
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE Software being installed: WS Policy Feature 4.2.0.201708230828 (org.wso2.developerstudio.kernel.security.feature.feature.group 4.2.0.201708230828)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE Missing requirement for filter properties ~= $0: Standard Widget Toolkit 3.104.2.v20160212-1350 (org.eclipse.swt 3.104.2.v20160212-1350) requires 'org.eclipse.swt.gtk.linux.x86_64 [3.104.2.v20160212-1350]' but it could not be found
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.137
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE From: JFace 3.11.1.v20160128-1644 (org.eclipse.jface 3.11.1.v20160128-1644)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE To: bundle org.eclipse.swt [3.104.0,4.0.0)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.137
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE From: Eclipse UI 3.107.0.v20150507-1945 (org.eclipse.ui 3.107.0.v20150507-1945)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE To: bundle org.eclipse.jface [3.10.100,4.0.0)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.137
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE From: SecurityProject 4.2.0.201708230828 (org.wso2.developerstudio.eclipse.artifact.security 4.2.0.201708230828)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE To: bundle org.wso2.developerstudio.eclipse.kernel.libraries 4.1.0
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.137
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE From: KernelLibraries 4.1.0.201604061411 (org.wso2.developerstudio.eclipse.kernel.libraries 4.1.0.201604061411)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE To: bundle org.eclipse.ui 3.107.0
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.137
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE From: WS Policy Feature 4.2.0.201708230828 (org.wso2.developerstudio.kernel.security.feature.feature.group 4.2.0.201708230828)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.137
+!MESSAGE To: org.wso2.developerstudio.eclipse.artifact.security [4.2.0.201708230828]
+
+!ENTRY org.eclipse.equinox.p2.operations 4 10053 2017-09-08 19:03:50.145
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 10053 2017-09-08 19:03:50.145
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.145
+!MESSAGE Software being installed: WS Policy Feature 4.2.0.201708230828 (org.wso2.developerstudio.kernel.security.feature.feature.group 4.2.0.201708230828)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.145
+!MESSAGE Missing requirement for filter properties ~= $0: Standard Widget Toolkit 3.104.2.v20160212-1350 (org.eclipse.swt 3.104.2.v20160212-1350) requires 'org.eclipse.swt.gtk.linux.x86_64 [3.104.2.v20160212-1350]' but it could not be found
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.145
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.145
+!MESSAGE From: JFace 3.11.1.v20160128-1644 (org.eclipse.jface 3.11.1.v20160128-1644)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.145
+!MESSAGE To: bundle org.eclipse.swt [3.104.0,4.0.0)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.145
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.145
+!MESSAGE From: Eclipse UI 3.107.0.v20150507-1945 (org.eclipse.ui 3.107.0.v20150507-1945)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.146
+!MESSAGE To: bundle org.eclipse.jface [3.10.100,4.0.0)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.146
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.146
+!MESSAGE From: SecurityProject 4.2.0.201708230828 (org.wso2.developerstudio.eclipse.artifact.security 4.2.0.201708230828)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.146
+!MESSAGE To: bundle org.wso2.developerstudio.eclipse.kernel.libraries 4.1.0
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.146
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.146
+!MESSAGE From: KernelLibraries 4.1.0.201604061411 (org.wso2.developerstudio.eclipse.kernel.libraries 4.1.0.201604061411)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.146
+!MESSAGE To: bundle org.eclipse.ui 3.107.0
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.146
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.146
+!MESSAGE From: WS Policy Feature 4.2.0.201708230828 (org.wso2.developerstudio.kernel.security.feature.feature.group 4.2.0.201708230828)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.146
+!MESSAGE To: org.wso2.developerstudio.eclipse.artifact.security [4.2.0.201708230828]
+
+!ENTRY org.eclipse.equinox.p2.operations 4 10053 2017-09-08 19:03:50.176
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 10053 2017-09-08 19:03:50.176
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE Software being installed: WS Policy Feature 4.2.0.201708230828 (org.wso2.developerstudio.kernel.security.feature.feature.group 4.2.0.201708230828)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE Missing requirement for filter properties ~= $0: Standard Widget Toolkit 3.104.2.v20160212-1350 (org.eclipse.swt 3.104.2.v20160212-1350) requires 'org.eclipse.swt.gtk.linux.x86_64 [3.104.2.v20160212-1350]' but it could not be found
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.177
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE From: JFace 3.11.1.v20160128-1644 (org.eclipse.jface 3.11.1.v20160128-1644)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE To: bundle org.eclipse.swt [3.104.0,4.0.0)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.177
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE From: Eclipse UI 3.107.0.v20150507-1945 (org.eclipse.ui 3.107.0.v20150507-1945)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE To: bundle org.eclipse.jface [3.10.100,4.0.0)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.177
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE From: SecurityProject 4.2.0.201708230828 (org.wso2.developerstudio.eclipse.artifact.security 4.2.0.201708230828)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE To: bundle org.wso2.developerstudio.eclipse.kernel.libraries 4.1.0
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.177
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE From: KernelLibraries 4.1.0.201604061411 (org.wso2.developerstudio.eclipse.kernel.libraries 4.1.0.201604061411)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE To: bundle org.eclipse.ui 3.107.0
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.177
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE From: WS Policy Feature 4.2.0.201708230828 (org.wso2.developerstudio.kernel.security.feature.feature.group 4.2.0.201708230828)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE To: org.wso2.developerstudio.eclipse.artifact.security [4.2.0.201708230828]
+
+!ENTRY org.eclipse.equinox.p2.operations 4 10053 2017-09-08 19:03:50.177
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 10053 2017-09-08 19:03:50.177
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE Software being installed: WS Policy Feature 4.2.0.201708230828 (org.wso2.developerstudio.kernel.security.feature.feature.group 4.2.0.201708230828)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE Missing requirement for filter properties ~= $0: Standard Widget Toolkit 3.104.2.v20160212-1350 (org.eclipse.swt 3.104.2.v20160212-1350) requires 'org.eclipse.swt.gtk.linux.x86_64 [3.104.2.v20160212-1350]' but it could not be found
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.177
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE From: JFace 3.11.1.v20160128-1644 (org.eclipse.jface 3.11.1.v20160128-1644)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE To: bundle org.eclipse.swt [3.104.0,4.0.0)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.177
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.177
+!MESSAGE From: Eclipse UI 3.107.0.v20150507-1945 (org.eclipse.ui 3.107.0.v20150507-1945)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.178
+!MESSAGE To: bundle org.eclipse.jface [3.10.100,4.0.0)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.178
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.178
+!MESSAGE From: SecurityProject 4.2.0.201708230828 (org.wso2.developerstudio.eclipse.artifact.security 4.2.0.201708230828)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.178
+!MESSAGE To: bundle org.wso2.developerstudio.eclipse.kernel.libraries 4.1.0
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.178
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.178
+!MESSAGE From: KernelLibraries 4.1.0.201604061411 (org.wso2.developerstudio.eclipse.kernel.libraries 4.1.0.201604061411)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.178
+!MESSAGE To: bundle org.eclipse.ui 3.107.0
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 1 2017-09-08 19:03:50.178
+!MESSAGE Cannot satisfy dependency:
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.178
+!MESSAGE From: WS Policy Feature 4.2.0.201708230828 (org.wso2.developerstudio.kernel.security.feature.feature.group 4.2.0.201708230828)
+!SUBENTRY 3 org.eclipse.equinox.p2.director 4 0 2017-09-08 19:03:50.178
+!MESSAGE To: org.wso2.developerstudio.eclipse.artifact.security [4.2.0.201708230828]
+!SESSION 2017-09-08 19:06:26.425 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_144
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.ui.browser 2 0 2017-09-08 19:06:52.163
+!MESSAGE Internal browser is not available: No more handles [Unknown Mozilla path (MOZILLA_FIVE_HOME not set)]

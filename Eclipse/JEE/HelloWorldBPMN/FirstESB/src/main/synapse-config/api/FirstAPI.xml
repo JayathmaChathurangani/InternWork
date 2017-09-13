@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/callAPI" hostname="firsthost" name="FirstAPI" port="3333" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="GET">
+        <inSequence>
+            <call>
+                <endpoint>
+                    <http method="get"/>
+                </endpoint>
+            </call>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+</api>
