@@ -6,6 +6,7 @@ import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
 import LM_TEAM from '../../services/database/LM_TEAM';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
+import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
 import '../../App.css';
 
 var preventDefault = require('react-prevent-default');
@@ -152,7 +153,8 @@ class RequestRepository extends Component{
         requestedBy
       ];   
       
-      LM_REPOSITORY.insertData(data);
+      //LM_REPOSITORY.insertData(data);
+      CommGitHubRepositoryCreationon.startProcess(data);
   
       
     }
@@ -170,7 +172,7 @@ class RequestRepository extends Component{
           <div className="form-group">
             <label htmlFor="inputRepositoryName" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Name</label>
             <div className="col-lg-10">
-              <input onChange={this.validateInputRepositoryName.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="carbon-identity-framework" required/>
+              <input onChange={this.validateInputRepositoryName.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="carbon-identity-framework"/>
               <span className="validate" id="validateInputRepositoryName">{this.state.validateRepository}</span>
             </div>
           </div>

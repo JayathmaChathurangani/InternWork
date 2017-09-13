@@ -20,14 +20,18 @@ service<http> gitHubService {
     }
 
 
-    @http:GET {}
+    @http:POST {}
     @http:Path {value:"/getSample"}
     resource getSample (message m) {
 
         message response = {};
+
+        string requestString  = messages:getStringPayload(m);
+        system:println(requestString);
         json requestJson = messages:getJsonPayload(m);
-        system:println("calles : ");
         system:println(requestJson);
+        json responseJson = {"helo":"Buddhi"};
+        messages:setJsonPayload(response,responseJson);
         reply response;
     }
 
