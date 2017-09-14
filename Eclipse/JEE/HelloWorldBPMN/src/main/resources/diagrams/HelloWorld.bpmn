@@ -11,7 +11,7 @@
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"companyName":"ibm","industry":"${variables}","address":{"country":"USA","state":"data"}}</activiti:expression>
+          <activiti:expression>{"companyName":"wso2","industry":"${buddhi}","address":{"country":"USA","state":"data"}}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputVariable">
           <activiti:string>languages</activiti:string>
@@ -32,7 +32,7 @@
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"companyName":"wso2","industry":"${variables}","address":{"country":"USA","state":"data"}}</activiti:expression>
+          <activiti:string>{"companyName":"wso2","industry":"sss","address":{"country":"USA","state":"data"}}</activiti:string>
         </activiti:field>
         <activiti:field name="outputVariable">
           <activiti:string>language</activiti:string>

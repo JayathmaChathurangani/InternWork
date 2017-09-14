@@ -29,10 +29,14 @@ service<http> gitHubService {
         string requestString  = messages:getStringPayload(m);
         system:println(requestString);
         json requestJson = messages:getJsonPayload(m);
-        system:println(requestJson);
+        system:println(m);
         json responseJson = {"helo":"Buddhi"};
         messages:setJsonPayload(response,responseJson);
-        reply response;
+        messages:setHeader(response,"Accept","*");
+        messages:setHeader(response,"Accept-Charset","*");
+        messages:setHeader(response,"Content-Type","application/json");
+        messages:setHeader(response,"Content-Type","application/json");
+        reply m;
     }
 
 }

@@ -48,7 +48,7 @@ class GitHubRepositoryCreation extends Component{
                 "value":mailColumns
             },
             {
-                "name":"data",
+                "name":"buddhi",
                 "value":requestData
             }
         ];
@@ -61,12 +61,14 @@ class GitHubRepositoryCreation extends Component{
         };
 
         var headers = {
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
         };
         return axios.post(
             url,
             data,
-            headers
+            headers            
         )
         .then(function (response) {
             
