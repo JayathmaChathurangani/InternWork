@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import LM_COMPONENT from '../../services/database/LM_COMPONENT';
 import LM_LICENSE from '../../services/database/LM_LICENSE';
 import LM_REPOSITORYTYPE from '../../services/database/LM_REPOSITORYTYPE';
 import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
@@ -9,7 +8,6 @@ import Common from '../../services/github/Common';
 import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
 import '../../App.css';
 
-var preventDefault = require('react-prevent-default');
 class RequestRepository extends Component{
   
   constructor(){
@@ -127,17 +125,17 @@ class RequestRepository extends Component{
         return false ;
      }
 
-      var repositoryName = this.refs.inputRepositoryName.value;
+      var repositoryName = "'" + this.refs.inputRepositoryName.value.toString() + "'";
       var repositoryType = this.refs.selectRepositoryType.value;
       var organization = this.refs.selectOrganization.value;
       var team = this.refs.selectTeam.value;
       var license = this.refs.selectLicense.value;
-      var language = this.refs.selectLanguage.value;
-      var groupId = this.refs.inputGroupId.value;
+      var language = "'" + this.refs.selectLanguage.value + "'";
+      var groupId = "'" + this.refs.inputGroupId.value.toString() + "'";
       var buildable = this.refs.inputBuildable.checked;
       var isPrivate = this.refs.inputPrivate.checked;
-      var description = this.refs.textDescription.value;
-      var requestedBy = "buddhik@wso2.com";
+      var description = "'" + this.refs.textDescription.value.toString() + "'";
+      var requestedBy = "'buddhik@wso2.com'";
 
       var data = [
         repositoryName,
@@ -155,6 +153,7 @@ class RequestRepository extends Component{
       
       //LM_REPOSITORY.insertData(data);
       CommGitHubRepositoryCreationon.startProcess(data);
+      //Mail.sendMail(data);
   
       
     }

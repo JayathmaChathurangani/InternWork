@@ -8,6 +8,7 @@ import ballerina.lang.jsons;
 import ballerina.lang.errors;
 import ballerina.lang.strings;
 
+
 @http:configuration {basePath:"/mailService"}
 service<http> mailService {
 

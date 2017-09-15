@@ -4,7 +4,7 @@ import Root from './scenes/Root';
 import Main from './scenes/Main';
 import './App.css';
 import RequestRepository from './scenes/repository/RequestRepository';
-
+import PendingRequests from './scenes/common/PendingRequests';
 import RequestComponent from './scenes/component/RequestComponent';
 import ShowComponent from './scenes/component/ShowComponent';
 
@@ -17,9 +17,12 @@ class App extends Component {
           {/* Index route for Root */}
           <IndexRoute component={RequestComponent} />
 
+          {/* PendingRequests routes start */}
+          <Route path={"pendingRequests"} component={PendingRequests}></Route>
+          {/* PendingRequests routes ends */}
+
           {/* Request routes start */}
           <Route path={"requestRepository"} component={RequestRepository}></Route>
-
           {/* Request routes ends */}
 
           {/* Component routes start */}

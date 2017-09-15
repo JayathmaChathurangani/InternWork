@@ -7,6 +7,7 @@ import ballerina.data.sql;
 import ballerina.lang.jsons;
 import ballerina.lang.strings;
 import ballerina.lang.errors;
+import ballerina.lang.system;
 
 
 
@@ -63,7 +64,8 @@ service<http> databaseService {
 
         try{
             json data = messages:getJsonPayload(m);
-
+            system:println("insert");
+            system:println(data);
             string columns = jsons:toString(data.columns);
             columns = strings:replace(columns,"\""," ");
             columns = strings:replace(columns,"]",")");
@@ -78,6 +80,7 @@ service<http> databaseService {
 
             string query = "INSERT INTO " + tableName + columns + " VALUES " + inputData;
 
+            system:println(query);
             sql:Parameter[] parametersArray = [];
             int rowCount = connection.update(query,parametersArray);
 
@@ -87,6 +90,47 @@ service<http> databaseService {
             reply response;
         }catch(errors:Error err){
             json errorMessage = {"type":"Error","message":err.msg};
+            system:println(err);
+            messages:setJsonPayload(response,errorMessage);
+            reply response;
+        }
+
+    }
+
+    @http:POST {}
+    @http:Path {value:"/updateData"}
+    resource updateData(message m){
+        message response = {};
+
+        try{
+            json requestData = messages:getJsonPayload(m);
+            string tableName = jsons:toString(requestData.tableName);
+            string condition = jsons:toString(requestData.condition);
+            string updateQueryColumns = " ";
+            int updateColumnNumber = lengthof requestData.columns;
+            int i = 0;
+            system:println(updateColumnNumber);
+            while(i < updateColumnNumber){
+                system:println(i);
+                if(i == (updateColumnNumber - 1)){
+                    updateQueryColumns = updateQueryColumns + jsons:toString(requestData.columns[i]) + " = " + jsons:toString(requestData.data[i]) + " " ;
+                    i = i + 1;
+                    continue;
+                }
+                updateQueryColumns = updateQueryColumns + jsons:toString(requestData.columns[i]) + " = " + jsons:toString(requestData.data[i]) + ", ";
+                i = i + 1;
+
+
+            }
+            string query = "UPDATE " + tableName + " SET "+ updateQueryColumns + condition;
+            system:println(query);
+            sql:Parameter[] parametersArray = [];
+            int rowCount = connection.update(query,parametersArray);
+
+            reply response;
+        }catch(errors:Error err){
+            json errorMessage = {"type":"Error","message":err.msg};
+            system:println(err);
             messages:setJsonPayload(response,errorMessage);
             reply response;
         }

@@ -2,9 +2,10 @@ import {Component} from 'react';
 import axios from 'axios';
 import MainData from '../MainData';
 import Mail from '../mail/Mail';
+
 class LM_REPOSITORY extends Component{
     
-/* insert into repository table */
+    /* insert into repository table */
     insertData(data){
         var url = MainData.ballerinaDatabaseURL + "insertData";
         var columns = [
@@ -38,12 +39,55 @@ class LM_REPOSITORY extends Component{
             console.log(error);
         });
     }
-/*  insert into repository table ends*/
+    /*  insert into repository table ends*/
+
+
+    /* update repository table */
+    update(updateColumns,updateData,identifiedColumn,identifiedData){
+        var url = MainData.ballerinaDatabaseURL + "updateData";
+        var condition = " WHERE " + identifiedColumn + " = " + identifiedData;
+        var requestData = {"tableName":"LM_REPOSITORY","columns":updateColumns,"data":updateData,"condition":condition};
+        return axios.post(
+            url,
+            requestData
+        )
+        .then(function (response) {
+            
+            if(response.data.type == "Error"){
+                console.log(" Your BPMN error occur " + response.data.message);
+            }
+            
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+    /* update repository table ends*/
 
     selectDataFromName(data){
         var url = MainData.ballerinaDatabaseURL + "select";
         var select = "*";
         var condition = "WHERE REPOSITORY_NAME ='" + data + "' ";
+        var requestData = {"tableName":"LM_REPOSITORY","select":select,"condition":condition};
+
+        return axios.post(
+            url,
+            requestData
+        )
+        .then(function (response) {
+            
+            return(response.data) ;
+            
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    selectDataFromRequestBy(data){
+        var url = MainData.ballerinaDatabaseURL + "select";
+        var select = "*";
+        var condition = "WHERE REPOSITORY_REQUEST_BY ='" + data + "' ";
         var requestData = {"tableName":"LM_REPOSITORY","select":select,"condition":condition};
 
         return axios.post(

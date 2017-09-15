@@ -1,37 +1,38 @@
 import {Component} from 'react';
 import axios from 'axios';
 import MainData from '../MainData';
+import LM_REPOSITORY from '../database/LM_REPOSITORY'
 
 class GitHubRepositoryCreation extends Component{
 
     startProcess(requestData){
         var url = MainData.bpmnStartURL;
         var columns = [
-            'REPOSITORY_NAME',
-            'REPOSITORY_LANGUAGE',
-            'REPOSITORY_BUILDABLE',
-            'REPOSITORY_PRIVATE',
-            'REPOSITORY_DESCRIPTION',
-            'REPOSITORY_GROUPID',
-            'REPOSITORY_LICENSE',
-            'REPOSITORY_TEAM',
-            'REPOSITORY_ORGANIZATION',
-            'REPOSITORY_TYPE',
-            'REPOSITORY_REQUEST_BY'
+            "REPOSITORY_NAME",
+            "REPOSITORY_LANGUAGE",
+            "REPOSITORY_BUILDABLE",
+            "REPOSITORY_PRIVATE",
+            "REPOSITORY_DESCRIPTION",
+            "REPOSITORY_GROUPID",
+            "REPOSITORY_LICENSE",
+            "REPOSITORY_TEAM",
+            "REPOSITORY_ORGANIZATION",
+            "REPOSITORY_TYPE",
+            "REPOSITORY_REQUEST_BY"
         ];
 
         var mailColumns = [
-            'Repository Name',
-            'Language',
-            'Buildable',
-            'Is private',
-            'Description',
-            'Group ID',
-            'License',
-            'Team',
-            'Organization',
-            'Type',
-            'Requested By'
+            "'Repository Name'",
+            "'Language'",
+            "'Buildable'",
+            "'Is private'",
+            "'Description'",
+            "'Group ID'",
+            "'License'",
+            "'Team'",
+            "'Organization'",
+            "'Type'",
+            "'Requested By'"
         ];
         var tableName = "LM_REPOSITORY";
         var variables = [
@@ -48,13 +49,13 @@ class GitHubRepositoryCreation extends Component{
                 "value":mailColumns
             },
             {
-                "name":"buddhi",
+                "name":"data",
                 "value":requestData
             }
         ];
 
         var data = {
-            "processDefinitionKey":"helloworld",
+            "processDefinitionKey":"repositoryCreationProcess",
             "businessKey":"myBusinessKey",
             "tenantId": "-1234",
             "variables":variables
@@ -71,8 +72,13 @@ class GitHubRepositoryCreation extends Component{
             headers            
         )
         .then(function (response) {
+            try{
+                LM_REPOSITORY.update(["REPOSITORY_BPMN_ID"],[response.data.id],"REPOSITORY_NAME",requestData[0]);
+                alert("Your GitHub repository request send via e-mail for approval.")
+            }catch(err){
+                alert(err);
+            }
             
-           console.log(response) ;
             
         })
         .catch(function (error) {

@@ -82,4 +82,15 @@ axios.post('http://www.localdom.lk:9090/databaseService/insertData', [{
       console.log(error);
     });
 ################################################################################################################################################################
+ var requestBy = "buddhik@wso2.com";
+        {/*get all number of requests from database*/}
+        /*LM_REPOSITORY.selectDataFromRequestBy(requestBy).then(function(response){
+            this.setState(function(){
+                return {
+                    pendingRequests:response
+                    }
+                })
+            }.bind(this))*/
+        {/*get all number of requests from database*/}
 
+//import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';

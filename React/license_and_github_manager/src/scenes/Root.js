@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import Header from '../components/layouts/Header';
+import AppHeader from '../components/layouts/AppHeader';
 import LeftNav from '../components/navs/LeftNav';
 
 class Root extends Component{
@@ -9,7 +9,7 @@ class Root extends Component{
       <div className="container-fluid">
         <div className="row" id="header">
           <div className="col-md-12">
-            <Header />
+            <AppHeader />
           </div>
 
         </div>
