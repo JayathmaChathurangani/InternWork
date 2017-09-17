@@ -7,12 +7,20 @@ import org.wso2.ballerina.connectors.gmail;
 import ballerina.lang.jsons;
 import ballerina.lang.errors;
 import ballerina.lang.strings;
+import ballerina.lang.system;
 
 
 @http:configuration {basePath:"/mailService"}
 service<http> mailService {
 
     string URL = "http://localhost:9090/databaseService/";
+    string clientId = "072671897981-3gi0mlt4f7nlqdird9knbgoeoj8ulf5s.apps.googleusercontent.com";
+    string clientSecret = "NcimadTUT67Xi6AZlU8D5ojw";
+    string userId = "buddhik@wso2.com";
+    string accessToken = "ya29.Glu5BCgLXyUejwtx3gU73n7YV8yw7lrF2stu9T7M-Tuu1rsPEn1nKxWnR1sZWTMMVxoX77NpZelTVXz_gKn0WTAAbffq8L1BpwJJFb0WY_W9m_xaDRt6Td65aQh5";
+    string refreshToken = "1/yQqXYfemqis8b-zPOavGksfCJ2vaXc7kKhB4Xc_JAaw";
+    gmail:ClientConnector gmailConnector = create gmail:ClientConnector(userId,accessToken,refreshToken,clientId,clientSecret);
+
     @http:POST {}
     @http:Path {value:"/sendMail"}
     resource sendMail (message m) {
@@ -20,29 +28,24 @@ service<http> mailService {
         message response = {};
 
         try{
-            string clientId = "1072671897981-3gi0mlt4f7nlqdird9knbgoeoj8ulf5s.apps.googleusercontent.com";
-            string clientSecret = "NcimadTUT67Xi6AZlU8D5ojw";
-            string userId = "buddhik@wso2.com";
-            string accessToken = "ya29.Glu5BCgLXyUejwtx3gU73n7YV8yw7lrF2stu9T7M-Tuu1rsPEn1nKxWnR1sZWTMMVxoX77NpZelTVXz_gKn0WTAAbffq8L1BpwJJFb0WY_W9m_xaDRt6Td65aQh5";
-            string refreshToken = "1/yQqXYfemqis8b-zPOavGksfCJ2vaXc7kKhB4Xc_JAaw";
-            gmail:ClientConnector gmailConnector = create gmail:ClientConnector(userId,accessToken,refreshToken,clientId,clientSecret);
 
-            http:ClientConnector httpConnector = create http:ClientConnector("http://localhost:9090/databaseService");
+            http:ClientConnector httpConnector = create http:ClientConnector(URL);
             message requestDataFromDb = {};
             json requestDataFromDbJson;
             message responseDataFromDb = {};
             json responseDataFromDbJson;
             string condition;
             string description;
-
             string to = " ";
-            string subject = "GitHub Repository Request";
+            string subject = "GitHub Repository Request ";
             string from = "webmisproject@gmail.com";
             string messageBody = "";
             string cc = "";
             string bcc = "";
             string id = "";
             string threadId = "";
+            system:println("hell1");
+
 
             json requestDataJson = messages:getJsonPayload(m);
             int lengthOfRequestArray = lengthof requestDataJson.columns;
@@ -178,12 +181,13 @@ service<http> mailService {
             message gmailResponse;
             gmailResponse = gmail:ClientConnector.sendMail(gmailConnector,to, subject, from, messageBody, cc, bcc, id, threadId);
 
-            json responseMessage = {"type":"done"};
+            json responseMessage = {"type":"Done"};
             messages:setJsonPayload(response,responseMessage);
             reply response;
         }catch(errors:Error err){
             json errorMessage = {"type":"Error","message":err.msg};
             messages:setJsonPayload(response,errorMessage);
+            system:println(errorMessage);
             reply response;
         }
 

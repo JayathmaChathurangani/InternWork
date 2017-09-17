@@ -64,8 +64,6 @@ service<http> databaseService {
 
         try{
             json data = messages:getJsonPayload(m);
-            system:println("insert");
-            system:println(data);
             string columns = jsons:toString(data.columns);
             columns = strings:replace(columns,"\""," ");
             columns = strings:replace(columns,"]",")");
@@ -80,12 +78,14 @@ service<http> databaseService {
 
             string query = "INSERT INTO " + tableName + columns + " VALUES " + inputData;
 
-            system:println(query);
             sql:Parameter[] parametersArray = [];
             int rowCount = connection.update(query,parametersArray);
-
+            json returnMessage = {"type":"Done","message":""};
+            json errorMessage = {"type":"Error","message":"Database Error"};
             if(rowCount >= 1){
-                messages:setStringPayload(response," Request Done !!");
+                messages:setJsonPayload(response,returnMessage);
+            }else{
+                messages:setJsonPayload(response,errorMessage);
             }
             reply response;
         }catch(errors:Error err){
@@ -109,7 +109,7 @@ service<http> databaseService {
             string updateQueryColumns = " ";
             int updateColumnNumber = lengthof requestData.columns;
             int i = 0;
-            system:println(updateColumnNumber);
+
             while(i < updateColumnNumber){
                 system:println(i);
                 if(i == (updateColumnNumber - 1)){
@@ -123,10 +123,48 @@ service<http> databaseService {
 
             }
             string query = "UPDATE " + tableName + " SET "+ updateQueryColumns + condition;
+
+            sql:Parameter[] parametersArray = [];
+            int rowCount = connection.update(query,parametersArray);
+            json returnMessage = {"type":"Done","message":""};
+            json errorMessage = {"type":"Error","message":"Database Error"};
+            if(rowCount >= 1){
+                messages:setJsonPayload(response,returnMessage);
+            }else{
+                messages:setJsonPayload(response,errorMessage);
+            }
+            reply response;
+        }catch(errors:Error err){
+            json errorMessage = {"type":"Error","message":err.msg};
+            system:println(err);
+            messages:setJsonPayload(response,errorMessage);
+            reply response;
+        }
+
+    }
+
+
+    @http:POST {}
+    @http:Path {value:"/deleteData"}
+    resource deleteData(message m){
+        message response = {};
+
+        try{
+            json requestData = messages:getJsonPayload(m);
+            string tableName = jsons:toString(requestData.tableName);
+            string condition = jsons:toString(requestData.condition);
+
+            string query = "DELETE FROM " + tableName + "  " + condition;
             system:println(query);
             sql:Parameter[] parametersArray = [];
             int rowCount = connection.update(query,parametersArray);
-
+            json returnMessage = {"type":"Done","message":""};
+            json errorMessage = {"type":"Error","message":"Database Error"};
+            if(rowCount >= 1){
+                messages:setJsonPayload(response,returnMessage);
+            }else{
+                messages:setJsonPayload(response,errorMessage);
+            }
             reply response;
         }catch(errors:Error err){
             json errorMessage = {"type":"Error","message":err.msg};

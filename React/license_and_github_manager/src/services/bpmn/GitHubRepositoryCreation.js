@@ -72,12 +72,18 @@ class GitHubRepositoryCreation extends Component{
             headers            
         )
         .then(function (response) {
-            try{
-                LM_REPOSITORY.update(["REPOSITORY_BPMN_ID"],[response.data.id],"REPOSITORY_NAME",requestData[0]);
-                alert("Your GitHub repository request send via e-mail for approval.")
-            }catch(err){
-                alert(err);
+
+            if(response.data.completed === false){
+                try{
+                    LM_REPOSITORY.update(["REPOSITORY_BPMN_ID"],[response.data.id],"REPOSITORY_NAME",requestData[0]);
+                    alert("Your GitHub repository request send via e-mail for approval.")
+                }catch(err){
+                    alert(err);
+                }
+            }else{
+                alert("Sorry database or e-mail sending error occur.Your GitHub repository request cannot send.")
             }
+            
             
             
         })

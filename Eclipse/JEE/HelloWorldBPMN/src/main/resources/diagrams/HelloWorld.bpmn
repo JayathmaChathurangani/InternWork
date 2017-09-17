@@ -13,17 +13,18 @@
         <activiti:field name="input">
           <activiti:expression>{"companyName":"wso2","industry":"${buddhi}","address":{"country":"USA","state":"data"}}</activiti:expression>
         </activiti:field>
-        <activiti:field name="outputVariable">
-          <activiti:string>languages</activiti:string>
-        </activiti:field>
         <activiti:field name="headers">
           <activiti:string>{"Content-Type":"application/json"}</activiti:string>
+        </activiti:field>
+        <activiti:field name="outputMappings">
+          <activiti:string>output1:input.value</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <startEvent id="startevent1" name="Start"></startEvent>
     <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask3" name="REST Task" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask4" name="REST Task" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
           <activiti:string>http://localhost:9090/gitHubService/getSample</activiti:string>
@@ -32,15 +33,48 @@
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:string>{"companyName":"wso2","industry":"sss","address":{"country":"USA","state":"data"}}</activiti:string>
+          <activiti:string>{"companyName":"wso2","industry":"1","address":{"country":"USA","state":"data"}}</activiti:string>
         </activiti:field>
         <activiti:field name="outputVariable">
-          <activiti:string>language</activiti:string>
+          <activiti:string>out1</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway2" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${output == 1}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask5" name="REST Task" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+      <extensionElements>
+        <activiti:field name="serviceURL">
+          <activiti:string>http://localhost:9090/gitHubService/getSample</activiti:string>
+        </activiti:field>
+        <activiti:field name="method">
+          <activiti:string>POST</activiti:string>
+        </activiti:field>
+        <activiti:field name="input">
+          <activiti:expression>{"companyName":"wso2","industry":"${output1}","address":{"country":"USA","state":"data"}}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="outputMappings">
+          <activiti:string>output:input.value</activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow10" sourceRef="servicetask2" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="exclusivegateway2"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>function set(output){
+var data = output;
+alert(data);
+
+}
+
+set(output);</script>
+    </scriptTask>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${output == 2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="scripttask1" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_helloworld">
     <bpmndi:BPMNPlane bpmnElement="helloworld" id="BPMNPlane_helloworld">
@@ -48,24 +82,51 @@
         <omgdc:Bounds height="35.0" width="35.0" x="670.0" y="166.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="178.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="178.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="450.0" y="230.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="450.0" y="185.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="520.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="178.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="530.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="105.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="280.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="205.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="385.0" y="205.0"></omgdi:waypoint>
-        <omgdi:waypoint x="502.0" y="230.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="470.0" y="185.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="502.0" y="230.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="625.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="687.0" y="166.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="285.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="205.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="425.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="205.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="470.0" y="225.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="277.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="582.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="687.0" y="201.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

@@ -1,0 +1,17 @@
+{
+  "subject":"GitHub Repository Request Edited"
+
+}
+
+files:File requestContentJsonFile = {path:"/home/buddhik/Documents/InternWork/InteliJ/LicenseAndGitHubManager/src/requestMailContent.txt"};
+            files:open(requestContentJsonFile, "r");
+
+
+            var requestContentJsonFileContent,_ = files:read(requestContentJsonFile,1000);
+            string requestContentString = blobs:toString(requestContentJsonFileContent, "utf-8");
+            json requestContentJson = jsons:getJson(requestContentJson,requestContentString);
+            subject = jsons:toString(requestContentJson.subject);
+            files:close(requestContentJsonFile);
+            system:println(requestContentJson);
+            system:println(requestContentString);
+            system:println("hell");

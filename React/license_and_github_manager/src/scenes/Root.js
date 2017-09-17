@@ -17,7 +17,7 @@ class Root extends Component{
           <div className="col-md-2" id="leftNav">
             <LeftNav />
           </div>
-          <div className="col-md-8">
+          <div className="col-md-10">
             {this.props.children}
           </div>
         </div>

@@ -24,19 +24,18 @@ service<http> gitHubService {
     @http:Path {value:"/getSample"}
     resource getSample (message m) {
 
-        message response = {};
+        message input = {};
 
         string requestString  = messages:getStringPayload(m);
         system:println(requestString);
         json requestJson = messages:getJsonPayload(m);
-        system:println(m);
-        json responseJson = {"helo":"Buddhi"};
-        messages:setJsonPayload(response,responseJson);
-        messages:setHeader(response,"Accept","*");
-        messages:setHeader(response,"Accept-Charset","*");
-        messages:setHeader(response,"Content-Type","application/json");
-        messages:setHeader(response,"Content-Type","application/json");
-        reply m;
+
+        json input1 = {input:{value:2}};
+        //messages:setStringPayload(response,"1");
+        messages:setJsonPayload(input,input1);
+        system:println(input);
+
+        reply input;
     }
 
 }
