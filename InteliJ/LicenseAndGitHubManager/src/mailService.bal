@@ -14,7 +14,8 @@ import ballerina.lang.system;
 service<http> mailService {
 
     string URL = "http://localhost:9090/databaseService/";
-    string clientId = "072671897981-3gi0mlt4f7nlqdird9knbgoeoj8ulf5s.apps.googleusercontent.com";
+    string bpmnTaskUrl = "https://localhost:9445/bpmn/runtime/tasks/";
+    string clientId = "1072671897981-3gi0mlt4f7nlqdird9knbgoeoj8ulf5s.apps.googleusercontent.com";
     string clientSecret = "NcimadTUT67Xi6AZlU8D5ojw";
     string userId = "buddhik@wso2.com";
     string accessToken = "ya29.Glu5BCgLXyUejwtx3gU73n7YV8yw7lrF2stu9T7M-Tuu1rsPEn1nKxWnR1sZWTMMVxoX77NpZelTVXz_gKn0WTAAbffq8L1BpwJJFb0WY_W9m_xaDRt6Td65aQh5";
@@ -171,9 +172,17 @@ service<http> mailService {
             }
             //set cc ends
 
+            //set link to user task
+            condition = "WHERE REPOSITORY_NAME = '" + jsons:toString(requestDataJson.data[0]) + "' ";
+            requestDataFromDbJson =  {"tableName":"LM_REPOSITORY","select":"REPOSITORY_ID","condition":condition};
+            messages:setJsonPayload(requestDataFromDb,requestDataFromDbJson);
+            responseDataFromDb = httpConnector.post("/select",requestDataFromDb);
+            responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
+            string acceptLink = bpmnTaskUrl + jsons:toString(responseDataFromDbJson[0].REPOSITORY_ID);
+            //set link to user task ends
+
             //set other mail content
             string mailBodyMessage = "Please note that, We need to create a GitHub repository according to following details \n\n\n";
-            string acceptLink = " https://clickme.com";
             string mailLinkMessage = "\n\nNote: \nTo confirm request please click this link below \n\n Link : " + acceptLink + " \n\n\n Thank You!!";
             messageBody = mailGreeting + " !" + "\n\n\n" + mailBodyMessage + messageBody + description + mailLinkMessage;
 
@@ -181,7 +190,7 @@ service<http> mailService {
             message gmailResponse;
             gmailResponse = gmail:ClientConnector.sendMail(gmailConnector,to, subject, from, messageBody, cc, bcc, id, threadId);
 
-            json responseMessage = {"type":"Done"};
+            json responseMessage = {"type":"Done","message":"done"};
             messages:setJsonPayload(response,responseMessage);
             reply response;
         }catch(errors:Error err){

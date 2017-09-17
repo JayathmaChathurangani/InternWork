@@ -72,7 +72,7 @@ class GitHubRepositoryCreation extends Component{
             headers            
         )
         .then(function (response) {
-
+            console.log(response);
             if(response.data.completed === false){
                 try{
                     LM_REPOSITORY.update(["REPOSITORY_BPMN_ID"],[response.data.id],"REPOSITORY_NAME",requestData[0]);
