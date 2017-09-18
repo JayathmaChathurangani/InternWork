@@ -4,6 +4,8 @@ import Root from './scenes/Root';
 import Main from './scenes/Main';
 import './App.css';
 import RequestRepository from './scenes/repository/RequestRepository';
+import AcceptRepository from './scenes/repository/AcceptRepository';
+import RejectRepository from './scenes/repository/RejectRepository';
 import PendingRequests from './scenes/common/PendingRequests';
 import RequestComponent from './scenes/component/RequestComponent';
 import ShowComponent from './scenes/component/ShowComponent';
@@ -23,6 +25,8 @@ class App extends Component {
 
           {/* Request routes start */}
           <Route path={"requestRepository"} component={RequestRepository}></Route>
+          <Route path={"acceptRepository"} component={AcceptRepository}></Route>
+          <Route path={"rejectRepository"} component={RejectRepository}></Route>
           {/* Request routes ends */}
 
           {/* Component routes start */}

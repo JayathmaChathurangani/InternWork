@@ -91,6 +91,26 @@ class GitHubRepositoryCreation extends Component{
             console.log(error);
         });
     }
+
+    completeUserTask(bpmnTaskId,variables){
+        var url = MainData.bpmnTaskUrl + bpmnTaskId;
+        var data = {"action":"complete","variables":variables};
+        var headers = {
+            'Content-Type':'application/json'
+        };
+        console.log(url,data);
+        return axios.post(
+            url,
+            data,
+            headers            
+        )
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
     
 }
 

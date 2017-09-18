@@ -14,7 +14,7 @@ import ballerina.lang.system;
 service<http> mailService {
 
     string URL = "http://localhost:9090/databaseService/";
-    string bpmnTaskUrl = "https://localhost:9445/bpmn/runtime/tasks/";
+    string bpmnTaskUrl = "http://localhost:3000/root/acceptRepository";
     string clientId = "1072671897981-3gi0mlt4f7nlqdird9knbgoeoj8ulf5s.apps.googleusercontent.com";
     string clientSecret = "NcimadTUT67Xi6AZlU8D5ojw";
     string userId = "buddhik@wso2.com";
@@ -178,7 +178,7 @@ service<http> mailService {
             messages:setJsonPayload(requestDataFromDb,requestDataFromDbJson);
             responseDataFromDb = httpConnector.post("/select",requestDataFromDb);
             responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
-            string acceptLink = bpmnTaskUrl + jsons:toString(responseDataFromDbJson[0].REPOSITORY_ID);
+            string acceptLink = bpmnTaskUrl + "?repositoryId=" + jsons:toString(responseDataFromDbJson[0].REPOSITORY_ID);
             //set link to user task ends
 
             //set other mail content
@@ -192,6 +192,42 @@ service<http> mailService {
 
             json responseMessage = {"type":"Done","message":"done"};
             messages:setJsonPayload(response,responseMessage);
+            reply response;
+        }catch(errors:Error err){
+            json errorMessage = {"type":"Error","message":err.msg};
+            messages:setJsonPayload(response,errorMessage);
+            system:println(errorMessage);
+            reply response;
+        }
+
+    }
+
+
+
+    @http:POST {}
+    @http:Path {value:"/sendAckMail"}
+    resource sendAckMail (message m) {
+
+        message response = {};
+
+        try{
+
+            json requestDataJson = messages:getJsonPayload(m);
+            string to = jsons:toString(requestDataJson.to);
+            string subject = "GitHub Repository Request ";
+            string from = "webmisproject@gmail.com";
+            string messageBody = jsons:toString(requestDataJson.messageData);
+            string cc = "";
+            string bcc = "";
+            string id = "";
+            string threadId = "";
+
+            message gmailResponse;
+            gmailResponse = gmail:ClientConnector.sendMail(gmailConnector,to, subject, from, messageBody, cc, bcc, id, threadId);
+
+            json responseMessage = {"type":"Done","message":"done"};
+            messages:setJsonPayload(response,responseMessage);
+            system:println("done");
             reply response;
         }catch(errors:Error err){
             json errorMessage = {"type":"Error","message":err.msg};

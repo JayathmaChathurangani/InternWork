@@ -103,6 +103,26 @@ class LM_REPOSITORY extends Component{
             console.log(error);
         });
     }
+
+    selectDataFromId(data){
+        var url = MainData.ballerinaDatabaseURL + "select";
+        var select = "*";
+        var condition = "WHERE REPOSITORY_ID =" + data;
+        var requestData = {"tableName":"LM_REPOSITORY","select":select,"condition":condition};
+
+        return axios.post(
+            url,
+            requestData
+        )
+        .then(function (response) {
+            
+            return(response.data) ;
+            
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
 }
 
 

@@ -6,26 +6,33 @@ import LM_TEAM from '../../services/database/LM_TEAM';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
 import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
+import {Link} from 'react-router';
 import '../../App.css';
 
-class RequestRepository extends Component{
+class AcceptRepository extends Component{
   
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
+    this.repo = null;
     this.state = {
       languages:[],
       licenseNames:[],
       repositoryTypes:[],
       organizations:[],
       teams:[],
-
       validateRepository:" ",
-      buttonState:false
+      buttonState:false,
+      repositoryId:props.location.query.repositoryId,
+      repositoryDetails:null
+      
     }
+
+    
+    
   }
 
-  /* component did mount */
-  componentDidMount(){
+  /* component will mount */
+  componentWillMount(){
     {/* get all team details from database*/}
     LM_TEAM.getAllTeams().then(function(response){
       this.setState(function(){
@@ -76,22 +83,30 @@ class RequestRepository extends Component{
     }.bind(this));
     {/* get all license from database*/}
 
+    {/* get repository details from ID*/}
+    LM_REPOSITORY.selectDataFromId(this.state.repositoryId).then(function(response){
+      this.setState(function(){
+        return{
+          repositoryDetails:response[0]
+        }
+      });
+      this.refs.inputRepositoryName.value = response[0].REPOSITORY_NAME;
+      this.refs.inputGroupId.value = response[0].REPOSITORY_GROUPID;
+      this.refs.inputBuildable.value = response[0].REPOSITORY_BUILDABLE;
+      this.refs.inputPrivate.value = response[0].REPOSITORY_PRIVATE;
+      this.refs.textDescription.value = response[0].REPOSITORY_DESCRIPTION;
+      console.log(response[0]);
+    }.bind(this));
+    {/* get repository details from ID ends*/}
+    
+
   }
-   /* component did mount ends*/
+   /* component will mount ends*/
 
   /* Validation functions*/
   validateInputRepositoryName(e){
     var inputRepositoryName = this.refs.inputRepositoryName.value;
     
-    // if(inputRepositoryName.length == 0){
-    //   this.setState(function(){
-    //     console.log(inputRepositoryName.length);
-    //     return{
-    //       validateRepository:"Required",
-    //       buttonState:true
-    //     }
-    //   })
-    // }
     LM_REPOSITORY.selectDataFromName(inputRepositoryName).then(function(response){
       if(response.length > 0){
         this.setState(function(){
@@ -114,9 +129,9 @@ class RequestRepository extends Component{
   }
     /* Validation functions end*/
 
-    /* submit function start*/
+    /* accept request function start */
 
-    submitRequest(e){
+    acceptRequest(e){
       e.preventDefault();
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
@@ -135,7 +150,8 @@ class RequestRepository extends Component{
       var buildable = this.refs.inputBuildable.checked;
       var isPrivate = this.refs.inputPrivate.checked;
       var description = "'" + this.refs.textDescription.value.toString() + "'";
-      var requestedBy = "'buddhik@wso2.com'";
+      var accept = 1;
+      var acceptBy = "'buddhi@wso2.com'";
 
       var data = [
         repositoryName,
@@ -148,30 +164,54 @@ class RequestRepository extends Component{
         team,
         organization,
         repositoryType,
-        requestedBy
-      ];   
-      
-      //LM_REPOSITORY.insertData(data);
-      CommGitHubRepositoryCreationon.startProcess(data);
+        accept,
+        acceptBy
+      ];  
+
+      var columns = [
+        'REPOSITORY_NAME',
+        'REPOSITORY_LANGUAGE',
+        'REPOSITORY_BUILDABLE',
+        'REPOSITORY_PRIVATE',
+        'REPOSITORY_DESCRIPTION',
+        'REPOSITORY_GROUPID',
+        'REPOSITORY_LICENSE',
+        'REPOSITORY_TEAM',
+        'REPOSITORY_ORGANIZATION',
+        'REPOSITORY_TYPE',
+        'REPOSITORY_ACCEPT',
+        'REPOSITORY_ACCEPTED_BY'
+    ];
+      console.log(data);
+      var variables = [
+        {
+          "name":"outputType",
+          "value":"Done"
+        }
+      ];
+      LM_REPOSITORY.update(columns,data,'REPOSITORY_ID',this.state.repositoryDetails.REPOSITORY_ID);
+      CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_ID,variables);
       //Mail.sendMail(data);
   
       
     }
-    /* submit function ends*/
+    /* accept request function ends */
+
+    
 
   render(){
-
+    
     return(
-      <form className="form-horizontal"  onSubmit={this.submitRequest.bind(this)}>
+      <form className="form-horizontal"  onSubmit={this.acceptRequest.bind(this)}>
         <h2 className="text-center">Request GitHub Repository Here</h2>
         
         <fieldset>
-          
+          {console.log((this.repo === null)? " ":this.repo.REPOSITORY_NAME)}
           <br/>
           <div className="form-group">
             <label htmlFor="inputRepositoryName" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Name</label>
             <div className="col-lg-10">
-              <input onChange={this.validateInputRepositoryName.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="carbon-identity-framework" defaultValue="kk"/>
+              <input onChange={this.validateInputRepositoryName.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="carbon-identity-framework" />
               <span className="validate" id="validateInputRepositoryName">{this.state.validateRepository}</span>
             </div>
           </div>
@@ -180,7 +220,11 @@ class RequestRepository extends Component{
             <label htmlFor="selectRepositoryType" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Type</label>
             <div className="col-lg-10">
               <select className="form-control" ref="selectRepositoryType" >
-                {this.state.repositoryTypes.map((repositoryType)=> <option key={repositoryType.REPOSITORYTYPE_ID} value={repositoryType.REPOSITORYTYPE_ID}>{repositoryType.REPOSITORYTYPE_NAME}</option>)}
+                {this.state.repositoryTypes.map((repositoryType)=>
+                ((this.state.repositoryDetails !== null) && (repositoryType.REPOSITORYTYPE_ID === this.state.repositoryDetails.REPOSITORY_TYPE))? 
+                  <option key={repositoryType.REPOSITORYTYPE_ID} selected value={repositoryType.REPOSITORYTYPE_ID}>{repositoryType.REPOSITORYTYPE_NAME}</option>:
+                  <option key={repositoryType.REPOSITORYTYPE_ID} value={repositoryType.REPOSITORYTYPE_ID}>{repositoryType.REPOSITORYTYPE_NAME}</option>
+                )}
               </select>
             </div>
           </div>
@@ -189,7 +233,10 @@ class RequestRepository extends Component{
             <label htmlFor="selectOrganization" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Organization</label>
             <div className="col-lg-10">
               <select className="form-control" ref="selectOrganization" >
-                {this.state.organizations.map((organization)=> <option key={organization.ORGANIZATION_ID} value={organization.ORGANIZATION_ID}>{organization.ORGANIZATION_NAME}</option>)}
+                {this.state.organizations.map((organization)=> 
+                ((this.state.repositoryDetails !== null) && (organization.ORGANIZATION_ID === this.state.repositoryDetails.REPOSITORY_ORGANIZATION)) ? 
+                <option key={organization.ORGANIZATION_ID} selected value={organization.ORGANIZATION_ID}>{organization.ORGANIZATION_NAME}</option>:
+                <option key={organization.ORGANIZATION_ID} value={organization.ORGANIZATION_ID}>{organization.ORGANIZATION_NAME}</option>)}
               </select>
             </div>
           </div>
@@ -198,7 +245,10 @@ class RequestRepository extends Component{
             <label htmlFor="selectTeam" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Team Name</label>
             <div className="col-lg-10">
               <select className="form-control" ref="selectTeam" >
-                {this.state.teams.map((team,i)=> <option key={team.TEAM_NAME} value={team.TEAM_ID} >{team.TEAM_NAME}</option>)}
+                {this.state.teams.map((team,i)=>
+                ((this.state.repositoryDetails !== null) && (team.TEAM_ID === this.state.repositoryDetails.REPOSITORY_TEAM))? 
+                <option key={team.TEAM_NAME} selected value={team.TEAM_ID} >{team.TEAM_NAME}</option>:
+                <option key={team.TEAM_NAME} value={team.TEAM_ID} >{team.TEAM_NAME}</option>)}
               </select>
             </div>
           </div>
@@ -207,7 +257,10 @@ class RequestRepository extends Component{
             <label htmlFor="selectLicense" className="col-lg-2 control-label">&nbsp;License</label>
             <div className="col-lg-10">
               <select className="form-control" ref="selectLicense">
-                {this.state.licenseNames.map((license)=> <option key={license.LICENSE_ID} value={license.LICENSE_ID}>{license.LICENSE_NAME}</option>)}
+                {this.state.licenseNames.map((license)=> 
+                ((this.state.repositoryDetails !== null) && (license.LICENSE_ID === this.state.repositoryDetails.REPOSITORY_LICENSE))?
+                <option key={license.LICENSE_ID} selected value={license.LICENSE_ID}>{license.LICENSE_NAME}</option>:
+                <option key={license.LICENSE_ID} value={license.LICENSE_ID}>{license.LICENSE_NAME}</option>)}
               </select>
             </div>
           </div>
@@ -215,9 +268,12 @@ class RequestRepository extends Component{
           <div className="form-group">
             <label htmlFor="selectLanguage" className="col-lg-2 control-label">Language</label>
             <div className="col-lg-10">
-            <select className="form-control" ref="selectLanguage">
+            <select className="form-control" ref="selectLanguage" >
               
-              {this.state.languages.map((language,i)=> (language === "Java")?<option key={i} selected value={language}>{language}</option>:<option key={i} value={language}>{language}</option>)}
+              {this.state.languages.map((language,i)=> 
+              ((this.state.repositoryDetails !== null) && (language === this.state.repositoryDetails.REPOSITORY_LANGUAGE))?
+              <option key={i} selected value={language}>{language}</option>:
+              <option key={i}  value={language}>{language}</option>)}
                 
               </select>
             </div>
@@ -235,11 +291,13 @@ class RequestRepository extends Component{
             <div className="col-lg-10">
               <div className="checkbox">
                 <label>
-                  <input type="checkbox"  ref="inputBuildable"/> Component Buildable
+                  {((this.state.repositoryDetails !== null) && (this.state.repositoryDetails.REPOSITORY_BUILDABLE === true))?<input type="checkbox"  ref="inputBuildable" checked/>:<input type="checkbox"  ref="inputBuildable"/>}
+                   Component Buildable
                 </label>
                 <br/><br/>
                 <label>
-                  <input type="checkbox" ref="inputPrivate"/> Make Private Repository
+                {((this.state.repositoryDetails !== null) && (this.state.repositoryDetails.REPOSITORY_PRIVATE === true))?<input type="checkbox" ref="inputPrivate" checked/>:<input type="checkbox" ref="inputPrivate"/>}
+                   Make Private Repository
                 </label>
               </div>
             </div>
@@ -256,8 +314,8 @@ class RequestRepository extends Component{
 
           <div className="form-group">
             <div className="col-lg-10 col-lg-offset-2">
-              <button type="reset" className="btn btn-default">Cancel</button>
-              &nbsp;
+            <Link to={"/root/rejectRepository?repositoryId="+this.state.repositoryId} ><button  className="btn btn-danger">Reject</button></Link>
+              &nbsp;&nbsp;&nbsp;
               <button type="submit" className="btn btn-info" id="form-horizontal" disabled={this.state.buttonState} >Request</button>
             </div>
           </div>
@@ -268,4 +326,4 @@ class RequestRepository extends Component{
   }
 }
 
-export default RequestRepository;
+export default AcceptRepository;

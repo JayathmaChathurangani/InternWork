@@ -38,7 +38,7 @@ class PendingRequests extends Component{
                 <div className="row">
                 {this.state.pendingRequests.map((request)=>
                     <div className="row" key={request.REPOSITORY_ID}>
-                        <div className="col-lg-10">
+                        <div className="col-lg-12">
                             <div className="panel panel-primary">
                                 <div className="panel-heading">
                                     <h3 className="panel-title">{( request.REPOSITORY_NAME)}</h3>
