@@ -136,7 +136,7 @@ class AcceptRepository extends Component{
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
 
-      if (confirm("Are you sure to request it?") == false ) {
+      if (confirm("Are you sure to accept this repository request?") == false ) {
         return false ;
      }
 
@@ -192,7 +192,7 @@ class AcceptRepository extends Component{
 
       try{
         LM_REPOSITORY.update(columns,data,'REPOSITORY_ID',this.state.repositoryDetails.REPOSITORY_ID);
-        CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_ID,variables);
+        CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
         alert("Repository accepted");
       }catch(err){
         alert("Error Occured. Repository acceptance fails.");

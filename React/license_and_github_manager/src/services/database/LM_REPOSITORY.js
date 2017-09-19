@@ -87,7 +87,7 @@ class LM_REPOSITORY extends Component{
     selectDataFromRequestBy(data){
         var url = MainData.ballerinaDatabaseURL + "select";
         var select = "*";
-        var condition = "WHERE REPOSITORY_REQUEST_BY ='" + data + "' ";
+        var condition = "WHERE REPOSITORY_REQUEST_BY ='" + data + "' AND REPOSITORY_ACCEPT IS NULL";
         var requestData = {"tableName":"LM_REPOSITORY","select":select,"condition":condition};
 
         return axios.post(

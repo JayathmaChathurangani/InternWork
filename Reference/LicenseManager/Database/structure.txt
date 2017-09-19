@@ -95,3 +95,12 @@ axios.post('http://www.localdom.lk:9090/databaseService/insertData', [{
         {/*get all number of requests from database*/}
 
 //import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
+
+
+########################################################################################################################################
+token=access_token=6d4d5c3708f0ec2324d1e64619b1edf285b61ecf&scope=&token_type=bearer
+access_token=2c87dfe2c6f229931f3388342f74e57c6fac0c0e&scope=&token_type=bearer
+
+personel=db7b44323d4796774bfb14eda750ccb325b4e62e
+
+

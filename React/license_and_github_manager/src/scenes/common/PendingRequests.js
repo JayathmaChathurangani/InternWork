@@ -44,7 +44,7 @@ class PendingRequests extends Component{
                                     <h3 className="panel-title">{( request.REPOSITORY_NAME)}</h3>
                                 </div>
                                 <div className="panel-body">
-                                    <img src={MainData.bpmnImgURL + request.REPOSITORY_BPMN_ID + "/diagram"}  className="img-responsive"/>
+                                    <img src={MainData.bpmnImgURL + request.REPOSITORY_BPMN_PROCESS_ID + "/diagram"}  className="img-responsive"/>
                                 </div>
                             </div>
                                 
