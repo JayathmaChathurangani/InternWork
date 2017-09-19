@@ -18,6 +18,7 @@ licenseAndGitHubManager/
 				ShowRepository.js
 				EditRepository.js
 				DeleteRepsitory.js
+				AcceptRepository.js
 				
 			component/
 				AddComponent.js

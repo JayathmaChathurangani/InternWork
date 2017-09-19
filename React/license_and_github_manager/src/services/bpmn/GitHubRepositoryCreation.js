@@ -1,7 +1,8 @@
-import {Component} from 'react';
+import React,{Component} from 'react';
 import axios from 'axios';
 import MainData from '../MainData';
-import LM_REPOSITORY from '../database/LM_REPOSITORY'
+import LM_REPOSITORY from '../database/LM_REPOSITORY';
+import GitHubRepositoryTask from './GitHubRepositoryTask';
 
 class GitHubRepositoryCreation extends Component{
 
@@ -66,17 +67,35 @@ class GitHubRepositoryCreation extends Component{
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
         };
+
+        
+
+       // console.log(this.state.tasks);
         return axios.post(
             url,
             data,
             headers            
         )
         .then(function (response) {
-            console.log(response);
+            
             if(response.data.completed === false){
                 try{
-                    LM_REPOSITORY.update(["REPOSITORY_BPMN_ID"],[response.data.id],"REPOSITORY_NAME",requestData[0]);
-                    alert("Your GitHub repository request send via e-mail for approval.")
+                    
+                    GitHubRepositoryTask.getTasks().then(function(responseTasks){
+                        var i = 0;
+                        var taskArraylength = responseTasks.data.length;
+        
+                        var task;
+                        for(i=0;i<taskArraylength;i++){
+                            task = responseTasks.data[i];
+                            if(task.processInstanceId === response.data.id){
+                                LM_REPOSITORY.update(["REPOSITORY_BPMN_ID"],[task.id],"REPOSITORY_NAME",requestData[0]);
+                                alert("Your GitHub repository request send via e-mail for approval.");
+                                break;
+                            }
+                        }
+                      }.bind(this));
+                      
                 }catch(err){
                     alert(err);
                 }

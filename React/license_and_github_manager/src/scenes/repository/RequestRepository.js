@@ -53,7 +53,7 @@ class RequestRepository extends Component{
           repositoryTypes:response
         }
       })
-    }.bind(this))
+    }.bind(this));
     {/*get all repository types from database end*/}
 
     {/*get all languages from github api*/}

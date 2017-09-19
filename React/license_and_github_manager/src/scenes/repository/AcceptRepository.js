@@ -189,9 +189,16 @@ class AcceptRepository extends Component{
           "value":"Done"
         }
       ];
-      LM_REPOSITORY.update(columns,data,'REPOSITORY_ID',this.state.repositoryDetails.REPOSITORY_ID);
-      CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_ID,variables);
-      //Mail.sendMail(data);
+
+      try{
+        LM_REPOSITORY.update(columns,data,'REPOSITORY_ID',this.state.repositoryDetails.REPOSITORY_ID);
+        CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_ID,variables);
+        alert("Repository accepted");
+      }catch(err){
+        alert("Error Occured. Repository acceptance fails.");
+      }
+      
+      
   
       
     }
