@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import ProgressButton from 'react-progress-button';
 import LM_LICENSE from '../../services/database/LM_LICENSE';
 import LM_REPOSITORYTYPE from '../../services/database/LM_REPOSITORYTYPE';
 import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
@@ -108,7 +109,7 @@ class RequestRepository extends Component{
           }
         })
       }
-    }.bind(this));;
+    }.bind(this));
   
 
   }
@@ -125,36 +126,37 @@ class RequestRepository extends Component{
         return false ;
      }
 
-      var repositoryName = "'" + this.refs.inputRepositoryName.value.toString() + "'";
-      var repositoryType = this.refs.selectRepositoryType.value;
-      var organization = this.refs.selectOrganization.value;
-      var team = this.refs.selectTeam.value;
-      var license = this.refs.selectLicense.value;
-      var language = "'" + this.refs.selectLanguage.value + "'";
-      var groupId = "'" + this.refs.inputGroupId.value.toString() + "'";
-      var buildable = this.refs.inputBuildable.checked;
-      var isPrivate = this.refs.inputPrivate.checked;
-      var description = "'" + this.refs.textDescription.value.toString() + "'";
-      var requestedBy = "'buddhik@wso2.com'";
+      setTimeout(() => {
+        var repositoryName = "'" + this.refs.inputRepositoryName.value.toString() + "'";
+        var repositoryType = this.refs.selectRepositoryType.value;
+        var organization = this.refs.selectOrganization.value;
+        var team = this.refs.selectTeam.value;
+        var license = this.refs.selectLicense.value;
+        var language = "'" + this.refs.selectLanguage.value + "'";
+        var groupId = "'" + this.refs.inputGroupId.value.toString() + "'";
+        var buildable = this.refs.inputBuildable.checked;
+        var isPrivate = this.refs.inputPrivate.checked;
+        var description = "'" + this.refs.textDescription.value.toString() + "'";
+        var requestedBy = "'buddhik@wso2.com'";
 
-      var data = [
-        repositoryName,
-        language,
-        buildable,
-        isPrivate,
-        description,
-        groupId,
-        license,
-        team,
-        organization,
-        repositoryType,
-        requestedBy
-      ];   
-      
-      //LM_REPOSITORY.insertData(data);
-      CommGitHubRepositoryCreationon.startProcess(data);
-      //Mail.sendMail(data);
-  
+        var data = [
+          repositoryName,
+          language,
+          buildable,
+          isPrivate,
+          description,
+          groupId,
+          license,
+          team,
+          organization,
+          repositoryType,
+          requestedBy
+        ];   
+        
+        //LM_REPOSITORY.insertData(data);
+        CommGitHubRepositoryCreationon.startProcess(data);
+        //Mail.sendMail(data);
+      }, 3000)
       
     }
     /* submit function ends*/
@@ -171,7 +173,7 @@ class RequestRepository extends Component{
           <div className="form-group">
             <label htmlFor="inputRepositoryName" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Name</label>
             <div className="col-lg-10">
-              <input onChange={this.validateInputRepositoryName.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="carbon-identity-framework" defaultValue="kk"/>
+              <input onChange={this.validateInputRepositoryName.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="carbon-identity-framework" />
               <span className="validate" id="validateInputRepositoryName">{this.state.validateRepository}</span>
             </div>
           </div>
@@ -258,7 +260,7 @@ class RequestRepository extends Component{
             <div className="col-lg-10 col-lg-offset-2">
               <button type="reset" className="btn btn-default">Cancel</button>
               &nbsp;
-              <button type="submit" className="btn btn-info" id="form-horizontal" disabled={this.state.buttonState} >Request</button>
+              <ProgressButton type="submit" className="btn btn-info" id="form-horizontal" disabled={this.state.buttonState} >Request</ProgressButton>
             </div>
           </div>
         </fieldset>

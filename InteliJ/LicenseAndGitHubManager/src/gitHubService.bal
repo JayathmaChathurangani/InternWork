@@ -35,25 +35,36 @@ service<http> gitHubService {
             json requestDataFromDbJson;
             json responseDataFromDbJson;
             json requestJson = messages:getJsonPayload(m);
-            system:println(requestJson);
             message requestDataFromDb = {};
             message responseDataFromDb = {};
             string condition;
-            string repositoryName = jsons:toString(requestJson.data[0]);
-            string repositoryLanguage = jsons:toString(requestJson.data[1]);
-            string repositoryDescription = jsons:toString(requestJson.data[4]);
-            string repositoryLicense = jsons:toString(requestJson.data[6]);
-            string repositoryOrganization = jsons:toString(requestJson.data[8]);
-            string accessToken = "db7b44323d4796774bfb14eda750ccb325b4e62e";
+            string accessToken = "6e28ec00a92d0c44732f1d809482d8ca3d0ca245";
+            string repositoryId = jsons:toString(requestJson.repositoryId);
 
+            condition = "WHERE REPOSITORY_ID = " + repositoryId + " ";
+            requestDataFromDbJson =  {"tableName":"LM_REPOSITORY","select":"*","condition":condition};
+            messages:setJsonPayload(requestDataFromDb,requestDataFromDbJson);
+            responseDataFromDb = httpDbConnector.post("/select",requestDataFromDb);
+            responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
+
+
+            string repositoryName = jsons:toString(responseDataFromDbJson[0].REPOSITORY_NAME);
+            string repositoryLanguage = jsons:toString(responseDataFromDbJson[0].REPOSITORY_LANGUAGE);
+            string repositoryDescription = jsons:toString(responseDataFromDbJson[0].REPOSITORY_DESCRIPTION);
+            string repositoryLicense = jsons:toString(responseDataFromDbJson[0].REPOSITORY_LICENSE);
+            string repositoryOrganization = jsons:toString(responseDataFromDbJson[0].REPOSITORY_ORGANIZATION);
+            string repositoryPrivateString = jsons:toString(responseDataFromDbJson[0].REPOSITORY_PRIVATE);
+            boolean repositoryPrivate = false;
+
+            if(repositoryPrivateString == "true"){
+                repositoryPrivate = true;
+            }
 
             condition = "WHERE ORGANIZATION_ID = '" + repositoryOrganization + "' ";
-            system:println(condition);
             requestDataFromDbJson =  {"tableName":"LM_ORGANIZATION","select":"ORGANIZATION_NAME","condition":condition};
             messages:setJsonPayload(requestDataFromDb,requestDataFromDbJson);
             responseDataFromDb = httpDbConnector.post("/select",requestDataFromDb);
             responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
-            system:println(responseDataFromDbJson);
             repositoryOrganization = jsons:toString(responseDataFromDbJson[0].ORGANIZATION_NAME);
 
 
@@ -71,16 +82,15 @@ service<http> gitHubService {
             json requestDataJsonForGitHubApi = {
                                                    "name":repositoryName,
                                                    "description":repositoryDescription,
-                                                   "private":requestJson.data[3],
+                                                   "private":repositoryPrivate,
                                                    "gitignore_template":repositoryLanguage,
                                                    "license_template":repositoryLicense
                                                };
-            system:println(requestDataJsonForGitHubApi);
+
             message requestMessageForGitHub = {};
             messages:setJsonPayload(requestMessageForGitHub,requestDataJsonForGitHubApi);
             message responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
 
-            system:println(responseFromGitHubApi);
             json responseMessage = {"type":"Done","message":"done"};
             messages:setJsonPayload(response,responseMessage);
             reply response;

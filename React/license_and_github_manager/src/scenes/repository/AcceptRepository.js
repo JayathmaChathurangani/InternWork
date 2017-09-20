@@ -187,7 +187,12 @@ class AcceptRepository extends Component{
         {
           "name":"outputType",
           "value":"Done"
+        },
+        {
+          "name":"repositoryId",
+          "value":this.state.repositoryDetails.REPOSITORY_ID
         }
+
       ];
 
       try{

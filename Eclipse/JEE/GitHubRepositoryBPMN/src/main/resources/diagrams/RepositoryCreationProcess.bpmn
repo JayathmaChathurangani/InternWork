@@ -28,7 +28,7 @@
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"columns":"${mailColumns}","data":${data}}</activiti:expression>
+          <activiti:expression>{"repositoryId":${repositoryId}}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
           <activiti:string>outputType:type</activiti:string>
@@ -119,7 +119,7 @@
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"to":${data[10]},"messageData":"Your repository request succesfully completed."}</activiti:expression>
+          <activiti:expression>{"to":${data[10]},"messageData":"${data[0]} Your repository request succesfully completed."}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputVariable">
           <activiti:string>ack</activiti:string>
@@ -137,7 +137,7 @@
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"to":${data[10]},"messageData":"Your repository request accepted. But repository creation fails"}</activiti:expression>
+          <activiti:expression>{"to":${data[10]},"messageData":"${data[0]}  Your repository request accepted. But repository creation fails"}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputVariable">
           <activiti:string>ack</activiti:string>
