@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Link} from 'react-router';
 
+
 class LeftNav extends Component{
 
   render(){

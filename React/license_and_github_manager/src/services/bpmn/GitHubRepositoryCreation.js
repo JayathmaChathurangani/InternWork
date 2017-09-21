@@ -77,33 +77,7 @@ class GitHubRepositoryCreation extends Component{
             headers            
         )
         .then(function (response) {
-            
-            if(response.data.completed === false){
-                try{
-                    
-                    GitHubRepositoryTask.getTasks().then(function(responseTasks){
-                        var i = 0;
-                        var taskArraylength = responseTasks.data.length;
-        
-                        var task;
-                        for(i=0;i<taskArraylength;i++){
-                            task = responseTasks.data[i];
-                            if(task.processInstanceId === response.data.id){
-                                LM_REPOSITORY.update(["REPOSITORY_BPMN_TASK_ID","REPOSITORY_BPMN_PROCESS_ID"],[task.id,response.data.id],"REPOSITORY_NAME",requestData[0]);
-                                alert("Your GitHub repository request send via e-mail for approval.");
-                                break;
-                            }
-                        }
-                      }.bind(this));
-
-                }catch(err){
-                    alert(err);
-                }
-            }else{
-                alert("Sorry database or e-mail sending error occur.Your GitHub repository request cannot send.")
-            }
-            
-            
+            return response           
             
         })
         .catch(function (error) {

@@ -38,7 +38,7 @@ service<http> gitHubService {
             message requestDataFromDb = {};
             message responseDataFromDb = {};
             string condition;
-            string accessToken = "6e28ec00a92d0c44732f1d809482d8ca3d0ca245";
+            string accessToken = "8ecd9f141cb6509736d20c36e62fee389eff4512";
             string repositoryId = jsons:toString(requestJson.repositoryId);
 
             condition = "WHERE REPOSITORY_ID = " + repositoryId + " ";
@@ -90,7 +90,7 @@ service<http> gitHubService {
             message requestMessageForGitHub = {};
             messages:setJsonPayload(requestMessageForGitHub,requestDataJsonForGitHubApi);
             message responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
-
+            system:println(responseFromGitHubApi);
             json responseMessage = {"type":"Done","message":"done"};
             messages:setJsonPayload(response,responseMessage);
             reply response;

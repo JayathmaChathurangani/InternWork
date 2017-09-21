@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import ProgressButton from 'react-progress-button';
 import LM_LICENSE from '../../services/database/LM_LICENSE';
 import LM_REPOSITORYTYPE from '../../services/database/LM_REPOSITORYTYPE';
 import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
@@ -7,7 +6,9 @@ import LM_TEAM from '../../services/database/LM_TEAM';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
 import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
+import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
 import '../../App.css';
+import $ from "jquery";
 
 class RequestRepository extends Component{
   
@@ -19,9 +20,10 @@ class RequestRepository extends Component{
       repositoryTypes:[],
       organizations:[],
       teams:[],
-
       validateRepository:" ",
-      buttonState:false
+      buttonState:false,
+      displayFieldset:'block',
+      displayLoader:'none'
     }
   }
 
@@ -84,15 +86,6 @@ class RequestRepository extends Component{
   validateInputRepositoryName(e){
     var inputRepositoryName = this.refs.inputRepositoryName.value;
     
-    // if(inputRepositoryName.length == 0){
-    //   this.setState(function(){
-    //     console.log(inputRepositoryName.length);
-    //     return{
-    //       validateRepository:"Required",
-    //       buttonState:true
-    //     }
-    //   })
-    // }
     LM_REPOSITORY.selectDataFromName(inputRepositoryName).then(function(response){
       if(response.length > 0){
         this.setState(function(){
@@ -121,42 +114,81 @@ class RequestRepository extends Component{
       e.preventDefault();
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
-
+      
       if (confirm("Are you sure to request it?") == false ) {
         return false ;
-     }
+      }
+      
+      this.setState(function(){
+        return{
+          displayFieldset:'none',
+          displayLoader:'block'
+        }
+      })
+      var repositoryName = "'" + this.refs.inputRepositoryName.value.toString() + "'";
+      var repositoryType = this.refs.selectRepositoryType.value;
+      var organization = this.refs.selectOrganization.value;
+      var team = this.refs.selectTeam.value;
+      var license = this.refs.selectLicense.value;
+      var language = "'" + this.refs.selectLanguage.value + "'";
+      var groupId = "'" + this.refs.inputGroupId.value.toString() + "'";
+      var buildable = this.refs.inputBuildable.checked;
+      var isPrivate = this.refs.inputPrivate.checked;
+      var description = "'" + this.refs.textDescription.value.toString() + "'";
+      var requestedBy = "'buddhik@wso2.com'";
 
-      setTimeout(() => {
-        var repositoryName = "'" + this.refs.inputRepositoryName.value.toString() + "'";
-        var repositoryType = this.refs.selectRepositoryType.value;
-        var organization = this.refs.selectOrganization.value;
-        var team = this.refs.selectTeam.value;
-        var license = this.refs.selectLicense.value;
-        var language = "'" + this.refs.selectLanguage.value + "'";
-        var groupId = "'" + this.refs.inputGroupId.value.toString() + "'";
-        var buildable = this.refs.inputBuildable.checked;
-        var isPrivate = this.refs.inputPrivate.checked;
-        var description = "'" + this.refs.textDescription.value.toString() + "'";
-        var requestedBy = "'buddhik@wso2.com'";
-
-        var data = [
-          repositoryName,
-          language,
-          buildable,
-          isPrivate,
-          description,
-          groupId,
-          license,
-          team,
-          organization,
-          repositoryType,
-          requestedBy
-        ];   
+      var data = [
+        repositoryName,
+        language,
+        buildable,
+        isPrivate,
+        description,
+        groupId,
+        license,
+        team,
+        organization,
+        repositoryType,
+        requestedBy
+      ];   
+      
+      CommGitHubRepositoryCreationon.startProcess(data).then(function(response) {
         
-        //LM_REPOSITORY.insertData(data);
-        CommGitHubRepositoryCreationon.startProcess(data);
-        //Mail.sendMail(data);
-      }, 3000)
+        if(response.data.completed === false){
+          try{
+              
+              GitHubRepositoryTask.getTasks().then(function(responseTasks){
+              var i = 0;
+              var taskArraylength = responseTasks.data.length;
+
+              var task;
+                for(i=0;i<taskArraylength;i++){
+                    task = responseTasks.data[i];
+                    if(task.processInstanceId === response.data.id){
+                        LM_REPOSITORY.update(["REPOSITORY_BPMN_TASK_ID","REPOSITORY_BPMN_PROCESS_ID"],[task.id,response.data.id],"REPOSITORY_NAME",repositoryName);
+                        alert("Your GitHub repository request send via e-mail for approval.");
+                        
+                        break;
+                    }
+                }
+              }.bind(this));
+
+          }catch(err){
+              alert(err);
+          }
+        }else{
+            alert("Sorry database or e-mail sending error occur.Your GitHub repository request cannot send.")
+        }
+        this.setState(function(){
+          return{
+            displayFieldset:'block',
+            displayLoader:'none'
+          }
+        });         
+    }.bind(this));
+     
+    
+      
+      
       
     }
     /* submit function ends*/
@@ -167,7 +199,7 @@ class RequestRepository extends Component{
       <form className="form-horizontal"  onSubmit={this.submitRequest.bind(this)}>
         <h2 className="text-center">Request GitHub Repository Here</h2>
         
-        <fieldset>
+        <fieldset style={{display:this.state.displayFieldset}}>
           
           <br/>
           <div className="form-group">
@@ -260,10 +292,27 @@ class RequestRepository extends Component{
             <div className="col-lg-10 col-lg-offset-2">
               <button type="reset" className="btn btn-default">Cancel</button>
               &nbsp;
-              <ProgressButton type="submit" className="btn btn-info" id="form-horizontal" disabled={this.state.buttonState} >Request</ProgressButton>
+              <button type="submit" ref="submitButton" className="btn btn-info" id="form-horizontal" data-loading-text="Loading ..." disabled={this.state.buttonState} >
+              <i id="submitButtonIcon" class="fa fa-spinner" aria-hidden="true"></i>Request</button>
             </div>
           </div>
         </fieldset>
+        <div className="container-fluid" style={{display:this.state.displayLoader}}>
+          <br/><br/><br/>
+          <div className="row">
+            <div className="col-lg-5">
+              
+            </div>
+            <div className="col-lg-4">
+              <div className="loader"></div>
+            </div>
+            <div className="col-lg-3">
+              
+            </div>
+          </div>
+          
+        </div>
+        
       </form>
     )
 
