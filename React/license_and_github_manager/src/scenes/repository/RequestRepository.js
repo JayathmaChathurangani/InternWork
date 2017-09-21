@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import {browserHistory} from 'react-router';
 import LM_LICENSE from '../../services/database/LM_LICENSE';
 import LM_REPOSITORYTYPE from '../../services/database/LM_REPOSITORYTYPE';
 import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
@@ -7,8 +8,9 @@ import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
 import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
 import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
+
 import '../../App.css';
-import $ from "jquery";
+
 
 class RequestRepository extends Component{
   
@@ -29,7 +31,7 @@ class RequestRepository extends Component{
 
   /* component did mount */
   componentDidMount(){
-    {/* get all team details from database*/}
+    /* get all team details from database*/
     LM_TEAM.getAllTeams().then(function(response){
       this.setState(function(){
         return {
@@ -37,9 +39,9 @@ class RequestRepository extends Component{
         }
       })
     }.bind(this));
-    {/* get all team details from database ends*/}
+    /* get all team details from database ends*/
 
-    {/*get all organizations types from database*/}
+    /*get all organizations types from database*/
     LM_ORGANIZATION.getAllOrganizations().then(function(response){
       this.setState(function(){
         return {
@@ -47,19 +49,20 @@ class RequestRepository extends Component{
         }
       })
     }.bind(this));
-    {/*get all organizations types from database*/}
+    /*get all organizations types from database*/
 
-    {/*get all repository types from database*/}
+    /*get all repository types from database*/
     LM_REPOSITORYTYPE.getAllRepositoryTypes().then(function(response){
       this.setState(function(){
         return {
           repositoryTypes:response
         }
       })
+      console.log(this.state.repositoryTypes);
     }.bind(this));
-    {/*get all repository types from database end*/}
+    /*get all repository types from database end*/
 
-    {/*get all languages from github api*/}
+    /*get all languages from github api*/
     Common.getAllLanguages().then(function(response){
       this.setState(function(){
         return {
@@ -67,9 +70,9 @@ class RequestRepository extends Component{
         }
       })
     }.bind(this));
-    {/*get all languages from github api ends*/}
+    /*get all languages from github api ends*/
 
-    {/* get all license from database*/}
+    /* get all license from database*/
     LM_LICENSE.getAllLicenseNames().then(function(response){
       this.setState(function(){
         return{
@@ -77,7 +80,7 @@ class RequestRepository extends Component{
         }
       })
     }.bind(this));
-    {/* get all license from database*/}
+    /* get all license from database*/
 
   }
    /* component did mount ends*/
@@ -115,16 +118,11 @@ class RequestRepository extends Component{
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
       
-      if (confirm("Are you sure to request it?") == false ) {
+      if (confirm("Are you sure to request it?") === false ) {
         return false ;
       }
       
-      this.setState(function(){
-        return{
-          displayFieldset:'none',
-          displayLoader:'block'
-        }
-      })
+      
       var repositoryName = "'" + this.refs.inputRepositoryName.value.toString() + "'";
       var repositoryType = this.refs.selectRepositoryType.value;
       var organization = this.refs.selectOrganization.value;
@@ -151,6 +149,25 @@ class RequestRepository extends Component{
         requestedBy
       ];   
       
+      var i = 0;
+      var repoTypes = this.state.repositoryTypes;
+      for(i=0;i<repoTypes.length;i++){
+        //console.log(repoTypes[i].REPOSITORYTYPE_ID)
+        if((repoTypes[i].REPOSITORYTYPE_ID === parseInt(repositoryType,10)) && (repoTypes[i].REPOSITORYTYPE_JENKINS === true) && (repoTypes[i].REPOSITORYTYPE_NEXUS === true)){
+          var path = "/root/otherRepository";
+          browserHistory.push(path);
+          return false;
+        }
+      }
+      
+
+      this.setState(function(){
+        return{
+          displayFieldset:'none',
+          displayLoader:'block'
+        }
+      })
+      
       CommGitHubRepositoryCreationon.startProcess(data).then(function(response) {
         
         if(response.data.completed === false){
@@ -169,7 +186,7 @@ class RequestRepository extends Component{
                         break;
                     }
                 }
-              }.bind(this));
+              });
 
           }catch(err){
               alert(err);
@@ -291,8 +308,7 @@ class RequestRepository extends Component{
             <div className="col-lg-10 col-lg-offset-2">
               <button type="reset" className="btn btn-default">Cancel</button>
               &nbsp;
-              <button type="submit" ref="submitButton" className="btn btn-info" id="form-horizontal" data-loading-text="Loading ..." disabled={this.state.buttonState} >
-              <i id="submitButtonIcon" class="fa fa-spinner" aria-hidden="true"></i>Request</button>
+              <button type="submit" ref="submitButton" className="btn btn-info" id="form-horizontal" data-loading-text="Loading ..." disabled={this.state.buttonState} >Request</button>
             </div>
           </div>
         </fieldset>

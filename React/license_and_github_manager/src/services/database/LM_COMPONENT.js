@@ -6,7 +6,7 @@ class LM_COMPONENT extends Component{
 
   selectComponentFromName(componentKey){
     var url = MainData.ballerinaDatabaseURL + "select";
-    componentKey = componentKey + " ";
+    
     var data = {'tableName':'LM_COMPONENT','select':'*','condition':'WHERE','parameters':{'column':'COMP_NAME','data':componentKey,'sqlType':'varchar'}};
     console.log(data);
     axios.post(

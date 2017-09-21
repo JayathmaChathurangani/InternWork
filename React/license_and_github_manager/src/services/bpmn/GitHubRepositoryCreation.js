@@ -1,8 +1,7 @@
-import React,{Component} from 'react';
+import {Component} from 'react';
 import axios from 'axios';
 import MainData from '../MainData';
-import LM_REPOSITORY from '../database/LM_REPOSITORY';
-import GitHubRepositoryTask from './GitHubRepositoryTask';
+
 
 class GitHubRepositoryCreation extends Component{
 

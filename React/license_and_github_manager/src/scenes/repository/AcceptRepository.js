@@ -33,7 +33,7 @@ class AcceptRepository extends Component{
 
   /* component will mount */
   componentWillMount(){
-    {/* get all team details from database*/}
+    /* get all team details from database*/
     LM_TEAM.getAllTeams().then(function(response){
       this.setState(function(){
         return {
@@ -41,9 +41,9 @@ class AcceptRepository extends Component{
         }
       })
     }.bind(this));
-    {/* get all team details from database ends*/}
+    /* get all team details from database ends*/
 
-    {/*get all organizations types from database*/}
+    /*get all organizations types from database*/
     LM_ORGANIZATION.getAllOrganizations().then(function(response){
       this.setState(function(){
         return {
@@ -51,9 +51,9 @@ class AcceptRepository extends Component{
         }
       })
     }.bind(this));
-    {/*get all organizations types from database*/}
+    /*get all organizations types from database*/
 
-    {/*get all repository types from database*/}
+    /*get all repository types from database*/
     LM_REPOSITORYTYPE.getAllRepositoryTypes().then(function(response){
       this.setState(function(){
         return {
@@ -61,9 +61,9 @@ class AcceptRepository extends Component{
         }
       })
     }.bind(this))
-    {/*get all repository types from database end*/}
+    /*get all repository types from database end*/
 
-    {/*get all languages from github api*/}
+    /*get all languages from github api*/
     Common.getAllLanguages().then(function(response){
       this.setState(function(){
         return {
@@ -71,9 +71,9 @@ class AcceptRepository extends Component{
         }
       })
     }.bind(this));
-    {/*get all languages from github api ends*/}
+    /*get all languages from github api ends*/
 
-    {/* get all license from database*/}
+    /* get all license from database*/
     LM_LICENSE.getAllLicenseNames().then(function(response){
       this.setState(function(){
         return{
@@ -81,9 +81,9 @@ class AcceptRepository extends Component{
         }
       })
     }.bind(this));
-    {/* get all license from database*/}
+    /* get all license from database*/
 
-    {/* get repository details from ID*/}
+    /* get repository details from ID*/
     LM_REPOSITORY.selectDataFromId(this.state.repositoryId).then(function(response){
       this.setState(function(){
         return{
@@ -97,7 +97,7 @@ class AcceptRepository extends Component{
       this.refs.textDescription.value = response[0].REPOSITORY_DESCRIPTION;
       console.log(response[0]);
     }.bind(this));
-    {/* get repository details from ID ends*/}
+    /* get repository details from ID ends*/
     
 
   }
@@ -136,7 +136,7 @@ class AcceptRepository extends Component{
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
 
-      if (confirm("Are you sure to accept this repository request?") == false ) {
+      if (confirm("Are you sure to accept this repository request?") === false ) {
         return false ;
      }
 

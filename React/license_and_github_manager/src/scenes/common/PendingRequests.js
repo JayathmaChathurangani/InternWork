@@ -17,7 +17,7 @@ class PendingRequests extends Component{
     /* component did mount */
     componentDidMount(){
         var requestBy = "buddhik@wso2.com";
-        {/*get all number of requests from database*/}
+        /*get all number of requests from database*/
         LM_REPOSITORY.selectDataFromRequestBy(requestBy).then(function(response){
             this.setState(function(){
                 return {
@@ -25,7 +25,7 @@ class PendingRequests extends Component{
                     }
                 })
             }.bind(this))
-        {/*get all number of requests from database*/}
+        /*get all number of requests from database*/
 
     }
     /* component did mount ends */
@@ -44,7 +44,7 @@ class PendingRequests extends Component{
                                     <h3 className="panel-title">{( request.REPOSITORY_NAME)}</h3>
                                 </div>
                                 <div className="panel-body">
-                                    <img src={MainData.bpmnImgURL + request.REPOSITORY_BPMN_PROCESS_ID + "/diagram"}  className="img-responsive"/>
+                                    <img alt="" src={MainData.bpmnImgURL + request.REPOSITORY_BPMN_PROCESS_ID + "/diagram"}  className="img-responsive"/>
                                 </div>
                             </div>
                                 

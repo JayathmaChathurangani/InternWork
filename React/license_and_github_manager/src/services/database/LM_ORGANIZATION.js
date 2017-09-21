@@ -8,7 +8,7 @@ class LM_ORGANIZATION extends Component{
 getAllOrganizations(){
     var url = MainData.ballerinaDatabaseURL + "select";
     var data = {"tableName":"LM_ORGANIZATION","select":"*"};
-    var returnData = [];
+    
     return axios.post(
         url,
         data

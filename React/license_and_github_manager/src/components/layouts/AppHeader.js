@@ -15,7 +15,7 @@ class AppHeader extends Component{
   /* component did mount */
   componentDidMount(){
     var requestBy = "buddhik@wso2.com";
-    {/*get all number of requests from database*/}
+    /*get all number of requests from database*/
     LM_REPOSITORY.selectDataFromRequestBy(requestBy).then(function(response){
       this.setState(function(){
         return {
@@ -23,7 +23,7 @@ class AppHeader extends Component{
         }
       })
     }.bind(this))
-    {/*get all number of requests from database*/}
+    /*get all number of requests from database*/
 
   }
   /* component did mount ends */

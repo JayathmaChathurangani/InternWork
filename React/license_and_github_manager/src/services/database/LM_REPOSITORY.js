@@ -53,7 +53,7 @@ class LM_REPOSITORY extends Component{
         )
         .then(function (response) {
             
-            if(response.data.type == "Error"){
+            if(response.data.type === "Error"){
                 console.log(" Your BPMN error occur " + response.data.message);
             }
             

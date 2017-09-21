@@ -6,8 +6,7 @@ class LM_REPOSITORYTYPE extends Component{
     /* get all repository types */
     getAllRepositoryTypes(){
         var url = MainData.ballerinaDatabaseURL + "select";
-        var data = {"tableName":"LM_REPOSITORYTYPE","select":"REPOSITORYTYPE_ID,REPOSITORYTYPE_NAME"};
-        var returnData = [];
+        var data = {"tableName":"LM_REPOSITORYTYPE","select":"*"};
         return axios.post(
             url,
             data

@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
-import {Link} from 'react-router';
 import '../../App.css';
 
 class RejectRepository extends Component{
@@ -16,7 +15,7 @@ class RejectRepository extends Component{
 
   componentWillMount(){
 
-    {/* get repository details from ID*/}
+    /* get repository details from ID*/
     LM_REPOSITORY.selectDataFromId(this.state.repositoryId).then(function(response){
       this.setState(function(){
         return{
@@ -24,7 +23,7 @@ class RejectRepository extends Component{
         }
       });
     }.bind(this));
-    {/* get repository details from ID ends*/}
+    /* get repository details from ID ends*/
   }
 
   rejectRequest(e){
@@ -32,7 +31,7 @@ class RejectRepository extends Component{
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
 
-    if (confirm("Are you sure to reject repository request?") == false ) {
+    if (confirm("Are you sure to reject repository request?") === false ) {
       return false ;
    }
 

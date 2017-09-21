@@ -8,7 +8,6 @@ class LM_TEAM extends Component{
     getAllTeams(){
         var url = MainData.ballerinaDatabaseURL + "select";
         var data = {"tableName":"LM_TEAM","select":"*"};
-        var returnData = [];
         return axios.post(
             url,
             data

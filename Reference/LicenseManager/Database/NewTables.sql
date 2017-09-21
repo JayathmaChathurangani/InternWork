@@ -81,8 +81,7 @@ INSERT INTO LM_TEAM VALUES
 ("Ballerinalang");
 
 INSERT INTO LM_USER VALUES
-('webmisproject@gmail.com','Buddhi','ADMIN'),
-('buddhik@wso2.com','Buddhi','ALL'),
-('b.wathsala.bw@gmail.com','Wathsala','ACCEPT'),
-('webmisproject@gmail.com','Webmis','READ');
+('webmisproject@gmail.com','Buddhi','ALL'),
+('buddhik@wso2.com','Buddhi','ACCEPT'),
+('b.wathsala.bw@gmail.com','Wathsala','ACCEPT');
 

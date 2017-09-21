@@ -27,7 +27,7 @@ class Mail extends Component{
         )
         .then(function (response) {
             
-            if(response.data.type == "done"){
+            if(response.data.type === "done"){
                 alert(" Your request send for approval via E-mail.");
             }else{
                 alert(" Your request sending fails." + response.data.message);

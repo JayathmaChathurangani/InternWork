@@ -9,7 +9,7 @@
     getAllLanguages(){
         var url = MainData.ballerinaGitHubURL + "getAllLanguages";
         var data = {};
-        var returnData = [];
+        
         return axios.get(
           url,
           data
