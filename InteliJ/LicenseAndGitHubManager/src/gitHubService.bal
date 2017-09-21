@@ -38,8 +38,15 @@ service<http> gitHubService {
             message requestDataFromDb = {};
             message responseDataFromDb = {};
             string condition;
-            string accessToken = "8ecd9f141cb6509736d20c36e62fee389eff4512";
+            string accessToken = "";
             string repositoryId = jsons:toString(requestJson.repositoryId);
+
+            condition = "WHERE USER_PERMISSION = 'ALL'";
+            requestDataFromDbJson =  {"tableName":"LM_USER","select":"*","condition":condition};
+            messages:setJsonPayload(requestDataFromDb,requestDataFromDbJson);
+            responseDataFromDb = httpDbConnector.post("/select",requestDataFromDb);
+            responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
+            accessToken = jsons:toString(responseDataFromDbJson[0].USER_TOKEN);
 
             condition = "WHERE REPOSITORY_ID = " + repositoryId + " ";
             requestDataFromDbJson =  {"tableName":"LM_REPOSITORY","select":"*","condition":condition};

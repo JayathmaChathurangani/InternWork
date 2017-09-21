@@ -166,7 +166,6 @@ class RequestRepository extends Component{
                     if(task.processInstanceId === response.data.id){
                         LM_REPOSITORY.update(["REPOSITORY_BPMN_TASK_ID","REPOSITORY_BPMN_PROCESS_ID"],[task.id,response.data.id],"REPOSITORY_NAME",repositoryName);
                         alert("Your GitHub repository request send via e-mail for approval.");
-                        
                         break;
                     }
                 }
