@@ -9,9 +9,6 @@ import ballerina.lang.strings;
 import ballerina.lang.errors;
 import ballerina.lang.system;
 
-
-
-
 @http:configuration {basePath:"/databaseService"}
 service<http> databaseService {
 
@@ -174,4 +171,6 @@ service<http> databaseService {
         }
 
     }
+
+
 }
