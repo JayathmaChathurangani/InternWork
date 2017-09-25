@@ -19,10 +19,10 @@
       </extensionElements>
     </serviceTask>
     <userTask id="approveGitHubREpositoryUserTask" name="Waiting for approval" activiti:assignee="admin"></userTask>
-    <serviceTask id="createGitHubRepositoryRestTask" name="Create GitHub Repository" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+    <serviceTask id="createGitHubRepositoryRestTask" name="Create Repositories" isForCompensation="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
-          <activiti:string>http://localhost:9090/gitHubService/createRepository</activiti:string>
+          <activiti:string>http://localhost:9090/createRepositories</activiti:string>
         </activiti:field>
         <activiti:field name="method">
           <activiti:string>POST</activiti:string>
@@ -187,7 +187,7 @@
         <omgdc:Bounds height="40.0" width="40.0" x="1030.0" y="161.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="61.0" width="151.0" x="975.0" y="306.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="179.0" x="960.0" y="306.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="71.0" width="141.0" x="1509.0" y="144.0"></omgdc:Bounds>
@@ -259,7 +259,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="1050.0" y="201.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1050.0" y="306.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1049.0" y="306.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="12.0" width="43.0" x="1060.0" y="219.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -269,7 +269,7 @@
         <omgdi:waypoint x="1690.0" y="179.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="1126.0" y="336.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1139.0" y="336.0"></omgdi:waypoint>
         <omgdi:waypoint x="1669.0" y="336.0"></omgdi:waypoint>
         <omgdi:waypoint x="1707.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>

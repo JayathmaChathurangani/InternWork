@@ -6,7 +6,7 @@ class LM_LICENSE extends Component{
 
 /* get all license from database */
 getAllLicenseNames(){
-    var url = MainData.ballerinaDatabaseURL + "select";
+    var url = MainData.ballerinaDatabaseURL + "selectData";
     var data = {"tableName":"LM_LICENSE","select":"LICENSE_ID,LICENSE_NAME"};
     return axios.post(
         url,

@@ -65,7 +65,7 @@ class LM_REPOSITORY extends Component{
     /* update repository table ends*/
 
     selectDataFromName(data){
-        var url = MainData.ballerinaDatabaseURL + "select";
+        var url = MainData.ballerinaDatabaseURL + "selectData";
         var select = "*";
         var condition = "WHERE REPOSITORY_NAME ='" + data + "' ";
         var requestData = {"tableName":"LM_REPOSITORY","select":select,"condition":condition};
@@ -85,7 +85,7 @@ class LM_REPOSITORY extends Component{
     }
 
     selectDataFromRequestBy(data){
-        var url = MainData.ballerinaDatabaseURL + "select";
+        var url = MainData.ballerinaDatabaseURL + "selectData";
         var select = "*";
         var condition = "WHERE REPOSITORY_REQUEST_BY ='" + data + "' AND REPOSITORY_ACCEPT IS NULL";
         var requestData = {"tableName":"LM_REPOSITORY","select":select,"condition":condition};
@@ -105,7 +105,7 @@ class LM_REPOSITORY extends Component{
     }
 
     selectDataFromId(data){
-        var url = MainData.ballerinaDatabaseURL + "select";
+        var url = MainData.ballerinaDatabaseURL + "selectData";
         var select = "*";
         var condition = "WHERE REPOSITORY_ID =" + data;
         var requestData = {"tableName":"LM_REPOSITORY","select":select,"condition":condition};

@@ -5,7 +5,7 @@ import MainData from '../MainData';
 class LM_REPOSITORYTYPE extends Component{
     /* get all repository types */
     getAllRepositoryTypes(){
-        var url = MainData.ballerinaDatabaseURL + "select";
+        var url = MainData.ballerinaDatabaseURL + "selectData";
         var data = {"tableName":"LM_REPOSITORYTYPE","select":"*"};
         return axios.post(
             url,

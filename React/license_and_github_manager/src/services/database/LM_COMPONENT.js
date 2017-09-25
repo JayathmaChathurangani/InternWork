@@ -5,7 +5,7 @@ import MainData from '../MainData';
 class LM_COMPONENT extends Component{
 
   selectComponentFromName(componentKey){
-    var url = MainData.ballerinaDatabaseURL + "select";
+    var url = MainData.ballerinaDatabaseURL + "selectData";
     
     var data = {'tableName':'LM_COMPONENT','select':'*','condition':'WHERE','parameters':{'column':'COMP_NAME','data':componentKey,'sqlType':'varchar'}};
     console.log(data);

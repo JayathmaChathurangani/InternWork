@@ -1,12 +1,11 @@
 import React,{Component} from 'react';
-import {browserHistory} from 'react-router';
 import LM_LICENSE from '../../services/database/LM_LICENSE';
 import LM_REPOSITORYTYPE from '../../services/database/LM_REPOSITORYTYPE';
 import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
 import LM_TEAM from '../../services/database/LM_TEAM';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
-import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
+import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreation';
 import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
 
 import '../../App.css';
@@ -25,7 +24,9 @@ class RequestRepository extends Component{
       validateRepository:" ",
       buttonState:false,
       displayFieldset:'block',
-      displayLoader:'none'
+      displayLoader:'none',
+      groupIdInputRequired:false,
+      groupIdInputSpan:" "
     }
   }
 
@@ -109,9 +110,34 @@ class RequestRepository extends Component{
   
 
   }
-    /* Validation functions end*/
 
-    /* submit function start*/
+  /* make group id required function*/
+
+  makeGroupIdRequired(){
+    var checkedValue = this.refs.inputNexus.checked;
+    if(checkedValue === true){
+      this.setState(function(){
+        return{
+          groupIdInputRequired:true,
+          groupIdInputSpan:<span className="required">*</span>
+        }
+      });
+    }else{
+      this.setState(function(){
+        return{
+          groupIdInputRequired:false,
+          groupIdInputSpan:" "
+        }
+      });
+    }
+    console.log(this.refs.inputGroupId.value);
+    
+  }
+  /* make group id required function ends*/
+
+  /* Validation functions end*/
+
+  /* submit function start*/
 
     submitRequest(e){
       e.preventDefault();
@@ -148,18 +174,7 @@ class RequestRepository extends Component{
         repositoryType,
         requestedBy
       ];   
-      
-      var i = 0;
-      var repoTypes = this.state.repositoryTypes;
-      for(i=0;i<repoTypes.length;i++){
-        //console.log(repoTypes[i].REPOSITORYTYPE_ID)
-        if((repoTypes[i].REPOSITORYTYPE_ID === parseInt(repositoryType,10)) && (repoTypes[i].REPOSITORYTYPE_JENKINS === true) && (repoTypes[i].REPOSITORYTYPE_NEXUS === true)){
-          var path = "/root/otherRepository";
-          browserHistory.push(path);
-          return false;
-        }
-      }
-      
+         
 
       this.setState(function(){
         return{
@@ -168,7 +183,7 @@ class RequestRepository extends Component{
         }
       })
       
-      CommGitHubRepositoryCreationon.startProcess(data).then(function(response) {
+      GitHubRepositoryCreation.startProcess(data).then(function(response) {
         
         if(response.data.completed === false){
           try{
@@ -274,13 +289,6 @@ class RequestRepository extends Component{
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputGroupId" className="col-lg-2 control-label">&nbsp;Group ID</label>
-            <div className="col-lg-10">
-              <input  type="text" className="form-control" ref="inputGroupId" id="inputRepositoryName" placeholder="org.wso2.example" />
-            </div>
-          </div>
-
-          <div className="form-group">
             <label htmlFor="inputLanguage" className="col-lg-2 control-label">Configurations</label>
             <div className="col-lg-10">
               <div className="checkbox">
@@ -291,11 +299,22 @@ class RequestRepository extends Component{
                 <label>
                   <input type="checkbox" ref="inputPrivate"/> Make Private Repository
                 </label>
+                <br/><br/>
+                <label>
+                  <input onChange={this.makeGroupIdRequired.bind(this)} type="checkbox" ref="inputNexus"/> Create Nexus Repository
+                </label>
               </div>
             </div>
           </div>
 
-          
+          <div className="form-group">
+            <label htmlFor="inputGroupId" className="col-lg-2 control-label">{this.state.groupIdInputSpan}&nbsp;Group ID</label>
+            <div className="col-lg-10" >
+              <input  type="text" className="form-control" ref="inputGroupId" placeholder="org.wso2.example" required={this.state.groupIdInputRequired}/>
+            </div>
+          </div>
+
+                  
           <div className="form-group">
             <label htmlFor="textDescription" className="col-lg-2 control-label">Description</label>
             <div className="col-lg-10">
