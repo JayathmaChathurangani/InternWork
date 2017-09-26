@@ -6,6 +6,7 @@ import ballerina.lang.jsons;
 import ballerina.lang.errors;
 import ballerina.lang.strings;
 import ballerina.lang.system;
+import ballerina.utils;
 
 
 function sendMail(message m)(message ){
@@ -171,11 +172,14 @@ function sendMail(message m)(message ){
         responseDataFromDb = selectData(requestDataFromDb);
         responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
         string acceptLink = bpmnTaskUrl + "?repositoryId=" + jsons:toString(responseDataFromDbJson[0].REPOSITORY_ID);
-        //set link to user task ends
 
+        //set link to user task ends
+        acceptLink =  utils:base64encode(acceptLink);
+        acceptLink = utils:base64decode(acceptLink);
         //set other mail content
         string mailBodyMessage = "Please note that, We need to create a GitHub repository according to following details \n\n\n";
         string mailLinkMessage = "\n\nNote: \nTo confirm request please click this link below \n\n Link : " + acceptLink + " \n\n\n Thank You!! ";
+        system:println(mailLinkMessage);
         messageBody = mailGreeting + " !" + "\n\n\n" + mailBodyMessage + messageBody + description + mailLinkMessage;
 
         messageBody = (string )messageBody;
@@ -184,11 +188,12 @@ function sendMail(message m)(message ){
         //set other mail content ends
         message gmailResponse;
         gmailResponse = gmail:ClientConnector.sendMail(gmailConnector,to, subject, from, messageBody, cc, bcc, id, threadId);
-        json responseMessage = {"type":"Done","message":"done"};
+        system:println(gmailResponse);
+        json responseMessage = {"responseType":"Done","responseMessage":"done"};
         messages:setJsonPayload(response,responseMessage);
 
     }catch(errors:Error err){
-        json errorMessage = {"type":"Error","message":err.msg};
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
         messages:setJsonPayload(response,errorMessage);
         system:println(errorMessage);
 
@@ -209,24 +214,83 @@ function sendAckMail(message m)(message ){
     try{
 
         json requestDataJson = messages:getJsonPayload(m);
-        string to = jsons:toString(requestDataJson.to);
-        string subject = "GitHub Repository Request ";
+        string to = "";
+        string subject = jsons:toString(requestDataJson.subject);
         string from = "webmisproject@gmail.com";
-        string messageBody = jsons:toString(requestDataJson.messageData);
+        string messageBody = "";
         string cc = "";
         string bcc = "";
         string id = "";
         string threadId = "";
 
+        if(jsons:toString(requestDataJson.messageType)=="Reject"){
+            messageBody = "Your repository request rejected";
+        }else if(jsons:toString(requestDataJson.messageType)=="Failed"){
+            messageBody = "Your repository creation failed";
+        }else if(jsons:toString(requestDataJson.messageType)=="Done"){
+            messageBody = "Your repository creation completed";
+        }else {
+            messageBody = "Unknown error";
+        }
+        //set mail receivers
+        message requestDataFromDb = {};
+        string condition = "WHERE USER_PERMISSION = 'ALL' OR USER_PERMISSION = 'ACCEPT'";
+        json requestDataFromDbJson =  {"tableName":"LM_USER","select":"USER_EMAIL,USER_NAME","condition":condition};
+        messages:setJsonPayload(requestDataFromDb,requestDataFromDbJson);
+        message responseDataFromDb = selectData(requestDataFromDb);
+        json responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
+        string mailGreeting = "Hi ";
+
+        int i = 0;
+        int lengthOfDataArray = lengthof responseDataFromDbJson;
+        while (i < lengthOfDataArray) {
+
+            if(i == (lengthOfDataArray-1)){
+
+                to = to + jsons:toString(responseDataFromDbJson[i].USER_EMAIL);
+                mailGreeting = mailGreeting + jsons:toString(responseDataFromDbJson[i].USER_NAME);
+                i = i + 1;
+                continue;
+            }
+            mailGreeting = mailGreeting + jsons:toString(responseDataFromDbJson[i].USER_NAME) + ",";
+            to = to + jsons:toString(responseDataFromDbJson[i].USER_EMAIL) + ",";
+            i = i + 1;
+        }
+
+        //set mail receivers ends
+
+        //set cc
+
+        condition = "WHERE USER_PERMISSION = 'REJECT' OR USER_PERMISSION = 'READ'";
+        requestDataFromDbJson =  {"tableName":"LM_USER","select":"USER_EMAIL","condition":condition};
+        messages:setJsonPayload(requestDataFromDb,requestDataFromDbJson);
+        responseDataFromDb = selectData(requestDataFromDb);
+        responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
+
+
+        i = 0;
+        lengthOfDataArray = lengthof responseDataFromDbJson;
+        while (i < lengthOfDataArray) {
+
+            if(i == (lengthOfDataArray-1)){
+
+                cc = cc + jsons:toString(responseDataFromDbJson[i].USER_EMAIL);
+                i = i + 1;
+                continue;
+            }
+            cc = cc + jsons:toString(responseDataFromDbJson[i].USER_EMAIL) + ",";
+            i = i + 1;
+        }
+        //set cc ends
         message gmailResponse;
         gmailResponse = gmail:ClientConnector.sendMail(gmailConnector,to, subject, from, messageBody, cc, bcc, id, threadId);
-
-        json responseMessage = {"type":"Done","message":"done"};
+        system:println(gmailResponse);
+        json responseMessage = {"responseType":"Done","responseMessage":"done"};
         messages:setJsonPayload(response,responseMessage);
 
-
+        system:println(gmailResponse);
     }catch(errors:Error err){
-        json errorMessage = {"type":"Error","message":err.msg};
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
         messages:setJsonPayload(response,errorMessage);
         system:println(errorMessage);
 

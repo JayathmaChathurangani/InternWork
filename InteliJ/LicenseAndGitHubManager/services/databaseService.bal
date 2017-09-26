@@ -39,8 +39,8 @@ function insertData(message m)(message ){
 
         sql:Parameter[] parametersArray = [];
         int rowCount = connection.update(query,parametersArray);
-        json returnMessage = {"type":"Done","message":""};
-        json errorMessage = {"type":"Error","message":"Database Error"};
+        json returnMessage = {"responseType":"Done","responseMessage":""};
+        json errorMessage = {"responseType":"Error","responseMessage":"Database Error"};
         if(rowCount >= 1){
             messages:setJsonPayload(response,returnMessage);
         }else{
@@ -48,7 +48,7 @@ function insertData(message m)(message ){
         }
 
     }catch(errors:Error err){
-        json errorMessage = {"type":"Error","message":err.msg};
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
         system:println(err);
         messages:setJsonPayload(response,errorMessage);
 
@@ -86,8 +86,8 @@ function updateData(message m)(message ){
 
         sql:Parameter[] parametersArray = [];
         int rowCount = connection.update(query,parametersArray);
-        json returnMessage = {"type":"Done","message":""};
-        json errorMessage = {"type":"Error","message":"Database Error"};
+        json returnMessage = {"responseType":"Done","responseMessage":""};
+        json errorMessage = {"responseType":"Error","responseMessage":"Database Error"};
         if(rowCount >= 1){
             messages:setJsonPayload(response,returnMessage);
         }else{
@@ -95,7 +95,7 @@ function updateData(message m)(message ){
         }
 
     }catch(errors:Error err){
-        json errorMessage = {"type":"Error","message":err.msg};
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
         system:println(err);
         messages:setJsonPayload(response,errorMessage);
 
@@ -131,7 +131,7 @@ function selectData(message m)(message ){
 
 
     }catch(errors:Error err){
-        json errorMessage = {"type":"Error","message":err.msg};
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
         messages:setJsonPayload(response,errorMessage);
 
     }
@@ -153,8 +153,8 @@ function deleteData(message m)(message ){
 
         sql:Parameter[] parametersArray = [];
         int rowCount = connection.update(query,parametersArray);
-        json returnMessage = {"type":"Done","message":""};
-        json errorMessage = {"type":"Error","message":"Database Error"};
+        json returnMessage = {"responseType":"Done","responseMessage":""};
+        json errorMessage = {"responseType":"Error","responseMessage":"Database Error"};
         if(rowCount >= 1){
             messages:setJsonPayload(response,returnMessage);
         }else{
@@ -162,7 +162,7 @@ function deleteData(message m)(message ){
         }
 
     }catch(errors:Error err){
-        json errorMessage = {"type":"Error","message":err.msg};
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
         system:println(err);
         messages:setJsonPayload(response,errorMessage);
 

@@ -13,8 +13,12 @@ function createJenkinsJob(message m)(message ){
     message responseJenkins = {};
     message response = {};
     try{
+
+        system:println(m);
         json requestJson = messages:getJsonPayload(m);
+
         string jenkinsJobName = jsons:toString(requestJson.name);
+
 
         xml jenkinsRequestXml = xml`<project>
 		<properties>
@@ -42,14 +46,15 @@ function createJenkinsJob(message m)(message ){
         messages:setHeader(requestJenkinsMessage,"Authorization","Basic QnVkZGhpV2F0aHNhbGE6YjZlZjBjNGU0MDkzYzM3NmNkMjZkMWQ1NDYxOGIwM2Q=");
         http:ClientConnector jenkinsClientConnector = create http:ClientConnector(jenkinsUrl);
         responseJenkins = jenkinsClientConnector.post(requestJenkinsUrl,requestJenkinsMessage);
-
-        json responseMessage = {"type":"Done","message":"done"};
+        system:println(responseJenkins);
+        json responseMessage = {"responseType":"Done","responseMessage":"done"};
         messages:setJsonPayload(response,responseMessage);
         return response;
 
     }catch(errors:Error err){
-        json errorMessage = {"type":"Error","message":err.msg};
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
         system:println(err);
+        system:println("jenkins");
         messages:setJsonPayload(response,errorMessage);
 
     }

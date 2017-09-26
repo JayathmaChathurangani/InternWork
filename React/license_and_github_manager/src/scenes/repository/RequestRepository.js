@@ -157,6 +157,7 @@ class RequestRepository extends Component{
       var language = "'" + this.refs.selectLanguage.value + "'";
       var groupId = "'" + this.refs.inputGroupId.value.toString() + "'";
       var buildable = this.refs.inputBuildable.checked;
+      var nexus = this.refs.inputNexus.checked;
       var isPrivate = this.refs.inputPrivate.checked;
       var description = "'" + this.refs.textDescription.value.toString() + "'";
       var requestedBy = "'buddhik@wso2.com'";
@@ -165,6 +166,7 @@ class RequestRepository extends Component{
         repositoryName,
         language,
         buildable,
+        nexus,
         isPrivate,
         description,
         groupId,

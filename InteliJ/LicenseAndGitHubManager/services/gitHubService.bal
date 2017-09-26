@@ -80,15 +80,16 @@ function createGitHubRepository(message m)(message ){
         http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
         message responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
 
-        json responseMessage = {"type":"Done","message":"done"};
+        json responseMessage = {"responseType":"Done","responseMessage":"done"};
         messages:setJsonPayload(response,responseMessage);
         return response;
     }catch(errors:Error err){
-        json errorMessage = {"type":"Error","message":err.msg};
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
         system:println(err);
         messages:setJsonPayload(response,errorMessage);
         return response;
     }
+
 
     return response;
 }

@@ -23,7 +23,9 @@ class AcceptRepository extends Component{
       validateRepository:" ",
       buttonState:false,
       repositoryId:props.location.query.repositoryId,
-      repositoryDetails:null
+      repositoryDetails:null,
+      groupIdInputRequired:false,
+      groupIdInputSpan:" "
       
     }
 
@@ -87,7 +89,9 @@ class AcceptRepository extends Component{
     LM_REPOSITORY.selectDataFromId(this.state.repositoryId).then(function(response){
       this.setState(function(){
         return{
-          repositoryDetails:response[0]
+          repositoryDetails:response[0],
+          groupIdInputRequired:response[0].REPOSITORY_NEXUS,
+          groupIdInputSpan:((response[0].REPOSITORY_NEXUS)?<span className="required">*</span>:" ")
         }
       });
       this.refs.inputRepositoryName.value = response[0].REPOSITORY_NAME;
@@ -95,7 +99,7 @@ class AcceptRepository extends Component{
       this.refs.inputBuildable.value = response[0].REPOSITORY_BUILDABLE;
       this.refs.inputPrivate.value = response[0].REPOSITORY_PRIVATE;
       this.refs.textDescription.value = response[0].REPOSITORY_DESCRIPTION;
-      console.log(response[0]);
+      
     }.bind(this));
     /* get repository details from ID ends*/
     
@@ -127,6 +131,31 @@ class AcceptRepository extends Component{
   
 
   }
+
+  /* make group id required function*/
+
+  makeGroupIdRequired(){
+    var checkedValue = this.refs.inputNexus.checked;
+    if(checkedValue === true){
+      this.setState(function(){
+        return{
+          groupIdInputRequired:true,
+          groupIdInputSpan:<span className="required">*</span>
+        }
+      });
+    }else{
+      this.setState(function(){
+        return{
+          groupIdInputRequired:false,
+          groupIdInputSpan:" "
+        }
+      });
+    }
+    console.log(this.refs.inputGroupId.value);
+    
+  }
+  /* make group id required function ends*/
+
     /* Validation functions end*/
 
     /* accept request function start */
@@ -148,6 +177,7 @@ class AcceptRepository extends Component{
       var language = "'" + this.refs.selectLanguage.value + "'";
       var groupId = "'" + this.refs.inputGroupId.value.toString() + "'";
       var buildable = this.refs.inputBuildable.checked;
+      var nexus = this.refs.inputNexus.checked;
       var isPrivate = this.refs.inputPrivate.checked;
       var description = "'" + this.refs.textDescription.value.toString() + "'";
       var accept = 1;
@@ -157,6 +187,7 @@ class AcceptRepository extends Component{
         repositoryName,
         language,
         buildable,
+        nexus,
         isPrivate,
         description,
         groupId,
@@ -172,6 +203,7 @@ class AcceptRepository extends Component{
         'REPOSITORY_NAME',
         'REPOSITORY_LANGUAGE',
         'REPOSITORY_BUILDABLE',
+        'REPOSITORY_NEXUS',
         'REPOSITORY_PRIVATE',
         'REPOSITORY_DESCRIPTION',
         'REPOSITORY_GROUPID',
@@ -182,7 +214,7 @@ class AcceptRepository extends Component{
         'REPOSITORY_ACCEPT',
         'REPOSITORY_ACCEPTED_BY'
     ];
-      console.log(data);
+      
       var variables = [
         {
           "name":"outputType",
@@ -292,30 +324,34 @@ class AcceptRepository extends Component{
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputGroupId" className="col-lg-2 control-label">&nbsp;Group ID</label>
-            <div className="col-lg-10">
-              <input  type="text" className="form-control" ref="inputGroupId" id="inputRepositoryName" placeholder="org.wso2.example" />
-            </div>
-          </div>
-
-          <div className="form-group">
             <label htmlFor="inputLanguage" className="col-lg-2 control-label">Configurations</label>
             <div className="col-lg-10">
               <div className="checkbox">
                 <label>
-                  {((this.state.repositoryDetails !== null) && (this.state.repositoryDetails.REPOSITORY_BUILDABLE === true))?<input type="checkbox"  ref="inputBuildable" checked/>:<input type="checkbox"  ref="inputBuildable"/>}
+                  {((this.state.repositoryDetails !== null))?<input type="checkbox"  ref="inputBuildable" defaultChecked={this.state.repositoryDetails.REPOSITORY_BUILDABLE}/>:" "}
                    Component Buildable
                 </label>
                 <br/><br/>
                 <label>
-                {((this.state.repositoryDetails !== null) && (this.state.repositoryDetails.REPOSITORY_PRIVATE === true))?<input type="checkbox" ref="inputPrivate" checked/>:<input type="checkbox" ref="inputPrivate"/>}
+                {((this.state.repositoryDetails !== null))?<input type="checkbox" ref="inputPrivate" defaultChecked={this.state.repositoryDetails.REPOSITORY_PRIVATE}/>:<input type="checkbox" ref="inputPrivate"/>}
+                   Make Private Repository
+                </label>
+                <br/><br/>
+                <label>
+                {((this.state.repositoryDetails !== null))?<input onChange={this.makeGroupIdRequired.bind(this)} type="checkbox" ref="inputNexus" defaultChecked={this.state.repositoryDetails.REPOSITORY_NEXUS}/>:" "}
                    Make Private Repository
                 </label>
               </div>
             </div>
           </div>
-
           
+          <div className="form-group">
+            <label htmlFor="inputGroupId" className="col-lg-2 control-label">{this.state.groupIdInputSpan}&nbsp;Group ID</label>
+            <div className="col-lg-10">
+            <input  type="text" className="form-control" ref="inputGroupId" placeholder="org.wso2.example" required={this.state.groupIdInputRequired}/>
+            </div>
+          </div>
+
           <div className="form-group">
             <label htmlFor="textDescription" className="col-lg-2 control-label">Description</label>
             <div className="col-lg-10">
