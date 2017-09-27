@@ -46,7 +46,7 @@ function createJenkinsJob(message m)(message ){
         messages:setHeader(requestJenkinsMessage,"Authorization","Basic QnVkZGhpV2F0aHNhbGE6YjZlZjBjNGU0MDkzYzM3NmNkMjZkMWQ1NDYxOGIwM2Q=");
         http:ClientConnector jenkinsClientConnector = create http:ClientConnector(jenkinsUrl);
         responseJenkins = jenkinsClientConnector.post(requestJenkinsUrl,requestJenkinsMessage);
-        system:println(responseJenkins);
+
         json responseMessage = {"responseType":"Done","responseMessage":"done"};
         messages:setJsonPayload(response,responseMessage);
         return response;
