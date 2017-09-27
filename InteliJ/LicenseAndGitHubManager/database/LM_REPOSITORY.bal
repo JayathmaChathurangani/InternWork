@@ -29,8 +29,8 @@ function repositoryInsertData(string name,string language,boolean buildable,bool
     sql:Parameter paraGroupId = {sqlType:"varchar", value:groupId};
     sql:Parameter paraLicense = {sqlType:"integer", value:license};
     sql:Parameter paraTeam = {sqlType:"integer", value:team};
-    sql:Parameter paraOrganization = {sqlType:"int", value:organization};
-    sql:Parameter paraRepoType = {sqlType:"int", value:repoType};
+    sql:Parameter paraOrganization = {sqlType:"integer", value:organization};
+    sql:Parameter paraRepoType = {sqlType:"integer", value:repoType};
     sql:Parameter paraRequestBy = {sqlType:"varchar", value:requestBy};
 
     sql:Parameter[] parameterArray = [paraName,paraLanguage,paraBuildable,paraNexus,paraPrivate,paraDescription,paraGroupId,paraLicense,paraTeam,paraOrganization,paraRepoType,paraRequestBy];
@@ -42,7 +42,7 @@ function repositoryInsertData(string name,string language,boolean buildable,bool
 
 }
 
-function repositoryUpdateTaskAndProcessIds(int taskId,int processId,string repositoryName){
+function repositoryUpdateTaskAndProcessIds(int taskId,int processId,string repositoryName)(int){
 
     sql:ClientConnector connection = getConnection();
 
@@ -59,7 +59,7 @@ function repositoryUpdateTaskAndProcessIds(int taskId,int processId,string repos
     return returnValue;
 }
 
-function repositoryUpdateAll(string name,string language,boolean buildable,boolean nexus,boolean private,string description,string groupId,int license,int team,int organization,int repoType,boolean accept,string requestBy,string acceptBy){
+function repositoryUpdateAll(string name,string language,boolean buildable,boolean nexus,boolean private,string description,string groupId,int license,int team,int organization,int repoType,boolean accept,string requestBy,string acceptBy,int id)(int){
     sql:ClientConnector connection = getConnection();
     string query = "UPDATE LM_REPOSITORY SET
                                                 REPOSITORY_NAME = ?,
@@ -77,7 +77,7 @@ function repositoryUpdateAll(string name,string language,boolean buildable,boole
                                                 REPOSITORY_REQUEST_BY = ?,
                                                 REPOSITORY_ACCEPTED_BY = ?
 
-                                                ";
+                                                WHERE REPOSITORY_ID = ?";
 
     sql:Parameter paraName = {sqlType:"varchar", value:name};
     sql:Parameter paraLanguage = {sqlType:"varchar", value:language};
@@ -88,13 +88,14 @@ function repositoryUpdateAll(string name,string language,boolean buildable,boole
     sql:Parameter paraGroupId = {sqlType:"varchar", value:groupId};
     sql:Parameter paraLicense = {sqlType:"integer", value:license};
     sql:Parameter paraTeam = {sqlType:"integer", value:team};
-    sql:Parameter paraOrganization = {sqlType:"int", value:organization};
-    sql:Parameter paraRepoType = {sqlType:"int", value:repoType};
+    sql:Parameter paraOrganization = {sqlType:"integer", value:organization};
+    sql:Parameter paraRepoType = {sqlType:"integer", value:repoType};
     sql:Parameter paraAccept = {sqlType:"boolean", value:accept};
     sql:Parameter paraRequestBy = {sqlType:"varchar", value:requestBy};
     sql:Parameter paraAcceptBy = {sqlType:"varchar", value:acceptBy};
+    sql:Parameter paraRepositoryId = {sqlType:"integer", value:id};
 
-    sql:Parameter[] parameterArray = [paraName,paraLanguage,paraBuildable,paraNexus,paraPrivate,paraDescription,paraGroupId,paraLicense,paraTeam,paraOrganization,paraRepoType,paraAccept,paraRequestBy,paraAcceptBy];
+    sql:Parameter[] parameterArray = [paraName,paraLanguage,paraBuildable,paraNexus,paraPrivate,paraDescription,paraGroupId,paraLicense,paraTeam,paraOrganization,paraRepoType,paraAccept,paraRequestBy,paraAcceptBy,paraRepositoryId];
 
     int returnValue = connection.update(query,parameterArray);
 

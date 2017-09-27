@@ -156,8 +156,124 @@ service<http> MainService {
     resource repositoryInsertDataResource(message m){
 
         json requestJson = messages:getJsonPayload(m);
+        string name;
+        string language;
+        boolean buildable;
+        boolean nexus;
+        boolean private;
+        string description;
+        string groupId;
+        int license;
+        int team;
+        int organization;
+        int repoType;
+        string requestBy;
 
-        int responseValue = database:repositoryInsertData();
+        name = jsons:toString(requestJson.data[0]);
+        language = jsons:toString(requestJson.data[1]);
+        buildable,_ =  <boolean>(jsons:toString(requestJson.data[2]));
+        nexus,_ = <boolean>(jsons:toString(requestJson.data[3]));
+        private,_ = <boolean>(jsons:toString(requestJson.data[4]));
+        description = jsons:toString(requestJson.data[5]);
+        groupId = jsons:toString(requestJson.data[6]);
+        license,_ = <int>(jsons:toString(requestJson.data[7]));
+        team,_ = <int>(jsons:toString(requestJson.data[8]));
+        organization,_ = <int>(jsons:toString(requestJson.data[9]));
+        repoType,_ = <int>(jsons:toString(requestJson.data[10]));
+        requestBy = jsons:toString(requestJson.data[11]);
+
+        int responseValue = database:repositoryInsertData(name,language,buildable,nexus,private,description,groupId,license,team,organization,repoType,requestBy);
+
+        json responseJson;
+        message response = {};
+
+        if(responseValue > 0){
+            responseJson = {"responseType":"Done","responseMessage":" "};
+        }else{
+            responseJson = {"responseType":"Error","responseMessage":" "};
+        }
+
+        messages:setJsonPayload(response,responseJson);
+        reply response;
+    }
+
+    @http:POST {}
+    @http:Path {value:"/databseService/repository/updateBpmnAndTaskIds"}
+    resource updateBpmnAndTaskIdsResource(message m){
+
+        json requestJson = messages:getJsonPayload(m);
+        int taskId;
+        int processId;
+        string repositoryName;
+
+        taskId,_ = <int>(jsons:toString(requestJson.data[0]));
+        processId,_ = <int>(jsons:toString(requestJson.data[1]));
+        repositoryName = jsons:toString(requestJson.data[2]);
+
+        int responseValue = database:repositoryUpdateTaskAndProcessIds(taskId,processId,repositoryName);
+
+        json responseJson;
+        message response = {};
+
+        if(responseValue > 0){
+            responseJson = {"responseType":"Done","responseMessage":" "};
+        }else{
+            responseJson = {"responseType":"Error","responseMessage":" "};
+        }
+
+        messages:setJsonPayload(response,responseJson);
+        reply response;
+    }
+
+    @http:POST {}
+    @http:Path {value:"/databseService/repository/updateAll"}
+    resource repositoryUpdateAllResource(message m){
+
+        json requestJson = messages:getJsonPayload(m);
+        string name;
+        string language;
+        boolean buildable;
+        boolean nexus;
+        boolean private;
+        string description;
+        string groupId;
+        int license;
+        int team;
+        int organization;
+        int repoType;
+        boolean accept;
+        string requestBy;
+        string acceptBy;
+        int repositoryId;
+
+        name = jsons:toString(requestJson.data[0]);
+        language = jsons:toString(requestJson.data[1]);
+        buildable,_ =  <boolean>(jsons:toString(requestJson.data[2]));
+        nexus,_ = <boolean>(jsons:toString(requestJson.data[3]));
+        private,_ = <boolean>(jsons:toString(requestJson.data[4]));
+        description = jsons:toString(requestJson.data[5]);
+        groupId = jsons:toString(requestJson.data[6]);
+        license,_ = <int>(jsons:toString(requestJson.data[7]));
+        team,_ = <int>(jsons:toString(requestJson.data[8]));
+        organization,_ = <int>(jsons:toString(requestJson.data[9]));
+        repoType,_ = <int>(jsons:toString(requestJson.data[10]));
+        accept,_ = <boolean>(jsons:toString(requestJson.data[11]));
+        requestBy = jsons:toString(requestJson.data[12]);
+        acceptBy = jsons:toString(requestJson.data[13]);
+        repositoryId,_ = <int>(jsons:toString(requestJson.repoId));
+
+        int responseValue = database:repositoryUpdateAll(name,language,buildable,nexus,private,description,groupId,license,team,organization,repoType,accept,requestBy,acceptBy,repositoryId);
+
+        json responseJson;
+        message response = {};
+
+        if(responseValue > 0){
+            responseJson = {"responseType":"Done","responseMessage":" "};
+        }else{
+            responseJson = {"responseType":"Error","responseMessage":" "};
+        }
+
+        messages:setJsonPayload(response,responseJson);
         reply response;
     }
 
