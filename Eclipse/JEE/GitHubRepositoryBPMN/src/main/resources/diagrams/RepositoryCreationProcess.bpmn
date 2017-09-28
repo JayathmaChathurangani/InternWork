@@ -5,13 +5,13 @@
     <serviceTask id="gitHubRepoRequestAddedIntoDbRestTask" name="GitHub Repository Request Added into Database" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
-          <activiti:string>http://localhost:9090/databaseService/insertData</activiti:string>
+          <activiti:string>http://localhost:9090/databaseService/repository/insertData</activiti:string>
         </activiti:field>
         <activiti:field name="method">
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"tableName":"${tableName}","columns":"${columns}","data":${data}}</activiti:expression>
+          <activiti:expression>{"data":${data}}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
           <activiti:string>outputType:responseType,outputMessage:responseMessage</activiti:string>

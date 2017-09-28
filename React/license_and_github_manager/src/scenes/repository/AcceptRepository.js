@@ -169,19 +169,19 @@ class AcceptRepository extends Component{
         return false ;
      }
 
-      var repositoryName = "'" + this.refs.inputRepositoryName.value.toString() + "'";
+      var repositoryName =  this.refs.inputRepositoryName.value.toString();
       var repositoryType = this.refs.selectRepositoryType.value;
       var organization = this.refs.selectOrganization.value;
       var team = this.refs.selectTeam.value;
       var license = this.refs.selectLicense.value;
-      var language = "'" + this.refs.selectLanguage.value + "'";
-      var groupId = "'" + this.refs.inputGroupId.value.toString() + "'";
+      var language =  this.refs.selectLanguage.value ;
+      var groupId =  this.refs.inputGroupId.value.toString() ;
       var buildable = this.refs.inputBuildable.checked;
       var nexus = this.refs.inputNexus.checked;
       var isPrivate = this.refs.inputPrivate.checked;
-      var description = "'" + this.refs.textDescription.value.toString() + "'";
+      var description =  this.refs.textDescription.value.toString();
       var accept = 1;
-      var acceptBy = "'buddhi@wso2.com'";
+      var acceptBy = "buddhi@wso2.com";
 
       var data = [
         repositoryName,
@@ -228,7 +228,7 @@ class AcceptRepository extends Component{
       ];
 
       try{
-        LM_REPOSITORY.update(columns,data,'REPOSITORY_ID',this.state.repositoryDetails.REPOSITORY_ID);
+        LM_REPOSITORY.updateAll(data,this.state.repositoryDetails.REPOSITORY_ID);
         CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
         alert("Repository accepted");
       }catch(err){

@@ -79,7 +79,6 @@ function createGitHubRepository(message m)(message ){
         messages:setJsonPayload(requestMessageForGitHub,requestDataJsonForGitHubApi);
         http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
         message responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
-
         json responseMessage = {"responseType":"Done","responseMessage":"done"};
         messages:setJsonPayload(response,responseMessage);
         return response;

@@ -7,6 +7,7 @@ import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
 import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreation';
 import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
+import StringValidations from '../../services/validations/StringValidations';
 
 import '../../App.css';
 
@@ -89,7 +90,6 @@ class RequestRepository extends Component{
   /* Validation functions*/
   validateInputRepositoryName(e){
     var inputRepositoryName = this.refs.inputRepositoryName.value;
-    
     LM_REPOSITORY.selectDataFromName(inputRepositoryName).then(function(response){
       if(response.length > 0){
         this.setState(function(){
@@ -148,19 +148,19 @@ class RequestRepository extends Component{
         return false ;
       }
       
-      
-      var repositoryName = "'" + this.refs.inputRepositoryName.value.toString() + "'";
+      var repoName = StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString());
+      var repositoryName = "'" + StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString()) + "'";
       var repositoryType = this.refs.selectRepositoryType.value;
       var organization = this.refs.selectOrganization.value;
       var team = this.refs.selectTeam.value;
       var license = this.refs.selectLicense.value;
-      var language = "'" + this.refs.selectLanguage.value + "'";
-      var groupId = "'" + this.refs.inputGroupId.value.toString() + "'";
+      var language = "'" + StringValidations.escapeCharacters(this.refs.selectLanguage.value) + "'";
+      var groupId = "'" + StringValidations.escapeCharacters(this.refs.inputGroupId.value.toString()) + "'";
       var buildable = this.refs.inputBuildable.checked;
       var nexus = this.refs.inputNexus.checked;
       var isPrivate = this.refs.inputPrivate.checked;
-      var description = "'" + this.refs.textDescription.value.toString() + "'";
-      var requestedBy = "'buddhik@wso2.com'";
+      var description = "'" + StringValidations.escapeCharacters(this.refs.textDescription.value.toString()) + "'";
+      var requestedBy = "'" + StringValidations.escapeCharacters("buddhik@wso2.com") + "'";
 
       var data = [
         repositoryName,
@@ -198,7 +198,7 @@ class RequestRepository extends Component{
                 for(i=0;i<taskArraylength;i++){
                     task = responseTasks.data[i];
                     if(task.processInstanceId === response.data.id){
-                        LM_REPOSITORY.update(["REPOSITORY_BPMN_TASK_ID","REPOSITORY_BPMN_PROCESS_ID"],[task.id,response.data.id],"REPOSITORY_NAME",repositoryName);
+                        LM_REPOSITORY.updateTaskAndProcessIds([task.id,response.data.id,repoName]);
                         alert("Your GitHub repository request send via e-mail for approval.");
                         break;
                     }

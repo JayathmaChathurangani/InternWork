@@ -30,7 +30,7 @@ service<http> MainService {
             message requestDataFromDb = {};
             responseGitHub = services:createGitHubRepository(m);
             responseGitHubJson = messages:getJsonPayload(responseGitHub);
-            system:println(m);
+            system:println(responseGitHubJson);
             json requestDataJson = messages:getJsonPayload(m);
 
             string repositoryId = jsons:toString(requestDataJson.repositoryId);
@@ -52,13 +52,13 @@ service<http> MainService {
             message requestJenkinsMessage = {};
             json requestJenkinsJson = {};
             if(nexus == "true"){
-                system:println("call nexus");
+
                 groupId = jsons:toString(responseDataFromDbJson[0].REPOSITORY_GROUPID);
                 requestNexusJson = {"name":repositoryName,"id":groupId};
                 messages:setJsonPayload(requestNexusMessage,requestNexusJson);
                 responseNexus = services:createNexus(requestNexusMessage);
                 responseNexusJson = messages:getJsonPayload(responseNexus);
-                system:println("create Nexus");
+
             }
 
             if(buildable == "true"){
@@ -66,7 +66,7 @@ service<http> MainService {
                 messages:setJsonPayload(requestJenkinsMessage,requestJenkinsJson);
                 responseJenkins = services:createJenkinsJob(requestJenkinsMessage);
                 responseJenkinsJson = messages:getJsonPayload(responseJenkins);
-                system:println("create Jenkins");
+
             }
 
 
@@ -76,19 +76,19 @@ service<http> MainService {
                 finalMessage = finalMessage + jsons:toString(responseGitHubJson.responseMessage);
                 finalMessageToSend = finalMessageToSend + "GitHub repository creation fails , ";
                 finalResponseJson = {"responseType":"Error","responseMessage":finalMessage,"toSend":finalMessageToSend};
-                system:println(finalResponseJson);
+
             }
             if((responseNexusJson != null) && ((jsons:toString(responseNexusJson.responseType)) == "Error")){
                  finalMessage = finalMessage + jsons:toString(responseNexusJson.responseMessage);
                  finalMessageToSend = finalMessageToSend + "Nexus repository creation fails , ";
                  finalResponseJson = {"responseType":"Error","responseMessage":finalMessage,"toSend":finalMessageToSend};
-                 system:println(finalResponseJson);
+
             }
             if((responseJenkinsJson != null) && ((jsons:toString(responseJenkinsJson.responseType)) == "Error")){
                 finalMessage = finalMessage + jsons:toString(responseJenkinsJson.responseMessage);
                 finalMessageToSend = finalMessageToSend + "Jenkins job creation fails , ";
                 finalResponseJson = {"responseType":"Error","responseMessage":finalMessage,"toSend":finalMessageToSend};
-                system:println(finalResponseJson);
+
             }
 
             messages:setJsonPayload(finalResponse,finalResponseJson);
@@ -96,13 +96,13 @@ service<http> MainService {
         }catch(errors:Error err){
             json errorMessage = {"responseType":"Error","responseMessages":err.msg};
             messages:setJsonPayload(finalResponse,errorMessage);
-            system:println("error");
+
             system:println(errorMessage);
 
 
         }
 
-        system:println(finalResponse);
+
         reply finalResponse;
     }
 
@@ -144,7 +144,7 @@ service<http> MainService {
 
 
     @http:POST {}
-    @http:Path {value:"/databseService/deleteData"}
+    @http:Path {value:"/databaseService/deleteData"}
     resource deleteData(message m){
 
         message response = services:deleteData(m);
@@ -152,9 +152,9 @@ service<http> MainService {
     }
 
     @http:POST {}
-    @http:Path {value:"/databseService/repository/insertData"}
+    @http:Path {value:"/databaseService/repository/insertData"}
     resource repositoryInsertDataResource(message m){
-
+        system:println(m);
         json requestJson = messages:getJsonPayload(m);
         string name;
         string language;
@@ -198,7 +198,7 @@ service<http> MainService {
     }
 
     @http:POST {}
-    @http:Path {value:"/databseService/repository/updateBpmnAndTaskIds"}
+    @http:Path {value:"/databaseService/repository/updateBpmnAndTaskIds"}
     resource updateBpmnAndTaskIdsResource(message m){
 
         json requestJson = messages:getJsonPayload(m);
@@ -226,9 +226,9 @@ service<http> MainService {
     }
 
     @http:POST {}
-    @http:Path {value:"/databseService/repository/updateAll"}
+    @http:Path {value:"/databaseService/repository/updateAll"}
     resource repositoryUpdateAllResource(message m){
-
+        system:println(m);
         json requestJson = messages:getJsonPayload(m);
         string name;
         string language;
@@ -242,7 +242,6 @@ service<http> MainService {
         int organization;
         int repoType;
         boolean accept;
-        string requestBy;
         string acceptBy;
         int repositoryId;
 
@@ -258,11 +257,10 @@ service<http> MainService {
         organization,_ = <int>(jsons:toString(requestJson.data[9]));
         repoType,_ = <int>(jsons:toString(requestJson.data[10]));
         accept,_ = <boolean>(jsons:toString(requestJson.data[11]));
-        requestBy = jsons:toString(requestJson.data[12]);
-        acceptBy = jsons:toString(requestJson.data[13]);
+        acceptBy = jsons:toString(requestJson.data[12]);
         repositoryId,_ = <int>(jsons:toString(requestJson.repoId));
 
-        int responseValue = database:repositoryUpdateAll(name,language,buildable,nexus,private,description,groupId,license,team,organization,repoType,accept,requestBy,acceptBy,repositoryId);
+        int responseValue = database:repositoryUpdateAll(name,language,buildable,nexus,private,description,groupId,license,team,organization,repoType,accept,acceptBy,repositoryId);
 
         json responseJson;
         message response = {};
@@ -282,6 +280,65 @@ service<http> MainService {
     resource sendMail(message m){
 
         message response = services:sendMail(m);
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/repository/selectAll"}
+    resource repositorySelectAllResource(message m){
+
+        message response = database:repositorySelectAll();
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/repository/selectFromName"}
+    resource repositorySelectFromNameResource(@http:QueryParam {value:"name"} string name){
+
+        system:println(name);
+        message response = database:repositorySelectFromName(name);
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/repository/selectFromId"}
+    resource repositorySelectFromIdResource(@http:QueryParam {value:"id"} int id){
+
+
+        message response = database:repositorySelectFromId(id);
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/repository/selectFromRequestBy"}
+    resource repositorySelectFromRequestByResource(@http:QueryParam {value:"requestBy"} string requestBy){
+
+
+        message response = database:repositorySelectFromRequestBy(requestBy);
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/license/selectAll"}
+    resource licenseSelectAllResource(message m){
+
+        message response = database:licenseSelectAll();
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/organization/selectAll"}
+    resource organizationSelectAllResource(message m){
+
+        message response = database:organizationSelectAll();
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/repoType/selectAll"}
+    resource typeSelectAllResource(message m){
+
+        message response = database:repositoryTypeSelectAll();
         reply response;
     }
 
