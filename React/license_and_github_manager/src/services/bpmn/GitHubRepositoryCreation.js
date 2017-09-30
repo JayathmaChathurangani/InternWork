@@ -5,7 +5,7 @@ import MainData from '../MainData';
 
 class GitHubRepositoryCreation extends Component{
 
-    startProcess(requestData){
+    startProcess(requestData,mailData,mainUsers){
         var url = MainData.bpmnStartURL;
         var columns = [
             "REPOSITORY_NAME",
@@ -23,20 +23,25 @@ class GitHubRepositoryCreation extends Component{
         ];
 
         var mailColumns = [
-            "'Repository Name'",
-            "'Language'",
-            "'Buildable'",
-            "'Nexus repository'",
-            "'Is private'",
-            "'Description'",
-            "'Group ID'",
-            "'License'",
-            "'Team'",
-            "'Organization'",
-            "'Type'",
-            "'Requested By'"
+            "Repository Name",
+            "Language",
+            "Buildable",
+            "Nexus repository",
+            "Is private",
+            "Description",
+            "Group ID",
+            "License",
+            "Team",
+            "Organization",
+            "Type",
+            "Requested By"
         ];
         var tableName = "LM_REPOSITORY";
+        var i = 0;
+        var sendToList = " ";
+        for(i=0;i<mainUsers.length;i++){
+            sendToList = sendToList + mainUsers[i].USER_EMAIL + ",";
+        }
         var variables = [
             {
                 "name":"tableName",
@@ -53,9 +58,17 @@ class GitHubRepositoryCreation extends Component{
             {
                 "name":"data",
                 "value":requestData
+            },
+            {
+                "name":"mailData",
+                "value":mailData
+            },
+            {
+                "name":"sendToList",
+                "value":sendToList
             }
         ];
-
+        
         var data = {
             "processDefinitionKey":"repositoryCreationProcess",
             "businessKey":"myBusinessKey",
@@ -71,7 +84,7 @@ class GitHubRepositoryCreation extends Component{
 
         
 
-       // console.log(this.state.tasks);
+        console.log(requestData);
         return axios.post(
             url,
             data,

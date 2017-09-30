@@ -199,21 +199,6 @@ class AcceptRepository extends Component{
         acceptBy
       ];  
 
-      var columns = [
-        'REPOSITORY_NAME',
-        'REPOSITORY_LANGUAGE',
-        'REPOSITORY_BUILDABLE',
-        'REPOSITORY_NEXUS',
-        'REPOSITORY_PRIVATE',
-        'REPOSITORY_DESCRIPTION',
-        'REPOSITORY_GROUPID',
-        'REPOSITORY_LICENSE',
-        'REPOSITORY_TEAM',
-        'REPOSITORY_ORGANIZATION',
-        'REPOSITORY_TYPE',
-        'REPOSITORY_ACCEPT',
-        'REPOSITORY_ACCEPTED_BY'
-    ];
       
       var variables = [
         {

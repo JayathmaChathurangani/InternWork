@@ -8,9 +8,16 @@ import ballerina.lang.system;
 
 function licenseSelectAll()(message){
     message response = {};
+    //map propertiesMap = getConnectionDetails();
+    //sql:ClientConnector connection = create sql:ClientConnector(propertiesMap);
+    //sql:ClientConnector connection = getConnection();
+    if(connection == null){
+
+        setConnection();
+    }
     try{
 
-        sql:ClientConnector connection = getConnection();
+
 
         string query = "SELECT * FROM LM_LICENSE";
         sql:Parameter[] parameterArray = [];

@@ -8,14 +8,23 @@ import ballerina.lang.system;
 
 function repositoryTypeSelectAll()(message){
     message response = {};
+    //map propertiesMap = getConnectionDetails();
+    //sql:ClientConnector connection = create sql:ClientConnector(propertiesMap);
+
+    //sql:ClientConnector connection = getConnection();
+    if(connection == null){
+
+        setConnection();
+    }
     try{
 
-        map propertiesMap = getConnectionDetails();
-        sql:ClientConnector connection = create sql:ClientConnector(propertiesMap);
+
 
         string query = "SELECT * FROM LM_REPOSITORYTYPE";
         sql:Parameter[] parameterArray = [];
+        system:println("before");
         datatable responseDataFromDb = connection.select(query ,parameterArray);
+        system:println("after");
         json resultJSON;
         resultJSON,_ = <json>responseDataFromDb;
         messages:setJsonPayload(response,resultJSON);

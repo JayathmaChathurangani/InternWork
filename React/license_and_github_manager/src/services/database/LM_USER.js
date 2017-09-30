@@ -2,26 +2,26 @@ import {Component} from 'react';
 import axios from 'axios';
 import MainData from '../MainData';
 
-class LM_REPOSITORYTYPE extends Component{
-    /* get all repository types */
-    getAllRepositoryTypes(){
-        var url = MainData.ballerinaDatabaseURL + "repoType/selectAll";
+class LM_USER extends Component{
+
+/* get  user data from database */
+    getMainUsers(){
+        var url = MainData.ballerinaDatabaseURL + "user/selectMainUsers";
         
         return axios.get(
             url
         )
         .then(function (response) {
             
-            return(response.data) ;
+        return(response.data) ;
             
         })
         .catch(function (error) {
             console.log(error);
         });
     }
-
-     /* get all repository types ends*/
+/* get user data from database ends*/
 }
 
 
-export default (new LM_REPOSITORYTYPE());
+export default (new LM_USER());

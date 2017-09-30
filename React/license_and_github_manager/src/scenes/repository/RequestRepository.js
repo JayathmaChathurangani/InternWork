@@ -3,6 +3,7 @@ import LM_LICENSE from '../../services/database/LM_LICENSE';
 import LM_REPOSITORYTYPE from '../../services/database/LM_REPOSITORYTYPE';
 import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
 import LM_TEAM from '../../services/database/LM_TEAM';
+import LM_USER from '../../services/database/LM_USER';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
 import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreation';
@@ -17,6 +18,7 @@ class RequestRepository extends Component{
   constructor(){
     super();
     this.state = {
+      mainUsers:[],
       languages:[],
       licenseNames:[],
       repositoryTypes:[],
@@ -43,8 +45,19 @@ class RequestRepository extends Component{
     }.bind(this));
     /* get all team details from database ends*/
 
+    /* get user details from database*/
+    LM_USER.getMainUsers().then(function(response){
+      this.setState(function(){
+        return {
+          mainUsers:response
+        }
+      })
+    }.bind(this));
+    /* get user details from database ends*/
+
     /*get all organizations types from database*/
     LM_ORGANIZATION.getAllOrganizations().then(function(response){
+      
       this.setState(function(){
         return {
           organizations:response
@@ -60,7 +73,7 @@ class RequestRepository extends Component{
           repositoryTypes:response
         }
       })
-      console.log(this.state.repositoryTypes);
+      
     }.bind(this));
     /*get all repository types from database end*/
 
@@ -90,6 +103,8 @@ class RequestRepository extends Component{
   /* Validation functions*/
   validateInputRepositoryName(e){
     var inputRepositoryName = this.refs.inputRepositoryName.value;
+    
+    
     LM_REPOSITORY.selectDataFromName(inputRepositoryName).then(function(response){
       if(response.length > 0){
         this.setState(function(){
@@ -147,20 +162,32 @@ class RequestRepository extends Component{
       if (confirm("Are you sure to request it?") === false ) {
         return false ;
       }
+      var repositoryTypeOptions = this.refs.selectRepositoryType.options;
+      var organizationOptions = this.refs.selectOrganization.options;
+      var teamOptions = this.refs.selectTeam.options;
+      var licenseOptions = this.refs.selectLicense.options;
+      var languageOptions = this.refs.selectLanguage.options;
+      
+      var repositoryTypeText = repositoryTypeOptions[repositoryTypeOptions.selectedIndex].text;
+      var organizationText = organizationOptions[organizationOptions.selectedIndex].text;
+      var teamText = teamOptions[teamOptions.selectedIndex].text;
+      var licenseText = licenseOptions[licenseOptions.selectedIndex].text;
+      var languageText = languageOptions[languageOptions.selectedIndex].text;
+      
       
       var repoName = StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString());
-      var repositoryName = "'" + StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString()) + "'";
+      var repositoryName = StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString()) ;
       var repositoryType = this.refs.selectRepositoryType.value;
       var organization = this.refs.selectOrganization.value;
       var team = this.refs.selectTeam.value;
       var license = this.refs.selectLicense.value;
-      var language = "'" + StringValidations.escapeCharacters(this.refs.selectLanguage.value) + "'";
-      var groupId = "'" + StringValidations.escapeCharacters(this.refs.inputGroupId.value.toString()) + "'";
+      var language = StringValidations.escapeCharacters(this.refs.selectLanguage.value) ;
+      var groupId = StringValidations.escapeCharacters(this.refs.inputGroupId.value.toString()) ;
       var buildable = this.refs.inputBuildable.checked;
       var nexus = this.refs.inputNexus.checked;
       var isPrivate = this.refs.inputPrivate.checked;
-      var description = "'" + StringValidations.escapeCharacters(this.refs.textDescription.value.toString()) + "'";
-      var requestedBy = "'" + StringValidations.escapeCharacters("buddhik@wso2.com") + "'";
+      var description = StringValidations.escapeCharacters(this.refs.textDescription.value.toString()) ;
+      var requestedBy = StringValidations.escapeCharacters("buddhik@wso2.com") ;
 
       var data = [
         repositoryName,
@@ -176,7 +203,22 @@ class RequestRepository extends Component{
         repositoryType,
         requestedBy
       ];   
-         
+
+      var mailData = [
+        repositoryName,
+        languageText,
+        buildable,
+        nexus,
+        isPrivate,
+        description,
+        groupId,
+        licenseText,
+        teamText,
+        organizationText,
+        repositoryTypeText,
+        requestedBy
+      ]; 
+    
 
       this.setState(function(){
         return{
@@ -185,7 +227,7 @@ class RequestRepository extends Component{
         }
       })
       
-      GitHubRepositoryCreation.startProcess(data).then(function(response) {
+      GitHubRepositoryCreation.startProcess(data,mailData,this.state.mainUsers).then(function(response) {
         
         if(response.data.completed === false){
           try{
@@ -274,7 +316,7 @@ class RequestRepository extends Component{
             <label htmlFor="selectLicense" className="col-lg-2 control-label">&nbsp;License</label>
             <div className="col-lg-10">
               <select className="form-control" ref="selectLicense">
-                {this.state.licenseNames.map((license)=> <option key={license.LICENSE_ID} value={license.LICENSE_ID}>{license.LICENSE_NAME}</option>)}
+                {this.state.licenseNames.map((license)=> <option key={license.LICENSE_ID} value={license.LICENSE_ID} data={license.LICENSE_NAME}>{license.LICENSE_NAME}</option>)}
               </select>
             </div>
           </div>

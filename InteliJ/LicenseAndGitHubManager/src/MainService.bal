@@ -11,6 +11,7 @@ import ballerina.lang.errors;
 
 
 @http:configuration {basePath:"/"}
+
 service<http> MainService {
 
     @http:POST {}
@@ -40,6 +41,7 @@ service<http> MainService {
             message responseDataFromDb = services:selectData(requestDataFromDb);
             json responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
 
+            finalResponseJson = {"responseType":"Done","responseMessage":" ","toSend":" ","repoUpdatedDetails":responseDataFromDbJson[0]};
             system:println(responseDataFromDbJson);
             string nexus = jsons:toString(responseDataFromDbJson[0].REPOSITORY_NEXUS);
             string buildable = jsons:toString(responseDataFromDbJson[0].REPOSITORY_BUILDABLE);
@@ -183,12 +185,17 @@ service<http> MainService {
         requestBy = jsons:toString(requestJson.data[11]);
 
         int responseValue = database:repositoryInsertData(name,language,buildable,nexus,private,description,groupId,license,team,organization,repoType,requestBy);
+        system:println(responseValue);
+
 
         json responseJson;
         message response = {};
 
         if(responseValue > 0){
-            responseJson = {"responseType":"Done","responseMessage":" "};
+            message getInsertedDataMessage = database:repositorySelectFromName(name);
+            json getInsertedDataJson = messages:getJsonPayload(getInsertedDataMessage);
+            system:println(getInsertedDataMessage);
+            responseJson = {"responseType":"Done","responseMessage":" ","repositoryId":jsons:toString(getInsertedDataJson[0].REPOSITORY_ID)};
         }else{
             responseJson = {"responseType":"Error","responseMessage":" "};
         }
@@ -339,6 +346,30 @@ service<http> MainService {
     resource typeSelectAllResource(message m){
 
         message response = database:repositoryTypeSelectAll();
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/team/selectAll"}
+    resource teamSelectAllResource(message m){
+
+        message response = database:teamSelectAll();
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/component/selectAll"}
+    resource componentSelectAllResource(message m){
+
+        message response = database:componentSelectAll();
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/user/selectMainUsers"}
+    resource userSelectMainUsersResource(message m){
+        system:println("call resource");
+        message response = database:userSelectMainUsers();
         reply response;
     }
 
