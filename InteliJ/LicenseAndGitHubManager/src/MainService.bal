@@ -34,11 +34,10 @@ service<http> MainService {
             system:println(responseGitHubJson);
             json requestDataJson = messages:getJsonPayload(m);
 
-            string repositoryId = jsons:toString(requestDataJson.repositoryId);
-            string condition = "WHERE REPOSITORY_ID = " + repositoryId + " ";
-            json requestDataFromDbJson =  {"tableName":"LM_REPOSITORY","select":"*","condition":condition};
-            messages:setJsonPayload(requestDataFromDb,requestDataFromDbJson);
-            message responseDataFromDb = services:selectData(requestDataFromDb);
+            int repositoryId;
+            repositoryId,_ = <int> jsons:toString(requestDataJson.repositoryId);
+
+            message responseDataFromDb = database:repositorySelectFromId(repositoryId);
             json responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
 
             finalResponseJson = {"responseType":"Done","responseMessage":" ","toSend":" ","repoUpdatedDetails":responseDataFromDbJson[0]};

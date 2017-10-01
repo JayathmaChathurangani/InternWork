@@ -9,6 +9,7 @@ import Common from '../../services/github/Common';
 import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreation';
 import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
 import StringValidations from '../../services/validations/StringValidations';
+import {Link} from 'react-router';
 
 import '../../App.css';
 
@@ -28,6 +29,8 @@ class RequestRepository extends Component{
       buttonState:false,
       displayFieldset:'block',
       displayLoader:'none',
+      displaySuceessBox:'none',
+      displayErrorBox:'none',
       groupIdInputRequired:false,
       groupIdInputSpan:" "
     }
@@ -150,6 +153,28 @@ class RequestRepository extends Component{
   }
   /* make group id required function ends*/
 
+  /* go back to request function starts */
+
+  goBackToRequest(e){
+    e.preventDefault();
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+
+    this.setState(function(){
+      return{
+        displayFieldset:'block',
+        displayErrorBox:'none'
+      }
+    });
+
+  }
+  /* go back to request function ends */
+
+  /* reload page function starts */
+  reloadPage(){
+    window.location.reload();
+  }
+  /* reload page function ends */
   /* Validation functions end*/
 
   /* submit function start*/
@@ -241,21 +266,39 @@ class RequestRepository extends Component{
                     task = responseTasks.data[i];
                     if(task.processInstanceId === response.data.id){
                         LM_REPOSITORY.updateTaskAndProcessIds([task.id,response.data.id,repoName]);
-                        alert("Your GitHub repository request send via e-mail for approval.");
+                        this.setState(function(){
+                          return{
+                            
+                            displayLoader:'none',
+                            displaySuceessBox:'block'
+                          }
+                        });
                         break;
                     }
                 }
-              });
+              }.bind(this));
 
           }catch(err){
-              alert(err);
+            this.setState(function(){
+              return{
+                
+                displayLoader:'none',
+                displayErrorBox:'block'
+              }
+            });
           }
         }else{
-            alert("Sorry database or e-mail sending error occur.Your GitHub repository request cannot send.")
+          this.setState(function(){
+            return{
+              
+              displayLoader:'none',
+              displayErrorBox:'block'
+            }
+          });
         }
         this.setState(function(){
           return{
-            displayFieldset:'block',
+           
             displayLoader:'none'
           }
         });         
@@ -389,6 +432,42 @@ class RequestRepository extends Component{
             </div>
           </div>
           
+        </div>
+
+        <div className="modal" style={{display:this.state.displaySuceessBox}}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 className="modal-title">Succesfull</h4>
+              </div>
+              <div className="modal-body">
+                <p><span><i className="fa fa-check" aria-hidden="true"></i></span>&nbsp;Request successfully submitted for approval via e-mail</p>
+              </div>
+              <div className="modal-footer">
+                <Link to={"/"} ><button type="button" className="btn btn-default" data-dismiss="modal">Back to main page</button></Link>&nbsp;&nbsp;
+                <button onClick={this.reloadPage.bind(this)} type="button" className="btn btn-success">Another Request</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="modal" style={{display:this.state.displayErrorBox}}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 className="modal-title">Failed</h4>
+              </div>
+              <div className="modal-body">
+                <p><span><i className="fa fa-times" aria-hidden="true"></i></span>&nbsp;Request sending fail</p>
+              </div>
+              <div className="modal-footer">
+                <button onClick={this.goBackToRequest.bind(this)} type="button" className="btn btn-default" data-dismiss="modal">Back</button>&nbsp;&nbsp;
+                <Link to={"/root/requestRepository"} ><button type="button" className="btn btn-success">New Request</button></Link>
+              </div>
+            </div>
+          </div>
         </div>
         
       </form>

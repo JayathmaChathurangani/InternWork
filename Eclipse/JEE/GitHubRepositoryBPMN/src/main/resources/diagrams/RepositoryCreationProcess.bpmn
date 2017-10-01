@@ -141,10 +141,10 @@
 <b>${mailColumns[4]}</b>:${repoUpdatedDetails.REPOSITORY_PRIVATE}<br />
 <b>${mailColumns[5]}</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION}<br />
 <b>${mailColumns[6]}</b>:${repoUpdatedDetails.REPOSITORY_GROUPID}<br />
-<b>${mailColumns[7]}</b>:${repoUpdatedDetails.REPOSITORY_LICENSE}<br />
-<b>${mailColumns[8]}</b>:${repoUpdatedDetails.REPOSITORY_TEAM}<br />
-<b>${mailColumns[9]}</b>:${repoUpdatedDetails.REPOSITORY_ORGANIZATION}<br />
-<b>${mailColumns[10]}</b>:${repoUpdatedDetails.REPOSITORY_TYPE}<br />
+<b>${mailColumns[7]}</b>:${repoUpdatedDetails.LICENSE_NAME}<br />
+<b>${mailColumns[8]}</b>:${repoUpdatedDetails.TEAM_NAME}<br />
+<b>${mailColumns[9]}</b>:${repoUpdatedDetails.ORGANIZATION_NAME}<br />
+<b>${mailColumns[10]}</b>:${repoUpdatedDetails.REPOSITORYTYPE_NAME}<br />
 <b>${mailColumns[11]}</b>:${repoUpdatedDetails.REPOSITORY_REQUEST_BY}<br />
 
 
@@ -170,10 +170,10 @@
 <b>${mailColumns[4]}</b>:${repoUpdatedDetails.REPOSITORY_PRIVATE}<br />
 <b>${mailColumns[5]}</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION}<br />
 <b>${mailColumns[6]}</b>:${repoUpdatedDetails.REPOSITORY_GROUPID}<br />
-<b>${mailColumns[7]}</b>:${repoUpdatedDetails.REPOSITORY_LICENSE}<br />
-<b>${mailColumns[8]}</b>:${repoUpdatedDetails.REPOSITORY_TEAM}<br />
-<b>${mailColumns[9]}</b>:${repoUpdatedDetails.REPOSITORY_ORGANIZATION}<br />
-<b>${mailColumns[10]}</b>:${repoUpdatedDetails.REPOSITORY_TYPE}<br />
+<b>${mailColumns[7]}</b>:${repoUpdatedDetails.LICENSE_NAME}<br />
+<b>${mailColumns[8]}</b>:${repoUpdatedDetails.TEAM_NAME}<br />
+<b>${mailColumns[9]}</b>:${repoUpdatedDetails.ORGANIZATION_NAME}<br />
+<b>${mailColumns[10]}</b>:${repoUpdatedDetails.REPOSITORYTYPE_NAME}<br />
 <b>${mailColumns[11]}</b>:${repoUpdatedDetails.REPOSITORY_REQUEST_BY}<br />
 
 
@@ -275,7 +275,7 @@
         <omgdi:waypoint x="1050.0" y="201.0"></omgdi:waypoint>
         <omgdi:waypoint x="1050.0" y="328.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="12.0" width="100.0" x="1054.0" y="242.0"></omgdc:Bounds>
+          <omgdc:Bounds height="12.0" width="31.0" x="1054.0" y="242.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
