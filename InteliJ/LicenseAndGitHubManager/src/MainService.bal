@@ -89,7 +89,7 @@ service<http> MainService {
 
         message response = services:getAllLanguages(m);
         system:println("languages");
-        system:println(response);
+        
         reply response;
     }
 
