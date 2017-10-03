@@ -113,7 +113,8 @@ function setIssueTemplate(string organization,string repositoryName)(message){
 
     http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
     message response = httpConnector.put(requestUrl,gitHubRequestMessage);
-
+    json responseMessage = {"responseType":"Done","responseMessage":"done"};
+    messages:setJsonPayload(response,responseMessage);
     return response;
 
 

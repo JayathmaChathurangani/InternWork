@@ -34,7 +34,8 @@ service<http> MainService {
             message responseDataFromDb = database:repositorySelectFromId(repositoryId);
             json responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
 
-            finalResponseJson = {"responseType":"Done","responseMessage":" ","toSend":" ","repoUpdatedDetails":responseDataFromDbJson[0]};
+            finalResponseJson = {"responseType":"Done","responseMessage":" ","responseDefault":"Done","repoUpdatedDetails":responseDataFromDbJson[0]};
+            system:println(finalResponseJson);
             messages:setJsonPayload(finalResponse,finalResponseJson);
 
         }catch(errors:Error err){
@@ -50,11 +51,23 @@ service<http> MainService {
     }
 
     @http:POST {}
+    @http:Path {value:"/gitHub/setIssueTemplate"}
+    resource gitHubSetIssueTemplateResource(message m){
+
+        json requestJson = messages:getJsonPayload(m);
+        string organization = jsons:toString(requestJson.organization);
+        string repositoryName = jsons:toString(requestJson.repositoryName);
+        message response = services:setIssueTemplate(organization,repositoryName);
+        reply response;
+    }
+
+    @http:POST {}
     @http:Path {value:"/createNexus"}
     resource createNexus (message m) {
         system:println("call Nexus");
         system:println(m);
         message response = services:createNexus(m);
+        system:println(response);
         reply response;
 
     }
@@ -65,6 +78,7 @@ service<http> MainService {
         system:println("call Jenkins");
         system:println(m);
         message response = services:createJenkinsJob(m);
+        system:println(response);
         reply response;
     }
 
@@ -74,6 +88,7 @@ service<http> MainService {
 
 
         message response = services:getAllLanguages(m);
+        system:println("languages");
         system:println(response);
         reply response;
     }
@@ -320,15 +335,6 @@ service<http> MainService {
     }
 
 
-    @http:POST {}
-    @http:Path {value:"/gitHub/setIssueTemplate"}
-    resource gitHubSetIssueTemplateResource(message m){
 
-        json requestJson = messages:getJsonPayload(m);
-        string organization = jsons:toString(requestJson.organization);
-        string repositoryName = jsons:toString(requestJson.repositoryName);
-        message response = services:setIssueTemplate(organization,repositoryName);
-        reply response;
-    }
 
 }

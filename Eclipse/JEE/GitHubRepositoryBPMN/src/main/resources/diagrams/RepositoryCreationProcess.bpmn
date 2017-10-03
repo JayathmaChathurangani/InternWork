@@ -31,7 +31,7 @@
           <activiti:expression>{"repositoryId":${repositoryId}}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
-          <activiti:string>outputType:responseType,repoUpdatedDetails:repoUpdatedDetails</activiti:string>
+          <activiti:string>outputTypeGitHub:responseType,repoUpdatedDetails:repoUpdatedDetails,outputTypeJenkins:responseDefault,outputTypeNexus:responseDefault</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -193,22 +193,26 @@
         <activiti:field name="input">
           <activiti:expression>{"organization":"${repoUpdatedDetails.ORGANIZATION_NAME}","repositoryName":"${repoUpdatedDetails.REPOSITORY_NAME}"}</activiti:expression>
         </activiti:field>
-        <activiti:field name="outputVariable">
-          <activiti:string>output</activiti:string>
+        <activiti:field name="outputMappings">
+          <activiti:string>outputTypeGitHubIssue:responseType</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow33" sourceRef="createGitHubRepositoryRestTask" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="createGitHubRepositoryRestTask" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Done"}]]></conditionExpression>
+    </sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow35" sourceRef="parallelgateway1" targetRef="mailtask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputType == "Error"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Error" || outputTypeJenkins == "Error" || outputTypeNexus == "Error" }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="parallelgateway1" targetRef="mailtask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputType == "Done"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Done" && outputTypeJenkins == "Done" && outputTypeNexus == "Done" }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="mailtask3" targetRef="endevent1"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow38" sourceRef="servicetask1" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="servicetask1" targetRef="parallelgateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Done"}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask2" name="Create Nexus" isForCompensation="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
@@ -220,8 +224,8 @@
         <activiti:field name="input">
           <activiti:expression>{"name":"${repoUpdatedDetails.REPOSITORY_NAME}","id":"${repoUpdatedDetails.REPOSITORY_ID}"}</activiti:expression>
         </activiti:field>
-        <activiti:field name="outputVariable">
-          <activiti:string>outNexus</activiti:string>
+        <activiti:field name="outputMappings">
+          <activiti:string>outputTypeNexus:responseType</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -236,16 +240,16 @@
         <activiti:field name="input">
           <activiti:expression>{"name":"${repoUpdatedDetails.REPOSITORY_NAME}","id":"${repoUpdatedDetails.REPOSITORY_ID}"}</activiti:expression>
         </activiti:field>
-        <activiti:field name="outputVariable">
-          <activiti:string>outJenkins</activiti:string>
+        <activiti:field name="outputMappings">
+          <activiti:string>outputTypeJenkins:responseType</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow39" sourceRef="parallelgateway2" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${repoUpdatedDetails.REPOSITORY_BUILDABLE == true}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${repoUpdatedDetails.REPOSITORY_BUILDABLE == true && outputTypeGitHub == "Done"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="parallelgateway2" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${repoUpdatedDetails.REPOSITORY_NEXUS == true}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${repoUpdatedDetails.REPOSITORY_NEXUS == true && outputTypeGitHub == "Done"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="servicetask2" targetRef="parallelgateway1"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="servicetask3" targetRef="parallelgateway1"></sequenceFlow>
