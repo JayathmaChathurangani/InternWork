@@ -47,8 +47,6 @@
     <sequenceFlow id="flow13" name="Approved" sourceRef="exclusivegateway3" targetRef="createGitHubRepositoryRestTask">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputType == "Done"}]]></conditionExpression>
     </sequenceFlow>
-    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow22" sourceRef="createGitHubRepositoryRestTask" targetRef="exclusivegateway4"></sequenceFlow>
     <serviceTask id="mailtask1" name="Send Mail for approval" isForCompensation="true" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
@@ -152,10 +150,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow29" name="Repository creation failed" sourceRef="exclusivegateway4" targetRef="mailtask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputType == "Error"}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="mailtask3" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="mailtask4" name="Send Acknowledgement" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
@@ -187,10 +181,74 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow31" name="Repository Creation completed" sourceRef="exclusivegateway4" targetRef="mailtask4">
+    <sequenceFlow id="flow32" sourceRef="mailtask4" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Set Issue Template" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+      <extensionElements>
+        <activiti:field name="serviceURL">
+          <activiti:string>http://localhost:9090/gitHub/setIssueTemplate</activiti:string>
+        </activiti:field>
+        <activiti:field name="method">
+          <activiti:string>POST</activiti:string>
+        </activiti:field>
+        <activiti:field name="input">
+          <activiti:expression>{"organization":"${repoUpdatedDetails.ORGANIZATION_NAME}","repositoryName":"${repoUpdatedDetails.REPOSITORY_NAME}"}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="outputVariable">
+          <activiti:string>output</activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow33" sourceRef="createGitHubRepositoryRestTask" targetRef="servicetask1"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow35" sourceRef="parallelgateway1" targetRef="mailtask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputType == "Error"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="parallelgateway1" targetRef="mailtask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputType == "Done"}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow32" sourceRef="mailtask4" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="mailtask3" targetRef="endevent1"></sequenceFlow>
+    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow38" sourceRef="servicetask1" targetRef="parallelgateway2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Create Nexus" isForCompensation="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+      <extensionElements>
+        <activiti:field name="serviceURL">
+          <activiti:string>http://localhost:9090/createNexus</activiti:string>
+        </activiti:field>
+        <activiti:field name="method">
+          <activiti:string>POST</activiti:string>
+        </activiti:field>
+        <activiti:field name="input">
+          <activiti:expression>{"name":"${repoUpdatedDetails.REPOSITORY_NAME}","id":"${repoUpdatedDetails.REPOSITORY_ID}"}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="outputVariable">
+          <activiti:string>outNexus</activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="Create Jenkins" activiti:async="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+      <extensionElements>
+        <activiti:field name="serviceURL">
+          <activiti:string>http://localhost:9090/createJenkins</activiti:string>
+        </activiti:field>
+        <activiti:field name="method">
+          <activiti:string>POST</activiti:string>
+        </activiti:field>
+        <activiti:field name="input">
+          <activiti:expression>{"name":"${repoUpdatedDetails.REPOSITORY_NAME}","id":"${repoUpdatedDetails.REPOSITORY_ID}"}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="outputVariable">
+          <activiti:string>outJenkins</activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow39" sourceRef="parallelgateway2" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${repoUpdatedDetails.REPOSITORY_BUILDABLE == true}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="parallelgateway2" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${repoUpdatedDetails.REPOSITORY_NEXUS == true}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="servicetask2" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="servicetask3" targetRef="parallelgateway1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_repositoryCreationProcess">
     <bpmndi:BPMNPlane bpmnElement="repositoryCreationProcess" id="BPMNPlane_repositoryCreationProcess">
@@ -204,19 +262,16 @@
         <omgdc:Bounds height="81.0" width="121.0" x="761.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="createGitHubRepositoryRestTask" id="BPMNShape_createGitHubRepositoryRestTask">
-        <omgdc:Bounds height="81.0" width="131.0" x="1169.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="131.0" x="1140.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="1690.0" y="162.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="2180.0" y="158.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="241.0" y="159.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="1030.0" y="161.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
-        <omgdc:Bounds height="40.0" width="40.0" x="1350.0" y="161.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask1" id="BPMNShape_mailtask1">
         <omgdc:Bounds height="63.0" width="171.0" x="420.0" y="147.0"></omgdc:Bounds>
@@ -225,10 +280,25 @@
         <omgdc:Bounds height="55.0" width="157.0" x="972.0" y="328.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask3" id="BPMNShape_mailtask3">
-        <omgdc:Bounds height="55.0" width="151.0" x="1295.0" y="260.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="176.0" x="1760.0" y="254.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask4" id="BPMNShape_mailtask4">
-        <omgdc:Bounds height="55.0" width="161.0" x="1500.0" y="154.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="161.0" x="1946.0" y="148.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="72.0" width="160.0" x="1300.0" y="146.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="1827.0" y="159.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="1530.0" y="161.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="1610.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="1610.0" y="152.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="35.0" y="179.0"></omgdi:waypoint>
@@ -242,8 +312,8 @@
         <omgdi:waypoint x="261.0" y="199.0"></omgdi:waypoint>
         <omgdi:waypoint x="261.0" y="430.0"></omgdi:waypoint>
         <omgdi:waypoint x="630.0" y="430.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1707.0" y="430.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1707.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2114.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2197.0" y="193.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="36.0" width="100.0" x="270.0" y="218.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -254,14 +324,10 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="1070.0" y="181.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1169.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1140.0" y="180.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="12.0" width="47.0" x="1069.0" y="162.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="1300.0" y="180.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1350.0" y="181.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="281.0" y="179.0"></omgdi:waypoint>
@@ -280,31 +346,51 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="1129.0" y="355.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1675.0" y="349.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1707.0" y="197.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="1370.0" y="201.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1370.0" y="260.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="36.0" width="100.0" x="1380.0" y="213.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="1446.0" y="287.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1650.0" y="287.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1707.0" y="197.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="1390.0" y="181.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1500.0" y="181.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="36.0" width="100.0" x="1389.0" y="138.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
+        <omgdi:waypoint x="2074.0" y="354.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2197.0" y="193.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="1661.0" y="181.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1690.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2107.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2180.0" y="175.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="1271.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1300.0" y="182.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="1847.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1848.0" y="254.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="1867.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1946.0" y="175.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="1936.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2073.0" y="280.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2197.0" y="193.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="1460.0" y="182.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1530.0" y="181.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="1550.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1550.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1610.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="1570.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1610.0" y="179.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="1715.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1847.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1847.0" y="159.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="1715.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1827.0" y="179.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

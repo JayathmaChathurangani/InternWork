@@ -76,6 +76,38 @@ function repositoryInsertData(string name,string language,boolean buildable,bool
 
 }
 
+function repositoryUpdateRejectDetails(string rejectBy,string rejectReason,int repositoryId)(int){
+    message response = {};
+    int returnValue;
+    //map propertiesMap = getConnectionDetails();
+    //sql:ClientConnector connection = create sql:ClientConnector(propertiesMap);
+    //sql:ClientConnector connection = getConnection();
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+
+
+        string query = "UPDATE LM_REPOSITORY SET REPOSITORY_ACCEPT = ? , REPOSITORY_DEACTIVATED_BY = ? , REPOSITORY_DEACTIVATED_REASON = ? WHERE REPOSITORY_ID = ?";
+
+        sql:Parameter paraAccept = {sqlType:"boolean", value:false};
+        sql:Parameter paraRejectBy = {sqlType:"varchar", value:rejectBy};
+        sql:Parameter paraRejectReason = {sqlType:"varchar", value:rejectReason};
+        sql:Parameter paraRepositoryId = {sqlType:"integer", value:repositoryId};
+
+        sql:Parameter[] parameterArray = [paraAccept,paraRejectBy,paraRejectReason,paraRepositoryId];
+
+        returnValue = connection.update(query,parameterArray);
+    }catch(errors:Error err){
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
+        messages:setJsonPayload(response,errorMessage);
+
+    }
+
+    return returnValue;
+}
+
 function repositoryUpdateTaskAndProcessIds(int taskId,int processId,string repositoryName)(int){
     message response = {};
     int returnValue;
@@ -106,6 +138,7 @@ function repositoryUpdateTaskAndProcessIds(int taskId,int processId,string repos
 
     return returnValue;
 }
+
 
 function repositoryUpdateAll(string name,string language,boolean buildable,boolean nexus,boolean private,string description,string groupId,int license,int team,int organization,int repoType,boolean accept,string acceptBy,int id)(int){
     message response = {};
@@ -193,6 +226,8 @@ function repositorySelectAll()(message){
 }
 
 
+
+
 function repositorySelectFromName(string name)(message){
     message response = {};
     //map propertiesMap = getConnectionDetails();
@@ -203,14 +238,48 @@ function repositorySelectFromName(string name)(message){
         setConnection();
     }
     try{
-        system:println(name);
-        string query = "SELECT * FROM LM_REPOSITORY WHERE REPOSITORY_NAME = ?";
+
+        string query = "SELECT * FROM LM_REPOSITORY WHERE REPOSITORY_NAME = ? ";
+
         sql:Parameter paraName = {sqlType:"varchar", value:name};
         sql:Parameter[] parameterArray = [paraName];
 
         datatable responseDataFromDb = connection.select(query ,parameterArray);
-        var resultJSON,_ = <json>responseDataFromDb;
 
+        var resultJSON,_ = <json>responseDataFromDb;
+        messages:setJsonPayload(response,resultJSON);
+
+
+    }catch(errors:Error err){
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
+        messages:setJsonPayload(response,errorMessage);
+
+    }
+    return response;
+
+}
+function repositorySelectFromId(int id)(message){
+    message response = {};
+    //map propertiesMap = getConnectionDetails();
+    //sql:ClientConnector connection = create sql:ClientConnector(propertiesMap);
+    //sql:ClientConnector connection = getConnection();
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+        system:println(id);
+        string query = "SELECT LM_REPOSITORY.*,LM_LICENSE.LICENSE_NAME,LM_LICENSE.LICENSE_KEY,LM_TEAM.TEAM_NAME,LM_ORGANIZATION.ORGANIZATION_NAME,LM_REPOSITORYTYPE.REPOSITORYTYPE_NAME from LM_REPOSITORY
+        INNER JOIN LM_LICENSE ON LM_REPOSITORY.REPOSITORY_LICENSE = LM_LICENSE.LICENSE_ID
+        INNER JOIN LM_TEAM ON LM_REPOSITORY.REPOSITORY_TEAM = LM_TEAM.TEAM_ID
+        INNER JOIN LM_ORGANIZATION ON LM_REPOSITORY.REPOSITORY_ORGANIZATION = LM_ORGANIZATION.ORGANIZATION_ID
+        INNER JOIN LM_REPOSITORYTYPE ON LM_REPOSITORY.REPOSITORY_TYPE = LM_REPOSITORYTYPE.REPOSITORYTYPE_ID
+        WHERE REPOSITORY_ID=?;";
+        sql:Parameter paraName = {sqlType:"integer", value:id};
+        sql:Parameter[] parameterArray = [paraName];
+
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        var resultJSON,_ = <json>responseDataFromDb;
         system:println(resultJSON);
         messages:setJsonPayload(response,resultJSON);
 
@@ -224,43 +293,7 @@ function repositorySelectFromName(string name)(message){
 
 }
 
-function repositorySelectFromId(int id)(message){
-    message response = {};
-    //map propertiesMap = getConnectionDetails();
-    //sql:ClientConnector connection = create sql:ClientConnector(propertiesMap);
-    //sql:ClientConnector connection = getConnection();
-    if(connection == null){
-
-        setConnection();
-    }
-    try{
-
-        string query = "SELECT LM_REPOSITORY.*,LM_LICENSE.LICENSE_NAME,LM_TEAM.TEAM_NAME,LM_ORGANIZATION.ORGANIZATION_NAME,LM_REPOSITORYTYPE.REPOSITORYTYPE_NAME from LM_REPOSITORY
-        INNER JOIN LM_LICENSE ON LM_REPOSITORY.REPOSITORY_LICENSE = LM_LICENSE.LICENSE_ID
-        INNER JOIN LM_TEAM ON LM_REPOSITORY.REPOSITORY_TEAM = LM_TEAM.TEAM_ID
-        INNER JOIN LM_ORGANIZATION ON LM_REPOSITORY.REPOSITORY_ORGANIZATION = LM_ORGANIZATION.ORGANIZATION_ID
-        INNER JOIN LM_REPOSITORYTYPE ON LM_REPOSITORY.REPOSITORY_TYPE = LM_REPOSITORYTYPE.REPOSITORYTYPE_ID
-        WHERE REPOSITORY_ID=?;";
-        sql:Parameter paraName = {sqlType:"integer", value:id};
-        sql:Parameter[] parameterArray = [paraName];
-
-        datatable responseDataFromDb = connection.select(query ,parameterArray);
-        var resultJSON,_ = <json>responseDataFromDb;
-
-
-        messages:setJsonPayload(response,resultJSON);
-
-
-    }catch(errors:Error err){
-        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
-        messages:setJsonPayload(response,errorMessage);
-
-    }
-    return response;
-
-}
-
-function repositorySelectFromRequestBy(string requestBy)(message){
+function repositorySelectFromRequestByAndWaiting(string requestBy)(message){
     message response = {};
     //map propertiesMap = getConnectionDetails();
     //sql:ClientConnector connection = create sql:ClientConnector(propertiesMap);
@@ -272,7 +305,7 @@ function repositorySelectFromRequestBy(string requestBy)(message){
 
     try{
 
-        string query = "SELECT * FROM LM_REPOSITORY WHERE REPOSITORY_REQUEST_BY = ?";
+        string query = "SELECT * FROM LM_REPOSITORY WHERE REPOSITORY_REQUEST_BY = ? AND REPOSITORY_ACCEPT IS NULL";
         sql:Parameter paraName = {sqlType:"varchar", value:requestBy};
         sql:Parameter[] parameterArray = [paraName];
 
@@ -466,9 +499,37 @@ function userSelectMainUsers()(message){
 
         string query = "SELECT * FROM LM_USER WHERE USER_PERMISSION = 'ALL' OR USER_PERMISSION = 'ACCEPT'";
         sql:Parameter[] parameterArray = [];
-        system:println("call");
         datatable responseDataFromDb = connection.select(query ,parameterArray);
-        system:println(responseDataFromDb);
+
+        json resultJSON;
+        resultJSON,_ = <json>responseDataFromDb;
+        messages:setJsonPayload(response,resultJSON);
+
+
+    }catch(errors:Error err){
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
+        messages:setJsonPayload(response,errorMessage);
+        system:println(errorMessage);
+
+    }
+    return response;
+
+}
+
+function userSelectAdminUsers()(message){
+    message response = {};
+
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+
+
+
+        string query = "SELECT * FROM LM_USER WHERE USER_PERMISSION = 'ALL'";
+        sql:Parameter[] parameterArray = [];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
         json resultJSON;
         resultJSON,_ = <json>responseDataFromDb;
         messages:setJsonPayload(response,resultJSON);

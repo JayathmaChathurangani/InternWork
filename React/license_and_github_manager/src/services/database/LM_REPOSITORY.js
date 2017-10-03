@@ -62,6 +62,25 @@ class LM_REPOSITORY extends Component{
         });
     }
 
+    updateRejectDetails(data){
+        var url = MainData.ballerinaDatabaseURL + "repository/updateRejectDetails";
+        var requestData = {"data":data};
+        return axios.post(
+            url,
+            requestData
+        )
+        .then(function (response) {
+            
+            if(response.data.type === "Error"){
+                console.log(" Your BPMN error occur " + response.data.message);
+            }
+            
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     updateAll(data,repoId){
         var url = MainData.ballerinaDatabaseURL + "repository/updateAll";
         var requestData = {"data":data,"repoId":repoId};
@@ -99,7 +118,7 @@ class LM_REPOSITORY extends Component{
     }
 
     selectDataFromRequestBy(data){
-        var url = MainData.ballerinaDatabaseURL + "repository/selectFromRequestBy?requestBy=" + data;
+        var url = MainData.ballerinaDatabaseURL + "repository/selectFromRequestByAndWaiting?requestBy=" + data;
         
         return axios.get(
             url

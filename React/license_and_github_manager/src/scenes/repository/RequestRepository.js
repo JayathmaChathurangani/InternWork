@@ -163,7 +163,8 @@ class RequestRepository extends Component{
     this.setState(function(){
       return{
         displayFieldset:'block',
-        displayErrorBox:'none'
+        displayErrorBox:'none',
+        displaySuceessBox:'none'
       }
     });
 
@@ -418,6 +419,8 @@ class RequestRepository extends Component{
             </div>
           </div>
         </fieldset>
+
+        
         <div className="container-fluid" style={{display:this.state.displayLoader}}>
           <br/><br/><br/>
           <div className="row">

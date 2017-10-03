@@ -9,6 +9,7 @@ import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepository
 import {Link} from 'react-router';
 import '../../App.css';
 
+
 class AcceptRepository extends Component{
   
   constructor(props){
@@ -25,7 +26,11 @@ class AcceptRepository extends Component{
       repositoryId:props.location.query.repositoryId,
       repositoryDetails:null,
       groupIdInputRequired:false,
-      groupIdInputSpan:" "
+      groupIdInputSpan:" ",
+      displayFieldset:'block',
+      displayAlrearyAccept:'none',
+      displayErrorBox:'none',
+      displaySuceessBox:'none'
       
     }
 
@@ -87,13 +92,28 @@ class AcceptRepository extends Component{
 
     /* get repository details from ID*/
     LM_REPOSITORY.selectDataFromId(this.state.repositoryId).then(function(response){
+      console.log(response);
       this.setState(function(){
-        return{
-          repositoryDetails:response[0],
-          groupIdInputRequired:response[0].REPOSITORY_NEXUS,
-          groupIdInputSpan:((response[0].REPOSITORY_NEXUS)?<span className="required">*</span>:" ")
+        if((response[0].REPOSITORY_ACCEPTED_BY === null) && (response[0].REPOSITORY_DEACTIVATED_BY === null)){
+          console.log("this");
+          return{
+            repositoryDetails:response[0],
+            groupIdInputRequired:response[0].REPOSITORY_NEXUS,
+            groupIdInputSpan:((response[0].REPOSITORY_NEXUS)?<span className="required">*</span>:" ")
+            
+          }
+        }else{
+          return{
+            displayFieldset:'none',
+            displayAlrearyAccept:'block',
+            repositoryDetails:response[0]
+            
+          }
         }
+        
       });
+
+      
       this.refs.inputRepositoryName.value = response[0].REPOSITORY_NAME;
       this.refs.inputGroupId.value = response[0].REPOSITORY_GROUPID;
       this.refs.inputBuildable.value = response[0].REPOSITORY_BUILDABLE;
@@ -156,9 +176,26 @@ class AcceptRepository extends Component{
   }
   /* make group id required function ends*/
 
-    /* Validation functions end*/
+  /* go back function starts */
 
-    /* accept request function start */
+  goBackToRequest(e){
+    e.preventDefault();
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+
+    this.setState(function(){
+      return{
+        displayFieldset:'block',
+        displayErrorBox:'none',
+        displaySuceessBox:'none',
+        displayAlrearyAccept:'none'
+      }
+    });
+  }
+  /* go back function ends */
+  /* Validation functions end*/
+
+  /* accept request function start */
 
     acceptRequest(e){
       e.preventDefault();
@@ -180,7 +217,7 @@ class AcceptRepository extends Component{
       var nexus = this.refs.inputNexus.checked;
       var isPrivate = this.refs.inputPrivate.checked;
       var description =  this.refs.textDescription.value.toString();
-      var accept = 1;
+      var accept = true;
       var acceptBy = "buddhi@wso2.com";
 
       var data = [
@@ -215,9 +252,21 @@ class AcceptRepository extends Component{
       try{
         LM_REPOSITORY.updateAll(data,this.state.repositoryDetails.REPOSITORY_ID);
         CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
-        alert("Repository accepted");
+        this.setState(function(){
+          return{
+            displaySuceessBox:'block',
+            displayFieldset:'none',
+            displayErrorBox:'none'
+          }
+        })
       }catch(err){
-        alert("Error Occured. Repository acceptance fails.");
+        this.setState(function(){
+          return{
+            displaySuceessBox:'none',
+            displayFieldset:'none',
+            displayErrorBox:'block'
+          }
+        })
       }
       
       
@@ -232,9 +281,9 @@ class AcceptRepository extends Component{
     
     return(
       <form className="form-horizontal"  onSubmit={this.acceptRequest.bind(this)}>
-        <h2 className="text-center">Request GitHub Repository Here</h2>
+        <h2 className="text-center">GitHub Repository Request</h2>
         
-        <fieldset>
+        <fieldset style={{display:this.state.displayFieldset}}>
           {console.log((this.repo === null)? " ":this.repo.REPOSITORY_NAME)}
           <br/>
           <div className="form-group">
@@ -353,6 +402,48 @@ class AcceptRepository extends Component{
             </div>
           </div>
         </fieldset>
+
+        <div className="alert alert-dismissible alert-warning" style={{display:this.state.displayAlrearyAccept}}>
+          
+          <button type="button" className="close" data-dismiss="alert">&times;</button>
+          <strong>This repository request already accepted by {(this.state.repositoryDetails !== null)?this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY:" "}</strong> 
+        </div>
+
+        <div className="modal" style={{display:this.state.displaySuceessBox}}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 className="modal-title">Succesfull</h4>
+              </div>
+              <div className="modal-body">
+                <p><span><i className="fa fa-check" aria-hidden="true"></i></span>&nbsp;Request successfully accepted</p>
+              </div>
+              <div className="modal-footer">
+               <Link to={"/"}><button type="button" className="btn btn-default" data-dismiss="modal">Back to main page</button>&nbsp;&nbsp;</Link>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="modal" style={{display:this.state.displayErrorBox}}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 className="modal-title">Failed</h4>
+              </div>
+              <div className="modal-body">
+                <p><span><i className="fa fa-times" aria-hidden="true"></i></span>&nbsp;Request acceptance fail</p>
+              </div>
+              <div className="modal-footer">
+                <button onClick={this.goBackToRequest.bind(this)} type="button" className="btn btn-default" data-dismiss="modal">Back</button>&nbsp;&nbsp;
+                <button onClick={this.acceptRequest.bind(this)}type="button" className="btn btn-success">Try again</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
     )
 

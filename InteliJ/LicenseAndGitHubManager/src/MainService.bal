@@ -18,20 +18,14 @@ service<http> MainService {
     @http:Path {value:"/createRepositories"}
     resource createRepositories (message m) {
         message responseGitHub = {};
-        message responseNexus = {};
-        message responseJenkins = {};
         message finalResponse = {};
         json responseGitHubJson = null;
-        json responseNexusJson = null;
-        json responseJenkinsJson = null;
         json finalResponseJson = {"responseType":"Done","responseMessage":" ","toSend":" "};
-        string finalMessage = " ";
-        string finalMessageToSend = " ";
         try {
-            message requestDataFromDb = {};
+
             responseGitHub = services:createGitHubRepository(m);
             responseGitHubJson = messages:getJsonPayload(responseGitHub);
-            system:println(responseGitHubJson);
+
             json requestDataJson = messages:getJsonPayload(m);
 
             int repositoryId;
@@ -41,63 +35,11 @@ service<http> MainService {
             json responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
 
             finalResponseJson = {"responseType":"Done","responseMessage":" ","toSend":" ","repoUpdatedDetails":responseDataFromDbJson[0]};
-            system:println(responseDataFromDbJson);
-            string nexus = jsons:toString(responseDataFromDbJson[0].REPOSITORY_NEXUS);
-            string buildable = jsons:toString(responseDataFromDbJson[0].REPOSITORY_BUILDABLE);
-            string repositoryName = jsons:toString(responseDataFromDbJson[0].REPOSITORY_NAME);
-            string groupId = " ";
-
-            message requestNexusMessage = {};
-            json requestNexusJson = {};
-            system:println(nexus);
-            message requestJenkinsMessage = {};
-            json requestJenkinsJson = {};
-            if(nexus == "true"){
-
-                groupId = jsons:toString(responseDataFromDbJson[0].REPOSITORY_GROUPID);
-                requestNexusJson = {"name":repositoryName,"id":groupId};
-                messages:setJsonPayload(requestNexusMessage,requestNexusJson);
-                responseNexus = services:createNexus(requestNexusMessage);
-                responseNexusJson = messages:getJsonPayload(responseNexus);
-
-            }
-
-            if(buildable == "true"){
-                requestJenkinsJson = {"name":repositoryName};
-                messages:setJsonPayload(requestJenkinsMessage,requestJenkinsJson);
-                responseJenkins = services:createJenkinsJob(requestJenkinsMessage);
-                responseJenkinsJson = messages:getJsonPayload(responseJenkins);
-
-            }
-
-
-
-
-            if((responseGitHubJson != null) && (jsons:toString(responseGitHubJson.responseType) == "Error")){
-                finalMessage = finalMessage + jsons:toString(responseGitHubJson.responseMessage);
-                finalMessageToSend = finalMessageToSend + "GitHub repository creation fails , ";
-                finalResponseJson = {"responseType":"Error","responseMessage":finalMessage,"toSend":finalMessageToSend};
-
-            }
-            if((responseNexusJson != null) && ((jsons:toString(responseNexusJson.responseType)) == "Error")){
-                 finalMessage = finalMessage + jsons:toString(responseNexusJson.responseMessage);
-                 finalMessageToSend = finalMessageToSend + "Nexus repository creation fails , ";
-                 finalResponseJson = {"responseType":"Error","responseMessage":finalMessage,"toSend":finalMessageToSend};
-
-            }
-            if((responseJenkinsJson != null) && ((jsons:toString(responseJenkinsJson.responseType)) == "Error")){
-                finalMessage = finalMessage + jsons:toString(responseJenkinsJson.responseMessage);
-                finalMessageToSend = finalMessageToSend + "Jenkins job creation fails , ";
-                finalResponseJson = {"responseType":"Error","responseMessage":finalMessage,"toSend":finalMessageToSend};
-
-            }
-
             messages:setJsonPayload(finalResponse,finalResponseJson);
 
         }catch(errors:Error err){
             json errorMessage = {"responseType":"Error","responseMessages":err.msg};
             messages:setJsonPayload(finalResponse,errorMessage);
-
             system:println(errorMessage);
 
 
@@ -107,55 +49,40 @@ service<http> MainService {
         reply finalResponse;
     }
 
+    @http:POST {}
+    @http:Path {value:"/createNexus"}
+    resource createNexus (message m) {
+        system:println("call Nexus");
+        system:println(m);
+        message response = services:createNexus(m);
+        reply response;
+
+    }
+
+    @http:POST {}
+    @http:Path {value:"/createJenkins"}
+    resource createJenkins (message m) {
+        system:println("call Jenkins");
+        system:println(m);
+        message response = services:createJenkinsJob(m);
+        reply response;
+    }
+
     @http:GET {}
     @http:Path {value:"/getAllLanguages"}
     resource getAllLanguages (message m) {
 
 
         message response = services:getAllLanguages(m);
+        system:println(response);
         reply response;
     }
 
-    @http:POST {}
-    @http:Path {value:"/databaseService/selectData"}
-    resource select(message m){
-
-        message response = services:selectData(m);
-        reply response;
-    }
-
-
-    @http:POST {}
-    @http:Path {value:"/databaseService/insertData"}
-    resource insertData(message m){
-        message response = services:insertData(m);
-        reply response;
-
-
-    }
-
-    @http:POST {}
-    @http:Path {value:"/databaseService/updateData"}
-    resource updateData(message m){
-        message response = services:updateData(m);
-        reply response;
-
-
-    }
-
-
-    @http:POST {}
-    @http:Path {value:"/databaseService/deleteData"}
-    resource deleteData(message m){
-
-        message response = services:deleteData(m);
-        reply response;
-    }
 
     @http:POST {}
     @http:Path {value:"/databaseService/repository/insertData"}
     resource repositoryInsertDataResource(message m){
-        system:println(m);
+
         json requestJson = messages:getJsonPayload(m);
         string name;
         string language;
@@ -184,16 +111,15 @@ service<http> MainService {
         requestBy = jsons:toString(requestJson.data[11]);
 
         int responseValue = database:repositoryInsertData(name,language,buildable,nexus,private,description,groupId,license,team,organization,repoType,requestBy);
-        system:println(responseValue);
 
 
+        system:println(name);
         json responseJson;
         message response = {};
 
         if(responseValue > 0){
             message getInsertedDataMessage = database:repositorySelectFromName(name);
             json getInsertedDataJson = messages:getJsonPayload(getInsertedDataMessage);
-            system:println(getInsertedDataMessage);
             responseJson = {"responseType":"Done","responseMessage":" ","repositoryId":jsons:toString(getInsertedDataJson[0].REPOSITORY_ID)};
         }else{
             responseJson = {"responseType":"Error","responseMessage":" "};
@@ -217,6 +143,34 @@ service<http> MainService {
         repositoryName = jsons:toString(requestJson.data[2]);
 
         int responseValue = database:repositoryUpdateTaskAndProcessIds(taskId,processId,repositoryName);
+
+        json responseJson;
+        message response = {};
+
+        if(responseValue > 0){
+            responseJson = {"responseType":"Done","responseMessage":" "};
+        }else{
+            responseJson = {"responseType":"Error","responseMessage":" "};
+        }
+
+        messages:setJsonPayload(response,responseJson);
+        reply response;
+    }
+
+    @http:POST {}
+    @http:Path {value:"/databaseService/repository/updateRejectDetails"}
+    resource updateRejectDetailsResource(message m){
+
+        json requestJson = messages:getJsonPayload(m);
+        string rejectBy;
+        string rejectReason;
+        int repositoryId;
+
+        rejectBy = jsons:toString(requestJson.data[0]);
+        rejectReason = jsons:toString(requestJson.data[1]);
+        repositoryId,_ = <int>(jsons:toString(requestJson.data[2]));
+
+        int responseValue = database:repositoryUpdateRejectDetails(rejectBy,rejectReason,repositoryId);
 
         json responseJson;
         message response = {};
@@ -281,13 +235,7 @@ service<http> MainService {
         reply response;
     }
 
-    @http:POST {}
-    @http:Path {value:"/mailService/sendMail"}
-    resource sendMail(message m){
 
-        message response = services:sendMail(m);
-        reply response;
-    }
 
     @http:GET {}
     @http:Path {value:"/databaseService/repository/selectAll"}
@@ -301,7 +249,6 @@ service<http> MainService {
     @http:Path {value:"/databaseService/repository/selectFromName"}
     resource repositorySelectFromNameResource(@http:QueryParam {value:"name"} string name){
 
-        system:println(name);
         message response = database:repositorySelectFromName(name);
         reply response;
     }
@@ -316,11 +263,11 @@ service<http> MainService {
     }
 
     @http:GET {}
-    @http:Path {value:"/databaseService/repository/selectFromRequestBy"}
+    @http:Path {value:"/databaseService/repository/selectFromRequestByAndWaiting"}
     resource repositorySelectFromRequestByResource(@http:QueryParam {value:"requestBy"} string requestBy){
 
 
-        message response = database:repositorySelectFromRequestBy(requestBy);
+        message response = database:repositorySelectFromRequestByAndWaiting(requestBy);
         reply response;
     }
 
@@ -367,32 +314,20 @@ service<http> MainService {
     @http:GET {}
     @http:Path {value:"/databaseService/user/selectMainUsers"}
     resource userSelectMainUsersResource(message m){
-        system:println("call resource");
+
         message response = database:userSelectMainUsers();
         reply response;
     }
 
-    @http:POST {}
-    @http:Path {value:"/mailService/sendAckMail"}
-    resource sendAckMail(message m){
-
-        message response = services:sendAckMail(m);
-        reply response;
-    }
 
     @http:POST {}
-    @http:Path {value:"/createJenkins"}
-    resource createJenkins(message m){
+    @http:Path {value:"/gitHub/setIssueTemplate"}
+    resource gitHubSetIssueTemplateResource(message m){
 
-        message response = services:createJenkinsJob(m);
-        reply response;
-    }
-
-    @http:POST {}
-    @http:Path {value:"/createNexus"}
-    resource createNexus(message m){
-
-        message response = services:createNexus(m);
+        json requestJson = messages:getJsonPayload(m);
+        string organization = jsons:toString(requestJson.organization);
+        string repositoryName = jsons:toString(requestJson.repositoryName);
+        message response = services:setIssueTemplate(organization,repositoryName);
         reply response;
     }
 

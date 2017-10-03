@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
+import {Link} from 'react-router';
 import '../../App.css';
 
 class RejectRepository extends Component{
@@ -9,7 +10,11 @@ class RejectRepository extends Component{
     super(props);
     this.state = {
         repositoryId:props.location.query.repositoryId,
-        repositoryDetails:null
+        repositoryDetails:null,
+        displayFieldset:'block',
+        displayAlrearyAccept:'none',
+        displayErrorBox:'none',
+        displaySuceessBox:'none'
     }   
   }
 
@@ -17,10 +22,27 @@ class RejectRepository extends Component{
 
     /* get repository details from ID*/
     LM_REPOSITORY.selectDataFromId(this.state.repositoryId).then(function(response){
+      console.log(response)
       this.setState(function(){
-        return{
-          repositoryDetails:response[0]
+        if((response[0].REPOSITORY_ACCEPTED_BY === null) && (response[0].REPOSITORY_DEACTIVATED_BY === null)){
+          return{
+            displayFieldset:'block',
+            displayAlrearyAccept:'none',
+            displayErrorBox:'none',
+            displaySuceessBox:'none',
+            repositoryDetails:response[0]
+            
+          }
+        }else{
+          return{
+            displayFieldset:'none',
+            displayAlrearyAccept:'block',
+            displayErrorBox:'none',
+            displaySuceessBox:'none',
+            repositoryDetails:response[0]
+          }
         }
+        
       });
     }.bind(this));
     /* get repository details from ID ends*/
@@ -35,23 +57,16 @@ class RejectRepository extends Component{
       return false ;
    }
 
-    var reasonForRejecting = "'" + this.refs.textReasonForRejecting.value.toString() + "'";
-    var accept = 0;
-    var rejectBy = "'buddhi@wso2.com'";
+    var reasonForRejecting = this.refs.textReasonForRejecting.value.toString();
+    var rejectBy = "buddhi@wso2.com";
 
     var data = [
-      
-      accept,
       rejectBy,
-      reasonForRejecting
+      reasonForRejecting,
+      this.state.repositoryDetails.REPOSITORY_ID
     ];  
 
-    var columns = [
-      
-      'REPOSITORY_ACCEPT',
-      'REPOSITORY_DEACTIVATED_BY',
-      'REPOSITORY_DEACTIVATED_REASON'
-  ];
+    
     console.log(data);
     var variables = [
       {
@@ -61,11 +76,25 @@ class RejectRepository extends Component{
     ];
 
     try{
-      LM_REPOSITORY.update(columns,data,'REPOSITORY_ID',this.state.repositoryDetails.REPOSITORY_ID);
+      LM_REPOSITORY.updateRejectDetails(data);
       CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
-      alert("Repository request rejected.");
+      this.setState(function(){
+        return{
+          displaySuceessBox:'block',
+          displayAlrearyAccept:'none',
+          displayFieldset:'none',
+          displayErrorBox:'none'
+        }
+      })
     }catch(err){
-      alert("Error Occured. Repository rejection fails.");
+      this.setState(function(){
+        return{
+          displaySuceessBox:'none',
+          displayAlrearyAccept:'none',
+          displayFieldset:'none',
+          displayErrorBox:'block'
+        }
+      })
     }
   }
  
@@ -76,7 +105,7 @@ class RejectRepository extends Component{
       <form className="form-horizontal" onSubmit={this.rejectRequest.bind(this)} >
         <h2 className="text-center">Request GitHub Repository Here</h2>
         
-        <fieldset>
+        <fieldset style={{display:this.state.displayFieldset}} >
           <br/>
           <div className="form-group">
             <label htmlFor="textReasonForRejecting" className="col-lg-2 control-label">Reason for rejecting :</label>
@@ -94,6 +123,50 @@ class RejectRepository extends Component{
             </div>
           </div>
         </fieldset>
+
+        <div className="alert alert-dismissible alert-warning" style={{display:this.state.displayAlrearyAccept}}>
+          {console.log(this.state.repositoryDetails)}
+          
+          <button type="button" className="close" data-dismiss="alert">&times;</button>
+          <strong>This repository request already {((this.state.repositoryDetails !== null))? ((this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY === null)?(" deactivated by " + this.state.repositoryDetails.REPOSITORY_DEACTIVATED_BY):(" accepted by " + this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY)):" "}</strong> 
+        </div>
+
+        <div className="modal" style={{display:this.state.displaySuceessBox}}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 className="modal-title">Succesfull</h4>
+              </div>
+              <div className="modal-body">
+                <p><span><i className="fa fa-check" aria-hidden="true"></i></span>&nbsp;Request successfully accepted</p>
+              </div>
+              <div className="modal-footer">
+               <Link to={"/"}><button type="button" className="btn btn-default" data-dismiss="modal">Back to main page</button>&nbsp;&nbsp;</Link>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="modal" style={{display:this.state.displayErrorBox}}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 className="modal-title">Failed</h4>
+              </div>
+              <div className="modal-body">
+                <p><span><i className="fa fa-times" aria-hidden="true"></i></span>&nbsp;Request acceptance fail</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-default" data-dismiss="modal">Back</button>&nbsp;&nbsp;
+                <button type="button" className="btn btn-success">Try again</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </form>
     )
 
