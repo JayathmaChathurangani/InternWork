@@ -1,11 +1,18 @@
 import React,{Component} from 'react';
 import Header from '../components/layouts/Header';
 import {Link} from 'react-router';
+import ValidateUser from '../services/authentication/ValidateUser';
 
 class Main extends Component{
+
+  jwtDecode(){
+    
+    console.log(ValidateUser.isAdminUser());
+  }
   render(){
 
     return(
+      
       <div className="container-fluid">
         <div className="row" id="header">
           <div className="col-md-12">
@@ -103,8 +110,9 @@ class Main extends Component{
                 <span><i className="fa fa-address-book-o fa-1x"></i></span>&nbsp;&nbsp;&nbsp;<b>Request 3rd party Library</b>
               </Link>
             {/* Request 3rd party lib. Request ends */}
-
+            
             </div>
+            <button onClick={this.jwtDecode.bind(this)} >click</button>
           </div>
         </div>
       </div>

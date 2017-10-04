@@ -33,6 +33,7 @@ service<http> MainService {
 
             message responseDataFromDb = database:repositorySelectFromId(repositoryId);
             json responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
+            system:println(responseDataFromDbJson);
 
             finalResponseJson = {"responseType":"Done","responseMessage":" ","responseDefault":"Done","repoUpdatedDetails":responseDataFromDbJson[0]};
             system:println(finalResponseJson);
@@ -58,6 +59,29 @@ service<http> MainService {
         string organization = jsons:toString(requestJson.organization);
         string repositoryName = jsons:toString(requestJson.repositoryName);
         message response = services:setIssueTemplate(organization,repositoryName);
+        reply response;
+    }
+
+    @http:POST {}
+    @http:Path {value:"/gitHub/setPullRequestTemplate"}
+    resource gitHubSetPullRequestTemplateResource(message m){
+
+        json requestJson = messages:getJsonPayload(m);
+        string organization = jsons:toString(requestJson.organization);
+        string repositoryName = jsons:toString(requestJson.repositoryName);
+        message response = services:setPullRequestTemplate(organization,repositoryName);
+        reply response;
+    }
+
+    @http:POST {}
+    @http:Path {value:"/gitHub/setReadMe"}
+    resource gitHubSetReadMeResource(message m){
+        system:println(m);
+        json requestJson = messages:getJsonPayload(m);
+        string organization = jsons:toString(requestJson.organization);
+        string repositoryName = jsons:toString(requestJson.repositoryName);
+        string repositoryDescription = jsons:toString(requestJson.repositoryDescription);
+        message response = services:setReadMe(organization,repositoryName,repositoryDescription);
         reply response;
     }
 
@@ -97,7 +121,7 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/databaseService/repository/insertData"}
     resource repositoryInsertDataResource(message m){
-
+        system:println(m);
         json requestJson = messages:getJsonPayload(m);
         string name;
         string language;

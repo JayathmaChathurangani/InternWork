@@ -119,3 +119,60 @@ function setIssueTemplate(string organization,string repositoryName)(message){
 
 
 }
+
+function setPullRequestTemplate(string organization,string repositoryName)(message){
+    system:println(organization + repositoryName);
+    message getAdminUserMessage = database:userSelectAdminUsers();
+    json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
+    system:println(getAdminUserJson);
+    string accessToken = jsons:toString(getAdminUserJson[0].USER_TOKEN);
+    string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
+    string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
+    string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/pull_request_template.md?access_token=" + accessToken + "&content=base64&branch=master";
+
+
+    files:File issueFile = {path:"./conf/pull_request_template.md"};
+    files:open(issueFile,"r");
+    var content, _ = files:read(issueFile, 100000);
+    string s = blobs:toString(content, "utf-8");
+    string encodeString = utils:base64encode(s);
+
+    message gitHubRequestMessage = {};
+    json gitHubRequestJson = {"message":"Add pull reaquest template","committer":{"name": userName,"email": userEmail},"content":encodeString};
+    messages:setJsonPayload(gitHubRequestMessage,gitHubRequestJson);
+
+    http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
+    message response = httpConnector.put(requestUrl,gitHubRequestMessage);
+    json responseMessage = {"responseType":"Done","responseMessage":"done"};
+    messages:setJsonPayload(response,responseMessage);
+    return response;
+
+
+}
+
+function setReadMe(string organization,string repositoryName,string repositoryDescription)(message){
+    system:println(organization + repositoryName);
+    message getAdminUserMessage = database:userSelectAdminUsers();
+    json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
+    system:println(getAdminUserJson);
+    string accessToken = jsons:toString(getAdminUserJson[0].USER_TOKEN);
+    string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
+    string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
+    string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/README.md?access_token=" + accessToken + "&content=base64&branch=master";
+
+
+
+    string encodeString = utils:base64encode(repositoryDescription);
+
+    message gitHubRequestMessage = {};
+    json gitHubRequestJson = {"message":"Add README.md","committer":{"name": userName,"email": userEmail},"content":encodeString};
+    messages:setJsonPayload(gitHubRequestMessage,gitHubRequestJson);
+
+    http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
+    message response = httpConnector.put(requestUrl,gitHubRequestMessage);
+    json responseMessage = {"responseType":"Done","responseMessage":"done"};
+    messages:setJsonPayload(response,responseMessage);
+    return response;
+
+
+}

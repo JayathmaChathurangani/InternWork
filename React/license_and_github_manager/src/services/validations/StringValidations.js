@@ -6,6 +6,7 @@ class StringValidations extends Component{
         str = str.replace(/\n/g," ");
         str = str.replace(/'/g,"\\'");
         str = str.replace(/"/g,'\\"');
+        str = str.replace(/;/g,'\\;');
 
         return str;
     }

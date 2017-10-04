@@ -13,7 +13,7 @@ class LM_USER extends Component{
         )
         .then(function (response) {
             
-        return(response.data) ;
+            return(response.data) ;
             
         })
         .catch(function (error) {
