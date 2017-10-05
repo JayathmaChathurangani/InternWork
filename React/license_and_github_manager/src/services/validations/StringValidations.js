@@ -4,7 +4,7 @@ class StringValidations extends Component{
 
     escapeCharacters(str){
         str = str.replace(/\n/g," ");
-        str = str.replace(/'/g,"\\'");
+        str = str.replace(/'/g,"\\\\'");
         str = str.replace(/"/g,'\\"');
         str = str.replace(/;/g,'\\;');
 

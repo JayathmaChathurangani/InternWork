@@ -239,7 +239,28 @@ function repositorySelectFromName(string name)(message){
     }
     try{
 
-        string query = "SELECT * FROM LM_REPOSITORY WHERE REPOSITORY_NAME = ? ";
+        string query = "SELECT
+        REPOSITORY_ID,
+        REPOSITORY_NAME,
+        REPOSITORY_LANGUAGE,
+        REPOSITORY_BUILDABLE,
+        REPOSITORY_NEXUS,
+        REPOSITORY_PRIVATE ,
+        QUOTE(REPOSITORY_DESCRIPTION) AS REPOSITORY_DESCRIPTION,
+        REPOSITORY_GROUPID,
+        REPOSITORY_LICENSE,
+        REPOSITORY_TEAM,
+        REPOSITORY_ORGANIZATION,
+        REPOSITORY_TYPE,
+        REPOSITORY_ACTIVED,
+        REPOSITORY_ACCEPT,
+        REPOSITORY_REQUEST_BY,
+        REPOSITORY_ACCEPTED_BY,
+        REPOSITORY_DEACTIVATED_BY,
+        REPOSITORY_DEACTIVATED_REASON,
+        REPOSITORY_BPMN_TASK_ID,
+        REPOSITORY_BPMN_PROCESS_ID
+        FROM LM_REPOSITORY WHERE REPOSITORY_NAME = ? ";
 
         sql:Parameter paraName = {sqlType:"varchar", value:name};
         sql:Parameter[] parameterArray = [paraName];
