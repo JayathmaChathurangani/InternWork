@@ -39,10 +39,12 @@ function createGitHubRepository(message m)(message ){
 
         string repositoryName = jsons:toString(responseDataFromDbJson[0].REPOSITORY_NAME);
         string repositoryLanguage = jsons:toString(responseDataFromDbJson[0].REPOSITORY_LANGUAGE);
-        string repositoryDescription = jsons:toString(responseDataFromDbJson[0].REPOSITORY_DESCRIPTION);
+        string repositoryDescription = " ";
         string repositoryLicense = jsons:toString(responseDataFromDbJson[0].LICENSE_KEY);
         string repositoryOrganization = jsons:toString(responseDataFromDbJson[0].ORGANIZATION_NAME);
         string repositoryPrivateString = jsons:toString(responseDataFromDbJson[0].REPOSITORY_PRIVATE);
+
+
         boolean repositoryPrivate = false;
 
         if(repositoryPrivateString == "true"){
