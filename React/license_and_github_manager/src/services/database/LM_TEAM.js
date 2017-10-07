@@ -5,19 +5,19 @@ import MainData from '../MainData';
 class LM_TEAM extends Component{
 
 /* get all team data from database */
-    getAllTeams(){
-        var url = MainData.ballerinaDatabaseURL + "team/selectAll";
-        
+    getAllTeams(organization){
+        var url = MainData.ballerinaGitHubURL + "gitHub/getTeams?organization=" + organization;
+        console.log("call");
         return axios.get(
             url
         )
         .then(function (response) {
             
-        return(response.data) ;
+            return(response.data) ;
             
         })
         .catch(function (error) {
-            console.log(error);
+            return([{id:" ","name":" "}])
         });
     }
 /* get all team data from database ends*/

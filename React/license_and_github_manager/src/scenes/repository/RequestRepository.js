@@ -36,17 +36,35 @@ class RequestRepository extends Component{
     }
   }
 
-  /* component did mount */
-  componentDidMount(){
-    /* get all team details from database*/
-    LM_TEAM.getAllTeams().then(function(response){
+  setTeams(){
+    var options = this.refs.selectOrganization.options;
+    var selectOrganization = options[options.selectedIndex].text;
+    LM_TEAM.getAllTeams(selectOrganization).then(function(response){
+      console.log("got",response)
       this.setState(function(){
         return {
           teams:response
         }
-      })
+      });
+           
+      console.log(this.state.teams)
     }.bind(this));
-    /* get all team details from database ends*/
+  }
+  /* component did mount */
+  componentDidMount(){
+    
+    /*get all organizations types from database*/
+    LM_ORGANIZATION.getAllOrganizations().then(function(response){
+      
+      this.setState(function(){
+        return {
+          organizations:response
+        }
+      });
+      this.setTeams();      
+
+    }.bind(this));
+    /*get all organizations types from database*/
 
     /* get user details from database*/
     LM_USER.getMainUsers().then(function(response){
@@ -57,17 +75,6 @@ class RequestRepository extends Component{
       })
     }.bind(this));
     /* get user details from database ends*/
-
-    /*get all organizations types from database*/
-    LM_ORGANIZATION.getAllOrganizations().then(function(response){
-      
-      this.setState(function(){
-        return {
-          organizations:response
-        }
-      })
-    }.bind(this));
-    /*get all organizations types from database*/
 
     /*get all repository types from database*/
     LM_REPOSITORYTYPE.getAllRepositoryTypes().then(function(response){
@@ -102,6 +109,7 @@ class RequestRepository extends Component{
 
   }
    /* component did mount ends*/
+
 
   /* Validation functions*/
   validateInputRepositoryName(e){
@@ -340,7 +348,7 @@ class RequestRepository extends Component{
 
           <div className="form-group">
             <label htmlFor="selectOrganization" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Organization</label>
-            <div className="col-lg-10">
+            <div className="col-lg-10" onChange={this.setTeams.bind(this)}>
               <select className="form-control" ref="selectOrganization" >
                 {this.state.organizations.map((organization)=> <option key={organization.ORGANIZATION_ID} value={organization.ORGANIZATION_ID}>{organization.ORGANIZATION_NAME}</option>)}
               </select>
@@ -351,7 +359,8 @@ class RequestRepository extends Component{
             <label htmlFor="selectTeam" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Team Name</label>
             <div className="col-lg-10">
               <select className="form-control" ref="selectTeam" >
-                {this.state.teams.map((team,i)=> <option key={team.TEAM_NAME} value={team.TEAM_ID} >{team.TEAM_NAME}</option>)}
+                {console.log("teams",this.state.teams)}
+                {this.state.teams.map((team,i)=> <option key={team.id} value={team.id} >{team.name}</option>)}
               </select>
             </div>
           </div>
@@ -360,6 +369,7 @@ class RequestRepository extends Component{
             <label htmlFor="selectLicense" className="col-lg-2 control-label">&nbsp;License</label>
             <div className="col-lg-10">
               <select className="form-control" ref="selectLicense">
+                
                 {this.state.licenseNames.map((license)=> <option key={license.LICENSE_ID} value={license.LICENSE_ID} data={license.LICENSE_NAME}>{license.LICENSE_NAME}</option>)}
               </select>
             </div>

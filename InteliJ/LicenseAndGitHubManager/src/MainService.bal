@@ -85,6 +85,14 @@ service<http> MainService {
         reply response;
     }
 
+    @http:GET {}
+    @http:Path {value:"/gitHub/getTeams"}
+    resource gitHubGetTeams(@http:QueryParam {value:"organization"} string organization){
+
+
+        message response = services:getTeamsFromOrganization(organization);
+        reply response;
+    }
     @http:POST {}
     @http:Path {value:"/createNexus"}
     resource createNexus (message m) {

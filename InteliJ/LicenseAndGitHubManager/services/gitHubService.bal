@@ -178,3 +178,30 @@ function setReadMe(string organization,string repositoryName,string repositoryDe
 
 
 }
+
+function getTeamsFromOrganization(string organization)(message ){
+    message response = {};
+    try{
+        json responseDataFromDbJson;
+        message responseDataFromDb = {};
+        string accessToken = "";
+        responseDataFromDb = database:userSelectAdminUsers();
+        responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
+        accessToken = jsons:toString(responseDataFromDbJson[0].USER_TOKEN);
+
+        message requestMessageFromGitHub = {};
+        string getUrl = "orgs/"+ organization + "/teams?access_token=" + accessToken;
+        http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
+        message responseFromGitHubApi = httpConnector.get(getUrl,requestMessageFromGitHub);
+        system:println(responseFromGitHubApi);
+        return responseFromGitHubApi;
+    }catch(errors:Error err){
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
+        messages:setJsonPayload(response,errorMessage);
+        return response;
+    }
+
+
+    return response;
+}
