@@ -43,7 +43,8 @@ function createGitHubRepository(message m)(message ){
         string repositoryLicense = jsons:toString(responseDataFromDbJson[0].LICENSE_KEY);
         string repositoryOrganization = jsons:toString(responseDataFromDbJson[0].ORGANIZATION_NAME);
         string repositoryPrivateString = jsons:toString(responseDataFromDbJson[0].REPOSITORY_PRIVATE);
-
+        int repositoryTeam;
+        repositoryTeam,_ = <int>(jsons:toString(responseDataFromDbJson[0].REPOSITORY_TEAM));
 
         boolean repositoryPrivate = false;
 
@@ -62,7 +63,8 @@ function createGitHubRepository(message m)(message ){
                                                "description":repositoryDescription,
                                                "private":repositoryPrivate,
                                                "gitignore_template":repositoryLanguage,
-                                               "license_template":repositoryLicense
+                                               "license_template":repositoryLicense,
+                                               "team_id":repositoryTeam
                                            };
 
         message requestMessageForGitHub = {};

@@ -5,6 +5,7 @@ import ballerina.lang.jsons;
 import ballerina.net.http;
 import ballerina.lang.errors;
 import ballerina.lang.system;
+import ballerina.lang.xmls;
 
 
 string nexusUrl = "http://localhost:8081/";
@@ -63,5 +64,26 @@ function createNexus(message m)(message ){
 
 
 
+
+}
+
+function createNexusRepositoryTarget(string id,string name,string pattern){
+    message response = {};
+    string idString = "<id>" + id + "</id>";
+    string nameString = "<name>" + name + "</name>";
+    string patternString = "<patterns><pattern>" + pattern + "</patterns></pattern>";
+    string xmlString = "<repo-target><data>" + idString + nameString + patternString + "</repo-target></data>";
+
+    xml requestXml = xmls:parse(xmlString);
+    message requestMessage = {};
+    messages:setXmlPayload(requestMessage,requestXml);
+    messages:setJsonPayload(requestNexusMessage,requestJsonPayload);
+    messages:setHeader(requestNexusMessage,"Content-Type","application/json");
+    messages:setHeader(requestNexusMessage,"Authorization","Basic YWRtaW46YWRtaW4xMjM=");
+    http:ClientConnector nexusClientConnector = create http:ClientConnector(nexusUrl);
+    message responseNexus = nexusClientConnector.post(requestNexusUrl,requestNexusMessage);
+
+    json returnMessage = {"responseType":"Done","responseMessage":""};
+    messages:setJsonPayload(response,returnMessage);
 
 }

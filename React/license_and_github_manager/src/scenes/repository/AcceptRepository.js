@@ -38,25 +38,33 @@ class AcceptRepository extends Component{
     
   }
 
-  /* component will mount */
-  componentWillMount(){
-    /* get all team details from database*/
-    LM_TEAM.getAllTeams().then(function(response){
+  setTeams(){
+    var options = this.refs.selectOrganization.options;
+    var selectOrganization = options[options.selectedIndex].text;
+    LM_TEAM.getAllTeams(selectOrganization).then(function(response){
+      console.log("got",response)
       this.setState(function(){
         return {
           teams:response
         }
-      })
+      });
+           
+      console.log(this.state.teams)
     }.bind(this));
-    /* get all team details from database ends*/
-
+  }
+  /* component did mount */
+  componentDidMount(){
+    
     /*get all organizations types from database*/
     LM_ORGANIZATION.getAllOrganizations().then(function(response){
+      
       this.setState(function(){
         return {
           organizations:response
         }
-      })
+      });
+      this.setTeams();      
+
     }.bind(this));
     /*get all organizations types from database*/
 
@@ -309,7 +317,7 @@ class AcceptRepository extends Component{
 
           <div className="form-group">
             <label htmlFor="selectOrganization" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Organization</label>
-            <div className="col-lg-10">
+            <div className="col-lg-10" onChange={this.setTeams.bind(this)}>
               <select className="form-control" ref="selectOrganization" >
                 {this.state.organizations.map((organization)=> 
                 ((this.state.repositoryDetails !== null) && (organization.ORGANIZATION_ID === this.state.repositoryDetails.REPOSITORY_ORGANIZATION)) ? 
@@ -324,9 +332,9 @@ class AcceptRepository extends Component{
             <div className="col-lg-10">
               <select className="form-control" ref="selectTeam" >
                 {this.state.teams.map((team,i)=>
-                ((this.state.repositoryDetails !== null) && (team.TEAM_ID === this.state.repositoryDetails.REPOSITORY_TEAM))? 
-                <option key={team.TEAM_NAME} selected value={team.TEAM_ID} >{team.TEAM_NAME}</option>:
-                <option key={team.TEAM_NAME} value={team.TEAM_ID} >{team.TEAM_NAME}</option>)}
+                ((this.state.repositoryDetails !== null) && (team.id === this.state.repositoryDetails.REPOSITORY_TEAM))? 
+                <option key={team.name} selected value={team.id} >{team.name}</option>:
+                <option key={team.name} value={team.id} >{team.name}</option>)}
               </select>
             </div>
           </div>
