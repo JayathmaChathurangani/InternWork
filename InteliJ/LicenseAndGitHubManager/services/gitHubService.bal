@@ -89,10 +89,9 @@ function getAllLanguages(message m)(message){
 }
 
 function setIssueTemplate(string organization,string repositoryName)(message){
-    system:println(organization + repositoryName);
+
     message getAdminUserMessage = database:userSelectAdminUsers();
     json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
-    system:println(getAdminUserJson);
     string accessToken = jsons:toString(getAdminUserJson[0].USER_TOKEN);
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);

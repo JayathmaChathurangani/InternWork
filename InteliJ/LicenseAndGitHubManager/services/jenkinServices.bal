@@ -2,43 +2,30 @@ package services;
 
 
 import ballerina.lang.messages;
-import ballerina.lang.jsons;
 import ballerina.net.http;
-import ballerina.lang.system;
 import ballerina.lang.errors;
+import ballerina.lang.files;
+import ballerina.lang.blobs;
+import ballerina.lang.xmls;
+import ballerina.lang.system;
 
 string jenkinsUrl = "http://localhost:8080/";
 
-function createJenkinsJob(message m)(message ){
+function createJenkinsJob(string jenkinsJobName)(json ){
     message responseJenkins = {};
-    message response = {};
+    json response;
     try{
 
-        system:println(m);
-        json requestJson = messages:getJsonPayload(m);
 
-        string jenkinsJobName = jsons:toString(requestJson.name);
+        files:File issueFile = {path:"./conf/normalJenkinsConf.xml"};
+        system:println("call Jenkins");
+        files:open(issueFile,"r");
+        system:println("call Jenkins2");
+        var content, _ = files:read(issueFile, 100000);
+        string s = blobs:toString(content, "utf-8");
 
-
-        xml jenkinsRequestXml = xml`<project>
-		<properties>
-			<com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.4.8">
-				<gitLabConnection/>
-			</com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
-			<com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.25">
-				<autoRebuild>false</autoRebuild>
-				<rebuildDisabled>false</rebuildDisabled>
-			</com.sonyericsson.rebuild.RebuildSettings>
-			<hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0.1">
-				<categories class="java.util.concurrent.CopyOnWriteArrayList"/>
-				<throttleEnabled>false</throttleEnabled>
-				<throttleOption>project</throttleOption>
-				<limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
-				<paramsToUseForLimit/>
-			</hudson.plugins.throttleconcurrents.ThrottleJobProperty>
-		</properties>
-    </project>`;
-
+        xml jenkinsRequestXml = xmls:parse(s);
+        system:println(jenkinsRequestXml);
         string requestJenkinsUrl =  "createItem?name=" +jenkinsJobName;
         message requestJenkinsMessage = {};
         messages:setXmlPayload(requestJenkinsMessage,jenkinsRequestXml);
@@ -47,16 +34,11 @@ function createJenkinsJob(message m)(message ){
         http:ClientConnector jenkinsClientConnector = create http:ClientConnector(jenkinsUrl);
         responseJenkins = jenkinsClientConnector.post(requestJenkinsUrl,requestJenkinsMessage);
 
-        json responseMessage = {"responseType":"Done","responseMessage":"done"};
-        messages:setJsonPayload(response,responseMessage);
+        response = {"responseType":"Done","responseMessage":"done"};
         return response;
-
     }catch(errors:Error err){
-        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
-        system:println(err);
-        system:println("jenkins");
-        messages:setJsonPayload(response,errorMessage);
-
+        response = {"responseType":"Error","responseMessage":err.msg};
+        return response;
     }
 
     return response;
@@ -66,6 +48,33 @@ function createJenkinsJob(message m)(message ){
 
 }
 
-function copyJenkinsJob(){
-    system:println("create");
+function createCarbonJenkinsJob(string jenkinsJobName)(json ){
+    message responseJenkins = {};
+    json response;
+    try{
+
+
+        files:File issueFile = {path:"./conf/carbonJenkinsConf.xml"};
+        files:open(issueFile,"r");
+        var content, _ = files:read(issueFile, 100000);
+        string s = blobs:toString(content, "utf-8");
+
+        xml jenkinsRequestXml = xmls:parse(s);
+
+        string requestJenkinsUrl =  "createItem?name=" +jenkinsJobName;
+        message requestJenkinsMessage = {};
+        messages:setXmlPayload(requestJenkinsMessage,jenkinsRequestXml);
+        messages:setHeader(requestJenkinsMessage,"Content-Type","application/xml");
+        messages:setHeader(requestJenkinsMessage,"Authorization","Basic QnVkZGhpV2F0aHNhbGE6YjZlZjBjNGU0MDkzYzM3NmNkMjZkMWQ1NDYxOGIwM2Q=");
+        http:ClientConnector jenkinsClientConnector = create http:ClientConnector(jenkinsUrl);
+        responseJenkins = jenkinsClientConnector.post(requestJenkinsUrl,requestJenkinsMessage);
+
+        response = {"responseType":"Done","responseMessage":"done"};
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+
+    }
+
+    return response;
 }

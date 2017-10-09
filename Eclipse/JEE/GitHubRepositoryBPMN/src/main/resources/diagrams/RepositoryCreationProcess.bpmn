@@ -175,7 +175,7 @@ In order to accept or reject the request please click the following button.
     <sequenceFlow id="flow33" sourceRef="createGitHubRepositoryRestTask" targetRef="servicetask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Done"}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="Create Nexus" isForCompensation="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+    <serviceTask id="servicetask2" name="Create Nexus Repository Target" activiti:async="true" isForCompensation="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
           <activiti:string>http://localhost:9090/createNexusRepositoryTarget</activiti:string>
@@ -184,7 +184,7 @@ In order to accept or reject the request please click the following button.
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"groupId":"${repoUpdatedDetails.REPOSITORY_NAME}","contentClass":"maven2"}</activiti:expression>
+          <activiti:expression>{"groupId":"${repoUpdatedDetails.REPOSITORY_GROUPID}","contentClass":"maven2"}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
           <activiti:string>outputTypeNexus:responseType</activiti:string>
@@ -292,7 +292,7 @@ In order to accept or reject the request please click the following button.
         <omgdc:Bounds height="83.0" width="131.0" x="1100.0" y="134.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="138.0" x="1803.0" y="66.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="191.0" x="1770.0" y="66.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="55.0" width="146.0" x="1805.0" y="148.0"></omgdc:Bounds>
@@ -373,7 +373,7 @@ In order to accept or reject the request please click the following button.
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
         <omgdi:waypoint x="1723.0" y="156.0"></omgdi:waypoint>
         <omgdi:waypoint x="1723.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1803.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1770.0" y="93.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="1231.0" y="175.0"></omgdi:waypoint>
@@ -388,7 +388,7 @@ In order to accept or reject the request please click the following button.
         <omgdi:waypoint x="1703.0" y="176.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="1941.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1961.0" y="93.0"></omgdi:waypoint>
         <omgdi:waypoint x="2016.0" y="93.0"></omgdi:waypoint>
         <omgdi:waypoint x="2016.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>

@@ -128,8 +128,24 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/createJenkins"}
     resource createJenkins (message m) {
-
-        message response = services:createJenkinsJob(m);
+        system:println(m);
+        json requestJson = messages:getJsonPayload(m);
+        string jenkinsJobName = jsons:toString(requestJson.name);
+        system:println(jenkinsJobName);
+        system:println(strings:contains(jenkinsJobName,"carbon"));
+        json responseJson;
+        message response = {};
+        if(strings:contains(jenkinsJobName,"carbon") == true){
+            system:println("call");
+            responseJson = services:createJenkinsJob(jenkinsJobName);
+            system:println(responseJson);
+        }else{
+            responseJson = services:createCarbonJenkinsJob(jenkinsJobName);
+            system:println(responseJson);
+        }
+        system:println("ok");
+        system:println(responseJson);
+        messages:setJsonPayload(response,responseJson);
         system:println(response);
         reply response;
     }
