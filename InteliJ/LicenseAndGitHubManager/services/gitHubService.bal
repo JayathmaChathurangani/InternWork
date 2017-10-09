@@ -15,17 +15,13 @@ import ballerina.lang.blobs;
 string gitHubApiUrl = "https://api.github.com/";
 
 
-function createGitHubRepository(message m)(message ){
-    message response = {};
+function createGitHubRepository(int repositoryId)(json ){
+    json response;
     try{
         json responseDataFromDbJson;
-
-        json requestJson = messages:getJsonPayload(m);
-
         message responseDataFromDb = {};
         string accessToken = "";
-        int repositoryId;
-        repositoryId, _ = <int>jsons:toString(requestJson.repositoryId);
+
 
         responseDataFromDb = database:userSelectAdminUsers();
         responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
@@ -72,14 +68,12 @@ function createGitHubRepository(message m)(message ){
         http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
         message responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
         system:println(responseFromGitHubApi);
-        json responseMessage = {"responseType":"Done","responseMessage":"done"};
-        messages:setJsonPayload(response,responseMessage);
-        return response;
+        response = {"responseType":"Done","responseMessage":"done"};
+
     }catch(errors:Error err){
-        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
+        response = {"responseType":"Error","responseMessage":err.msg};
         system:println(err);
-        messages:setJsonPayload(response,errorMessage);
-        return response;
+
     }
 
 

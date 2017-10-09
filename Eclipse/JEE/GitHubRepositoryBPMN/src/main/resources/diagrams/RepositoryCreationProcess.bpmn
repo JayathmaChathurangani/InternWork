@@ -178,13 +178,13 @@ In order to accept or reject the request please click the following button.
     <serviceTask id="servicetask2" name="Create Nexus" isForCompensation="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
-          <activiti:string>http://localhost:9090/createNexus</activiti:string>
+          <activiti:string>http://localhost:9090/createNexusRepositoryTarget</activiti:string>
         </activiti:field>
         <activiti:field name="method">
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"name":"${repoUpdatedDetails.REPOSITORY_NAME}","id":"${repoUpdatedDetails.REPOSITORY_ID}"}</activiti:expression>
+          <activiti:expression>{"groupId":"${repoUpdatedDetails.REPOSITORY_NAME}","contentClass":"maven2"}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
           <activiti:string>outputTypeNexus:responseType</activiti:string>

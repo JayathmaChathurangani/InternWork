@@ -7,6 +7,7 @@ import ballerina.lang.messages;
 import ballerina.lang.system;
 import ballerina.lang.jsons;
 import ballerina.lang.errors;
+import ballerina.lang.strings;
 
 
 
@@ -17,19 +18,21 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/createRepositories"}
     resource createRepositories (message m) {
-        message responseGitHub = {};
+
         message finalResponse = {};
         json responseGitHubJson = null;
         json finalResponseJson = {"responseType":"Done","responseMessage":" ","toSend":" "};
         try {
 
-            responseGitHub = services:createGitHubRepository(m);
-            responseGitHubJson = messages:getJsonPayload(responseGitHub);
+
 
             json requestDataJson = messages:getJsonPayload(m);
 
             int repositoryId;
             repositoryId,_ = <int> jsons:toString(requestDataJson.repositoryId);
+
+            responseGitHubJson = services:createGitHubRepository(repositoryId);
+
 
             message responseDataFromDb = database:repositorySelectFromId(repositoryId);
             json responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
@@ -96,19 +99,36 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/createNexus"}
     resource createNexus (message m) {
-        system:println("call Nexus");
-        system:println(m);
-        message response = services:createNexus(m);
-        system:println(response);
+        json requestJson = messages:getJsonPayload(m);
+        string groupId = jsons:toString(requestJson.id);
+        json responseJson = services:createNexus(groupId,groupId);
+        message response = {};
+        messages:setJsonPayload(response,responseJson);
         reply response;
+
+    }
+
+    @http:POST {}
+    @http:Path {value:"/createNexusRepositoryTarget"}
+    resource createNexusRepositoryTargetResource (message m) {
+
+        json requestJson = messages:getJsonPayload(m);
+        string groupId = jsons:toString(requestJson.groupId);
+        string contentClass = jsons:toString(requestJson.contentClass);
+        string pattern = strings:replace(groupId,".","/");
+        pattern = " .*/" + pattern + "/.* ";
+        json responseJson = services:createNexusRepositoryTarget(groupId,groupId,contentClass,pattern);
+
+        message responseMessage = {};
+        messages:setJsonPayload(responseMessage,responseJson);
+        reply responseMessage;
 
     }
 
     @http:POST {}
     @http:Path {value:"/createJenkins"}
     resource createJenkins (message m) {
-        system:println("call Jenkins");
-        system:println(m);
+
         message response = services:createJenkinsJob(m);
         system:println(response);
         reply response;

@@ -65,3 +65,7 @@ function createJenkinsJob(message m)(message ){
 
 
 }
+
+function copyJenkinsJob(){
+    
+}
