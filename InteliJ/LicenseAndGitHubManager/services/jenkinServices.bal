@@ -67,5 +67,5 @@ function createJenkinsJob(message m)(message ){
 }
 
 function copyJenkinsJob(){
-    
+    system:println("create");
 }
