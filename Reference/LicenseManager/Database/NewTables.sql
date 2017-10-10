@@ -5,7 +5,8 @@ CREATE TABLE LM_ORGANIZATION(
 
 CREATE TABLE LM_REPOSITORYTYPE(
 	REPOSITORYTYPE_ID INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	REPOSITORYTYPE_NAME VARCHAR(300) NOT NULL,
+	REPOSITORYTYPE_KEY VARCHAR(100) NOT NULL,
+	REPOSITORYTYPE_NAME VARCHAR(300) NOT NULL
 );
 
 CREATE TABLE LM_TEAM(
@@ -53,12 +54,12 @@ CREATE TABLE LM_USER(
 #########################################################################################################################################
 
 INSERT INTO LM_REPOSITORYTYPE VALUES
-(1,"Component(Carbon)"),
-(2,"Product"),
-(3,"Forked Repository"),
-(4,"Extensions"),
-(5,"WSO2 Components"),
-(6,"Other");
+(1,"carbon","Component(Carbon)"),
+(2,"product","Product"),
+(3,"forked","Forked Repository"),
+(4,"extensions","Extensions"),
+(5,"components","WSO2 Components"),
+(6,"other","Other");
 
 
 INSERT INTO LM_ORGANIZATION VALUES
