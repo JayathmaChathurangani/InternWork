@@ -12,13 +12,13 @@ class ValidateUser extends Component{
 
     setValidUserTrue(){
         this.validUser = true;
-        console.log("call");
+        console.log("call it");
     }
     getValidUser(){
         return this.validUser;
     }
     isAdminUser(){
-        var adminUserMail = "buddhik@wso2.com";
+        
         var userEmail = Token.getEmail();
         var flag = false;
         LM_USER.getMainUsers().then(function(response){
@@ -34,9 +34,13 @@ class ValidateUser extends Component{
                     continue;
                 }
             }
-           
+        flag = true;   
         }.bind(this));
-        return this.validUser;
+        if(flag === true){
+            console.log("true")
+        }else{
+            console.log("false")
+        }
         
     }
 }

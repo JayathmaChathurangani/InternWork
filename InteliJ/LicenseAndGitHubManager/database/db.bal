@@ -9,9 +9,9 @@ sql:ClientConnector connection = null;
 
 function setConnection(){
     if(connection == null){
-        string dbURL = "jdbc:mysql://localhost:3306/licensemanager?useSSL=false";
-        string username = "root";
-        string password = "#5shashika5#";
+        string dbURL = system:getEnv("DbUrl");
+        string username = system:getEnv("DbUserName");
+        string password = system:getEnv("DbPassword");
         map propertiesMap = {"jdbcUrl":dbURL, "username":username, "password":password,"maximumPoolSize":20};
         connection = create sql:ClientConnector(propertiesMap);
     }

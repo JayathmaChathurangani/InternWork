@@ -91,7 +91,7 @@ class RequestRepository extends Component{
     Common.getAllLanguages().then(function(response){
       this.setState(function(){
         return {
-          languages:response
+          languages:['Java','Go']
         }
       })
     }.bind(this));

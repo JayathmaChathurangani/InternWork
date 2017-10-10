@@ -128,25 +128,18 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/createJenkins"}
     resource createJenkins (message m) {
-        system:println(m);
+
         json requestJson = messages:getJsonPayload(m);
         string jenkinsJobName = jsons:toString(requestJson.name);
-        system:println(jenkinsJobName);
-        system:println(strings:contains(jenkinsJobName,"carbon"));
+        string jenkinsRepositoryType = jsons:toString(requestJson.repositoryType);
         json responseJson;
         message response = {};
-        if(strings:contains(jenkinsJobName,"carbon") == true){
-            system:println("call");
-            responseJson = services:createJenkinsJob(jenkinsJobName);
-            system:println(responseJson);
-        }else{
-            responseJson = services:createCarbonJenkinsJob(jenkinsJobName);
-            system:println(responseJson);
-        }
-        system:println("ok");
-        system:println(responseJson);
+
+        responseJson = services:createJenkinsJob(jenkinsJobName,jenkinsRepositoryType);
+
+
+
         messages:setJsonPayload(response,responseJson);
-        system:println(response);
         reply response;
     }
 
@@ -154,10 +147,8 @@ service<http> MainService {
     @http:Path {value:"/getAllLanguages"}
     resource getAllLanguages (message m) {
 
-
+        system:println("call languages");
         message response = services:getAllLanguages(m);
-        system:println("languages");
-
         reply response;
     }
 
@@ -165,7 +156,7 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/databaseService/repository/insertData"}
     resource repositoryInsertDataResource(message m){
-        system:println(m);
+
         json requestJson = messages:getJsonPayload(m);
         string name;
         string language;
@@ -195,8 +186,6 @@ service<http> MainService {
 
         int responseValue = database:repositoryInsertData(name,language,buildable,nexus,private,description,groupId,license,team,organization,repoType,requestBy);
 
-
-        system:println(name);
         json responseJson;
         message response = {};
 

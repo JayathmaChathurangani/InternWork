@@ -69,15 +69,15 @@ There is a repository request with following details. <br /><br />
 <li><b>${mailColumns[2]}</b>:&nbsp;${mailData[2]}</li>
 <li><b>${mailColumns[3]}</b>:&nbsp;${mailData[3]}</li>
 <li><b>${mailColumns[4]}</b>:&nbsp;${mailData[4]}</li>
-<li><b>${mailColumns[5]}</b>:&nbsp;${mailData[5].replaceAll("\\\\n"," ")}</li>
 <li><b>${mailColumns[6]}</b>:&nbsp;${mailData[6]}</li>
 <li><b>${mailColumns[7]}</b>:&nbsp;${mailData[7]}</li>
 <li><b>${mailColumns[8]}</b>:&nbsp;${mailData[8]}</li>
 <li><b>${mailColumns[9]}</b>:&nbsp;${mailData[9]}</li>
 <li><b>${mailColumns[10]}</b>:&nbsp;${mailData[10]}</li>
-<li><b>${mailColumns[11]}</b>:&nbsp;${mailData[11]}</li><br/>
+<li><b>${mailColumns[11]}</b>:&nbsp;${mailData[11]}</li>
+<li><b>${mailColumns[5]}</b>:&nbsp;<br/><br/>&emsp;${mailData[5].replaceAll("\\\\\\\\n","<br/>&emsp;")}</li><br/>
 
-In order to accept or reject the request please click the following button.
+<strong>In order to accept or reject the request please click the following button.</strong>
 <br /><br/>
 <li><b>Link:&nbsp;<b /><a href=http://localhost:3000/root/acceptRepository?repositoryId=${repositoryId}><button>Click Me</button></a>
 </p>]]></activiti:expression>
@@ -101,21 +101,23 @@ In order to accept or reject the request please click the following button.
         </activiti:field>
         <activiti:field name="html">
           <activiti:expression><![CDATA[<p>
-<b>${mailColumns[0]}</b>:${mailData[0]}<br />
-<b>${mailColumns[1]}</b>:${mailData[1]}<br />
-<b>${mailColumns[2]}</b>:${mailData[2]}<br />
-<b>${mailColumns[3]}</b>:${mailData[3]}<br />
-<b>${mailColumns[4]}</b>:${mailData[4]}<br />
-<b>${mailColumns[5]}</b>:${mailData[5]}<br />
-<b>${mailColumns[6]}</b>:${mailData[6]}<br />
-<b>${mailColumns[7]}</b>:${mailData[7]}<br />
-<b>${mailColumns[8]}</b>:${mailData[8]}<br />
-<b>${mailColumns[9]}</b>:${mailData[9]}<br />
-<b>${mailColumns[10]}</b>:${mailData[10]}<br />
-<b>${mailColumns[11]}</b>:${mailData[11]}<br />
+Hi all!<br /><br />
 
-<br />
-<b>Link : <b />http://localhost:3000/root/acceptRepository?repositoryId=${repositoryId}
+There is a repository request with following details. <br /><br />
+
+<li><b>${mailColumns[0]}</b>:&nbsp;${mailData[0]}</li>
+<li><b>${mailColumns[1]}</b>:&nbsp;${mailData[1]}</li>
+<li><b>${mailColumns[2]}</b>:&nbsp;${mailData[2]}</li>
+<li><b>${mailColumns[3]}</b>:&nbsp;${mailData[3]}</li>
+<li><b>${mailColumns[4]}</b>:&nbsp;${mailData[4]}</li>
+<li><b>${mailColumns[6]}</b>:&nbsp;${mailData[6]}</li>
+<li><b>${mailColumns[7]}</b>:&nbsp;${mailData[7]}</li>
+<li><b>${mailColumns[8]}</b>:&nbsp;${mailData[8]}</li>
+<li><b>${mailColumns[9]}</b>:&nbsp;${mailData[9]}</li>
+<li><b>${mailColumns[10]}</b>:&nbsp;${mailData[10]}</li>
+<li><b>${mailColumns[11]}</b>:&nbsp;${mailData[11]}</li>
+<li><b>${mailColumns[5]}</b>:&nbsp;<br/><br/>&emsp;${mailData[5].replaceAll("\\\\\\\\n","<br/>&emsp;")}</li><br/>
+
 </p>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -251,10 +253,10 @@ In order to accept or reject the request please click the following button.
     <sequenceFlow id="flow50" sourceRef="servicetask5" targetRef="inclusivegateway2"></sequenceFlow>
     <inclusiveGateway id="inclusivegateway3" name="Inclusive Gateway"></inclusiveGateway>
     <sequenceFlow id="flow51" sourceRef="servicetask2" targetRef="inclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow52" sourceRef="servicetask3" targetRef="inclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow53" sourceRef="inclusivegateway3" targetRef="mailtask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Done" && outputTypeJenkins == "Done" &&  outputTypeNexus == "Done"}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow59" sourceRef="servicetask3" targetRef="inclusivegateway3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_repositoryCreationProcess">
     <bpmndi:BPMNPlane bpmnElement="repositoryCreationProcess" id="BPMNPlane_repositoryCreationProcess">
@@ -271,7 +273,7 @@ In order to accept or reject the request please click the following button.
         <omgdc:Bounds height="81.0" width="131.0" x="888.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="2360.0" y="161.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="2488.0" y="161.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="241.0" y="159.0"></omgdc:Bounds>
@@ -286,16 +288,16 @@ In order to accept or reject the request please click the following button.
         <omgdc:Bounds height="74.0" width="157.0" x="730.0" y="327.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask4" id="BPMNShape_mailtask4">
-        <omgdc:Bounds height="78.0" width="161.0" x="2100.0" y="139.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="161.0" x="2310.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="83.0" width="131.0" x="1100.0" y="134.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="191.0" x="1770.0" y="66.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="191.0" x="1850.0" y="66.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="146.0" x="1805.0" y="148.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="1880.0" y="148.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="inclusivegateway2" id="BPMNShape_inclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="1703.0" y="156.0"></omgdc:Bounds>
@@ -307,7 +309,7 @@ In order to accept or reject the request please click the following button.
         <omgdc:Bounds height="87.0" width="115.0" x="1530.0" y="134.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="inclusivegateway3" id="BPMNShape_inclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="1996.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="2238.0" y="155.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="35.0" y="179.0"></omgdi:waypoint>
@@ -321,8 +323,8 @@ In order to accept or reject the request please click the following button.
         <omgdi:waypoint x="261.0" y="199.0"></omgdi:waypoint>
         <omgdi:waypoint x="261.0" y="430.0"></omgdi:waypoint>
         <omgdi:waypoint x="630.0" y="430.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2339.0" y="411.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2377.0" y="196.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2505.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2505.0" y="196.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="36.0" width="100.0" x="270.0" y="255.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -355,12 +357,12 @@ In order to accept or reject the request please click the following button.
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="887.0" y="364.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2299.0" y="354.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2377.0" y="196.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2470.0" y="363.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2505.0" y="196.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="2261.0" y="178.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2360.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2471.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2488.0" y="178.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="1019.0" y="178.0"></omgdi:waypoint>
@@ -368,12 +370,12 @@ In order to accept or reject the request please click the following button.
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="1743.0" y="176.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1805.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1880.0" y="175.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
         <omgdi:waypoint x="1723.0" y="156.0"></omgdi:waypoint>
         <omgdi:waypoint x="1723.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1770.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1850.0" y="93.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="1231.0" y="175.0"></omgdi:waypoint>
@@ -388,17 +390,17 @@ In order to accept or reject the request please click the following button.
         <omgdi:waypoint x="1703.0" y="176.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="1961.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2016.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2016.0" y="160.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="1951.0" y="175.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1996.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2041.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2257.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2258.0" y="155.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="2036.0" y="180.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2100.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2278.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2310.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="2021.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2238.0" y="175.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

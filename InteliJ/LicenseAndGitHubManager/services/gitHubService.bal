@@ -21,11 +21,7 @@ function createGitHubRepository(int repositoryId)(json ){
         json responseDataFromDbJson;
         message responseDataFromDb = {};
         string accessToken = "";
-
-
-        responseDataFromDb = database:userSelectAdminUsers();
-        responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
-        accessToken = jsons:toString(responseDataFromDbJson[0].USER_TOKEN);
+        accessToken = system:getEnv("GitHubToken");
 
 
         responseDataFromDb = database:repositorySelectFromId(repositoryId);
@@ -92,7 +88,7 @@ function setIssueTemplate(string organization,string repositoryName)(message){
 
     message getAdminUserMessage = database:userSelectAdminUsers();
     json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
-    string accessToken = jsons:toString(getAdminUserJson[0].USER_TOKEN);
+    string accessToken = system:getEnv("GitHubToken");
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/issue_template.md?access_token=" + accessToken + "&content=base64&branch=master";
@@ -122,7 +118,7 @@ function setPullRequestTemplate(string organization,string repositoryName)(messa
     message getAdminUserMessage = database:userSelectAdminUsers();
     json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
     system:println(getAdminUserJson);
-    string accessToken = jsons:toString(getAdminUserJson[0].USER_TOKEN);
+    string accessToken = system:getEnv("GitHubToken");
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/pull_request_template.md?access_token=" + accessToken + "&content=base64&branch=master";
@@ -152,7 +148,7 @@ function setReadMe(string organization,string repositoryName,string repositoryDe
     message getAdminUserMessage = database:userSelectAdminUsers();
     json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
     system:println(getAdminUserJson);
-    string accessToken = jsons:toString(getAdminUserJson[0].USER_TOKEN);
+    string accessToken = system:getEnv("GitHubToken");
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/README.md?access_token=" + accessToken + "&content=base64&branch=master";
@@ -182,7 +178,7 @@ function getTeamsFromOrganization(string organization)(message ){
         string accessToken = "";
         responseDataFromDb = database:userSelectAdminUsers();
         responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
-        accessToken = jsons:toString(responseDataFromDbJson[0].USER_TOKEN);
+        accessToken = system:getEnv("GitHubToken");
 
         message requestMessageFromGitHub = {};
         string getUrl = "orgs/"+ organization + "/teams?access_token=" + accessToken;

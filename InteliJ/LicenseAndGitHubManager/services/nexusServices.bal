@@ -70,13 +70,13 @@ function createNexusRepositoryTarget(string id,string name,string contentClass,s
     string nameString = "<name>" + name + "</name>";
     string patternString = "<patterns><pattern>" + pattern + "</pattern></patterns>";
     string xmlString = "<repo-target><data>" + idString + contentClassString + nameString + patternString + "</data></repo-target>";
-    system:println(xmlString);
     string requestNexusUrl = "nexus/service/local/repo_targets";
+    string authenticateToken = "Basic " + system:getEnv("NexusToken");
     xml requestXml = xmls:parse(xmlString);
     message requestNexusMessage = {};
     messages:setXmlPayload(requestNexusMessage,requestXml);
     messages:setHeader(requestNexusMessage,"Content-Type","application/xml");
-    messages:setHeader(requestNexusMessage,"Authorization","Basic YWRtaW46YWRtaW4xMjM=");
+    messages:setHeader(requestNexusMessage,"Authorization",authenticateToken);
     http:ClientConnector nexusClientConnector = create http:ClientConnector(nexusUrl);
     message responseNexus = nexusClientConnector.post(requestNexusUrl,requestNexusMessage);
     system:println(responseNexus);
