@@ -1,6 +1,6 @@
 package services;
 
-string url = "http";
+const string url = "http";
 
 function service1(string name)(string ){
     return name;

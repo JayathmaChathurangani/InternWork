@@ -7,7 +7,7 @@ class LM_TEAM extends Component{
 /* get all team data from database */
     getAllTeams(organization){
         var url = MainData.ballerinaGitHubURL + "gitHub/getTeams?organization=" + organization;
-        console.log("call");
+        
         return axios.get(
             url
         )

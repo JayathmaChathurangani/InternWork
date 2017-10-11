@@ -5,12 +5,14 @@ import ValidateUser from '../services/authentication/ValidateUser';
 
 class Main extends Component{
 
-  jwtDecode(){
-    
-    console.log(ValidateUser.isAdminUser());
+  constructor(){
+    super();
+    ValidateUser.isValidUser();
   }
+
   render(){
 
+    
     return(
       
       <div className="container-fluid">
@@ -112,7 +114,7 @@ class Main extends Component{
             {/* Request 3rd party lib. Request ends */}
             
             </div>
-            <button onClick={this.jwtDecode.bind(this)} >click</button>
+            
           </div>
         </div>
       </div>

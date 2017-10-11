@@ -4,15 +4,17 @@ import ballerina.data.sql;
 import ballerina.lang.messages;
 import ballerina.lang.errors;
 import ballerina.lang.system;
+import conf;
 
 sql:ClientConnector connection = null;
 
 function setConnection(){
     if(connection == null){
-        string dbURL = system:getEnv("DbUrl");
-        string username = system:getEnv("DbUserName");
-        string password = system:getEnv("DbPassword");
+        string dbURL = conf:databaseUrl;
+        string username = conf:databaseUserName;
+        string password = conf:databasePassword;
         map propertiesMap = {"jdbcUrl":dbURL, "username":username, "password":password,"maximumPoolSize":20};
+        system:println(propertiesMap);
         connection = create sql:ClientConnector(propertiesMap);
     }
 
@@ -24,9 +26,7 @@ function repositoryInsertData(string name,string language,boolean buildable,bool
     if(connection == null){
         setConnection();
     }
-    //map propertiesMap = getConnectionDetails();
-    //sql:ClientConnector connection = create sql:ClientConnector(propertiesMap);
-    //sql:ClientConnector connection = getConnection();
+
     if(connection == null){
 
         setConnection();

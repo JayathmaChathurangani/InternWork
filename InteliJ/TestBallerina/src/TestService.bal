@@ -1,8 +1,9 @@
 
+package src;
 
-import services;
 import ballerina.net.http;
 import ballerina.lang.messages;
+import ballerina.lang.system;
 
 @http:configuration {basePath:"/hello"}
 service<http> helloWorld {
@@ -10,10 +11,10 @@ service<http> helloWorld {
     @http:Path {value:"/first/second"}
     resource sayHello (message m) {
         message response = {};
+        system:println("name " + name1);
 
-        string name = services:service1("Wathsala");
-        name = services:url;
-        messages:setStringPayload(response, name);
+
+        messages:setStringPayload(response, name1);
         reply response;
     }
 }

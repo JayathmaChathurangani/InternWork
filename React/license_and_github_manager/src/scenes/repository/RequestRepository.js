@@ -10,6 +10,7 @@ import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreati
 import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
 import StringValidations from '../../services/validations/StringValidations';
 import {Link} from 'react-router';
+import ValidateUser from '../../services/authentication/ValidateUser';
 
 import '../../App.css';
 
@@ -18,6 +19,7 @@ class RequestRepository extends Component{
   
   constructor(){
     super();
+    ValidateUser.isValidUser();
     this.state = {
       mainUsers:[],
       languages:[],
@@ -40,18 +42,18 @@ class RequestRepository extends Component{
     var options = this.refs.selectOrganization.options;
     var selectOrganization = options[options.selectedIndex].text;
     LM_TEAM.getAllTeams(selectOrganization).then(function(response){
-      console.log("got",response)
+      
       this.setState(function(){
         return {
           teams:response
         }
       });
            
-      console.log(this.state.teams)
+     
     }.bind(this));
   }
   /* component did mount */
-  componentDidMount(){
+  componentWillMount(){
     
     /*get all organizations types from database*/
     LM_ORGANIZATION.getAllOrganizations().then(function(response){
@@ -156,7 +158,7 @@ class RequestRepository extends Component{
         }
       });
     }
-    console.log(this.refs.inputGroupId.value);
+    
     
   }
   /* make group id required function ends*/
@@ -359,7 +361,7 @@ class RequestRepository extends Component{
             <label htmlFor="selectTeam" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Team Name</label>
             <div className="col-lg-10">
               <select className="form-control" ref="selectTeam" >
-                {console.log("teams",this.state.teams)}
+                
                 {this.state.teams.map((team,i)=> <option key={team.id} value={team.id} >{team.name}</option>)}
               </select>
             </div>

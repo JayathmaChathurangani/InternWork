@@ -8,6 +8,7 @@ import AcceptRepository from './scenes/repository/AcceptRepository';
 import RejectRepository from './scenes/repository/RejectRepository';
 import OtherRepository from './scenes/repository/OtherRepository';
 import PendingRequests from './scenes/common/PendingRequests';
+import LoginError from './scenes/common/LoginError';
 import RequestComponent from './scenes/component/RequestComponent';
 import ShowComponent from './scenes/component/ShowComponent';
 
@@ -40,9 +41,8 @@ class App extends Component {
 
         </Route>
 
-        <Route path={"/"} component={Main}>
-
-        </Route>
+        <Route path={"/"} component={Main}></Route>
+        <Route path={"/loginError"} component={LoginError}></Route>
       </Router>
     );
   }

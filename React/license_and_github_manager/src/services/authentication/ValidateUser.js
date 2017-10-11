@@ -1,7 +1,7 @@
 import {Component} from 'react';
-import jwt_decode from 'jwt-decode';
 import Token from './Token';
 import LM_USER from '../database/LM_USER';
+import {browserHistory} from 'react-router';
 
 class ValidateUser extends Component{
 
@@ -10,38 +10,64 @@ class ValidateUser extends Component{
         this.validUser = false;
     }
 
-    setValidUserTrue(){
+    setValidUser(){
+        console.log("ok")
         this.validUser = true;
-        console.log("call it");
     }
+
     getValidUser(){
+        console.log("get");
         return this.validUser;
     }
     isAdminUser(){
         
         var userEmail = Token.getEmail();
         var flag = false;
-        LM_USER.getMainUsers().then(function(response){
+        return LM_USER.getMainUsers().then(function(response){
             var i = 0;
+            if(userEmail === null){
+                return false;
+            }
             for(i=0;i<response.length;i++){
-                console.log(response[i].USER_EMAIL);
+                
                 if(response[i].USER_EMAIL === userEmail){
-                    this.setValidUserTrue();
-                    
+                    this.setValidUser();
                     break;
                 }else{
                     flag = false;
                     continue;
                 }
             }
-        flag = true;   
-        }.bind(this));
-        if(flag === true){
-            console.log("true")
+            return flag;
+        });
+        
+        
+    }
+
+    isValidUser(){
+        
+        var token = Token.getToken();
+        if(token === null){
+            browserHistory.push('/loginError');
+            return false;
+        }
+
+        var userEmail = Token.getEmail();
+        
+        if(userEmail.endsWith("@wso2.com") === true){
+            return true;
         }else{
-            console.log("false")
+            browserHistory.push('/loginError');
+            return false;
         }
         
+        
+        
+    }
+
+    redirectToAdminLoginErrorPage(){
+        browserHistory.push('/loginError');
+        return;
     }
 }
 

@@ -6,6 +6,7 @@ import LM_TEAM from '../../services/database/LM_TEAM';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
 import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
+import ValidateUser from '../../services/authentication/ValidateUser';
 import {Link} from 'react-router';
 import '../../App.css';
 
@@ -14,6 +15,7 @@ class AcceptRepository extends Component{
   
   constructor(props){
     super(props);
+    ValidateUser.isValidUser();
     this.repo = null;
     this.state = {
       languages:[],
@@ -30,13 +32,23 @@ class AcceptRepository extends Component{
       displayFieldset:'block',
       displayAlrearyAccept:'none',
       displayErrorBox:'none',
-      displaySuceessBox:'none'
+      displaySuceessBox:'none',
+      isAdminUser:null
       
     }
-
     
+
+    ValidateUser.isAdminUser().then(function(response){
+      console.log("call2" + response)
+      if(response !== true){
+        ValidateUser.redirectToAdminLoginErrorPage();
+      }
+      
+    }.bind(this));
     
   }
+
+  
 
   setTeams(){
     var options = this.refs.selectOrganization.options;
@@ -48,13 +60,18 @@ class AcceptRepository extends Component{
           teams:response
         }
       });
-           
-      console.log(this.state.teams)
     }.bind(this));
   }
   /* component did mount */
-  componentDidMount(){
+  componentWillMount(){
+    console.log("call")
     
+
+    
+
+  }
+
+  componentDidMount(){
     /*get all organizations types from database*/
     LM_ORGANIZATION.getAllOrganizations().then(function(response){
       
@@ -131,7 +148,6 @@ class AcceptRepository extends Component{
     }.bind(this));
     /* get repository details from ID ends*/
     
-
   }
    /* component will mount ends*/
 
@@ -288,11 +304,12 @@ class AcceptRepository extends Component{
   render(){
     
     return(
+      
       <form className="form-horizontal"  onSubmit={this.acceptRequest.bind(this)}>
         <h2 className="text-center">GitHub Repository Request</h2>
-        
+          {console.log("admin: "+this.state.isAdminUser)}
         <fieldset style={{display:this.state.displayFieldset}}>
-          {console.log((this.repo === null)? " ":this.repo.REPOSITORY_NAME)}
+          
           <br/>
           <div className="form-group">
             <label htmlFor="inputRepositoryName" className="col-lg-2 control-label"><span className="required">*</span>&nbsp;Repository Name</label>
