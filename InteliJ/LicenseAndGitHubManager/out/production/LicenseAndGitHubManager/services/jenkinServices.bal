@@ -7,9 +7,9 @@ import ballerina.lang.errors;
 import ballerina.lang.files;
 import ballerina.lang.blobs;
 import ballerina.lang.xmls;
-import ballerina.lang.system;
 
-string jenkinsApiUrl = "http://localhost:8080/";
+import conf;
+
 
 function createJenkinsJob(string jenkinsJobName,string jenkinsJobType)(json ){
     message responseJenkins = {};
@@ -21,7 +21,7 @@ function createJenkinsJob(string jenkinsJobName,string jenkinsJobType)(json ){
         files:open(issueFile,"r");
         var content, _ = files:read(issueFile, 100000);
         string s = blobs:toString(content, "utf-8");
-        string authenticateToken = "Basic " + system:getEnv("JenkinsToken");
+        string authenticateToken = "Basic " + conf:jenkinsToken;
         xml jenkinsRequestXml = xmls:parse(s);
 
 
@@ -30,7 +30,7 @@ function createJenkinsJob(string jenkinsJobName,string jenkinsJobType)(json ){
         messages:setXmlPayload(requestJenkinsMessage,jenkinsRequestXml);
         messages:setHeader(requestJenkinsMessage,"Content-Type","application/xml");
         messages:setHeader(requestJenkinsMessage,"Authorization",authenticateToken);
-        http:ClientConnector jenkinsClientConnector = create http:ClientConnector(jenkinsApiUrl);
+        http:ClientConnector jenkinsClientConnector = create http:ClientConnector(conf:jenkinsApiUrl);
         responseJenkins = jenkinsClientConnector.post(requestJenkinsUrl,requestJenkinsMessage);
 
         requestJenkinsUrl = "view/" + jenkinsJobType +  "/addJobToView?name=" + jenkinsJobName;

@@ -96,7 +96,6 @@ service<http> MainService {
         message response = services:getTeamsFromOrganization(organization);
         reply response;
     }
-
     @http:POST {}
     @http:Path {value:"/createNexus"}
     resource createNexus (message m) {
@@ -308,6 +307,8 @@ service<http> MainService {
         reply response;
     }
 
+
+
     @http:GET {}
     @http:Path {value:"/databaseService/repository/selectAll"}
     resource repositorySelectAllResource(message m){
@@ -390,38 +391,7 @@ service<http> MainService {
         reply response;
     }
 
-    @http:GET {}
-    @http:Path {value:"/databaseService/user/checkAdminUsers"}
-    resource userCheckAdminUsersResource(@http:QueryParam {value:"email"} string email){
-        message response = {};
-        json responseJson = database:userCheckAdminUsers(email);
-        messages:setJsonPayload(response,responseJson);
-        reply response;
-    }
 
-    @http:POST {}
-    @http:Path {value:"/authentication/isValidUser"}
-    resource authenticateIsValidUsersResource(message m){
-        message response = {};
-        json requestJson = messages:getJsonPayload(m);
-        string webToken = jsons:toString(requestJson.token);
-        boolean responseValue = services:validateUser(webToken);
-        json responseJson = {"isValid":responseValue};
-        messages:setJsonPayload(response,responseJson);
-        reply response;
-    }
-
-    @http:POST{}
-    @http:Path {value:"/authentication/isAdminUser"}
-    resource authenticateIsAdminUsersResource(message m){
-        message response = {};
-        json requestJson = messages:getJsonPayload(m);
-        string webToken = jsons:toString(requestJson.token);
-        boolean responseValue = services:isAdminUser(webToken);
-        json responseJson = {"isValid":responseValue};
-        messages:setJsonPayload(response,responseJson);
-        reply response;
-    }
 
 
 }

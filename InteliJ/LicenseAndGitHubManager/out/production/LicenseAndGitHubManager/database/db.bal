@@ -139,6 +139,7 @@ function repositoryUpdateTaskAndProcessIds(int taskId,int processId,string repos
     return returnValue;
 }
 
+
 function repositoryUpdateAll(string name,string language,boolean buildable,boolean nexus,boolean private,string description,string groupId,int license,int team,int organization,int repoType,boolean accept,string acceptBy,int id)(int){
     message response = {};
     //map propertiesMap = getConnectionDetails();
@@ -224,6 +225,9 @@ function repositorySelectAll()(message){
 
 }
 
+
+
+
 function repositorySelectFromName(string name)(message){
     message response = {};
     //map propertiesMap = getConnectionDetails();
@@ -275,7 +279,6 @@ function repositorySelectFromName(string name)(message){
     return response;
 
 }
-
 function repositorySelectFromId(int id)(message){
     message response = {};
     //map propertiesMap = getConnectionDetails();
@@ -556,42 +559,6 @@ function userSelectAdminUsers()(message){
         json errorMessage = {"responseType":"Error","responseMessage":err.msg};
         messages:setJsonPayload(response,errorMessage);
         system:println(errorMessage);
-
-    }
-    return response;
-
-}
-
-function userCheckAdminUsers(string email)(json ){
-    json responseDbJson;
-    json response;
-
-    if(connection == null){
-
-        setConnection();
-    }
-    try{
-
-
-
-        string query = "SELECT * FROM LM_USER WHERE USER_EMAIL = ?";
-        sql:Parameter paraEmail = {sqlType:"varchar", value:email};
-        sql:Parameter[] parameterArray = [paraEmail];
-        datatable responseDataFromDb = connection.select(query ,parameterArray);
-        responseDbJson,_ = <json>responseDataFromDb;
-        int length = lengthof responseDbJson;
-        if(length > 0){
-            response = {"responseType":"Done","isAdmin":true,"userDetails":responseDbJson[0]};
-        }else{
-            response = {"responseType":"Done","isAdmin":false,"userDetails":""};
-        }
-
-
-
-    }catch(errors:Error err){
-        response = {"responseType":"Error","responseMessage":err.msg};
-
-        system:println(response);
 
     }
     return response;

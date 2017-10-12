@@ -217,6 +217,7 @@ class AcceptRepository extends Component{
     });
   }
   /* go back function ends */
+  
   /* Validation functions end*/
 
   /* accept request function start */

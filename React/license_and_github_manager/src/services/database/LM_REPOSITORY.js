@@ -41,7 +41,6 @@ class LM_REPOSITORY extends Component{
     }
     /*  insert into repository table ends*/
 
-
     /* update repository table */
     updateTaskAndProcessIds(data){
         var url = MainData.ballerinaDatabaseURL + "repository/updateBpmnAndTaskIds";

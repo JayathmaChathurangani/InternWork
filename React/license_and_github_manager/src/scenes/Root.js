@@ -11,7 +11,7 @@ class Root extends Component{
     ValidateUser.isValidUser();
     ValidateUser.isAdminUser();
     this.state = {
-      isAdminUser: null
+      isAdminUser: ValidateUser.getValidUser()
     }
 
     

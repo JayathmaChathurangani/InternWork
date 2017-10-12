@@ -23,22 +23,8 @@ class ValidateUser extends Component{
         
         var userEmail = Token.getEmail();
         var flag = false;
-        return LM_USER.getMainUsers().then(function(response){
-            var i = 0;
-            if(userEmail === null){
-                return false;
-            }
-            for(i=0;i<response.length;i++){
-                
-                if(response[i].USER_EMAIL === userEmail){
-                    this.setValidUser();
-                    break;
-                }else{
-                    flag = false;
-                    continue;
-                }
-            }
-            return flag;
+        return LM_USER.isAdminUser(userEmail).then(function(response){
+            console.log(response)
         });
         
         

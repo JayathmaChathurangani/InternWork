@@ -5,10 +5,10 @@ import ballerina.net.http;
 import ballerina.lang.errors;
 import ballerina.lang.system;
 import ballerina.lang.xmls;
+import conf;
 
 
 
-string nexusApiUrl = "http://localhost:8081/";
 
 function createNexus(string nexusRepositoryName,string nexusRepositoryId)(json ){
 
@@ -45,9 +45,8 @@ function createNexus(string nexusRepositoryName,string nexusRepositoryId)(json )
                                   };
         messages:setJsonPayload(requestNexusMessage,requestJsonPayload);
         messages:setHeader(requestNexusMessage,"Content-Type","application/json");
-        string authenticateToken = "Basic " + system:getEnv("NexusToken");
-        messages:setHeader(requestNexusMessage,"Authorization",authenticateToken);
-        http:ClientConnector nexusClientConnector = create http:ClientConnector(nexusApiUrl);
+        messages:setHeader(requestNexusMessage,"Authorization","Basic YWRtaW46YWRtaW4xMjM=");
+        http:ClientConnector nexusClientConnector = create http:ClientConnector(conf:nexusApiUrl);
         message responseNexus = nexusClientConnector.post(requestNexusUrl,requestNexusMessage);
 
         returnJson = {"responseType":"Done","responseMessage":""};
@@ -73,13 +72,13 @@ function createNexusRepositoryTarget(string id,string name,string contentClass,s
     string patternString = "<patterns><pattern>" + pattern + "</pattern></patterns>";
     string xmlString = "<repo-target><data>" + idString + contentClassString + nameString + patternString + "</data></repo-target>";
     string requestNexusUrl = "nexus/service/local/repo_targets";
-    string authenticateToken = "Basic " + system:getEnv("NexusToken");
+    string authenticateToken = "Basic " + conf:nexusToken;
     xml requestXml = xmls:parse(xmlString);
     message requestNexusMessage = {};
     messages:setXmlPayload(requestNexusMessage,requestXml);
     messages:setHeader(requestNexusMessage,"Content-Type","application/xml");
     messages:setHeader(requestNexusMessage,"Authorization",authenticateToken);
-    http:ClientConnector nexusClientConnector = create http:ClientConnector(nexusApiUrl);
+    http:ClientConnector nexusClientConnector = create http:ClientConnector(conf:nexusApiUrl);
     message responseNexus = nexusClientConnector.post(requestNexusUrl,requestNexusMessage);
 
     json returnJson = {"responseType":"Done","responseMessage":""};
