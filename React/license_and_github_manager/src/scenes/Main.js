@@ -1,14 +1,9 @@
 import React,{Component} from 'react';
 import Header from '../components/layouts/Header';
 import {Link} from 'react-router';
-import ValidateUser from '../services/authentication/ValidateUser';
+
 
 class Main extends Component{
-
-  constructor(){
-    super();
-    ValidateUser.isValidUser();
-  }
 
   render(){
 

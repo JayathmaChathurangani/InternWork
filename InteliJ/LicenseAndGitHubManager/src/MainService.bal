@@ -147,9 +147,14 @@ service<http> MainService {
     @http:GET {}
     @http:Path {value:"/getAllLanguages"}
     resource getAllLanguages (message m) {
+        message response = {};
+        json inValidUserJson = {"responseType":"Invalid User"};
+        if(services:getIsValidUser()){
+            response = services:getAllLanguages(m);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
 
-        system:println("call languages");
-        message response = services:getAllLanguages(m);
         reply response;
     }
 
@@ -170,35 +175,46 @@ service<http> MainService {
         int team;
         int organization;
         int repoType;
+        int responseValue;
         string requestBy;
-
-        name = jsons:toString(requestJson.data[0]);
-        language = jsons:toString(requestJson.data[1]);
-        buildable,_ =  <boolean>(jsons:toString(requestJson.data[2]));
-        nexus,_ = <boolean>(jsons:toString(requestJson.data[3]));
-        private,_ = <boolean>(jsons:toString(requestJson.data[4]));
-        description = jsons:toString(requestJson.data[5]);
-        groupId = jsons:toString(requestJson.data[6]);
-        license,_ = <int>(jsons:toString(requestJson.data[7]));
-        team,_ = <int>(jsons:toString(requestJson.data[8]));
-        organization,_ = <int>(jsons:toString(requestJson.data[9]));
-        repoType,_ = <int>(jsons:toString(requestJson.data[10]));
-        requestBy = jsons:toString(requestJson.data[11]);
-
-        int responseValue = database:repositoryInsertData(name,language,buildable,nexus,private,description,groupId,license,team,organization,repoType,requestBy);
-
-        json responseJson;
         message response = {};
+        json inValidUserJson = {"responseType":"Invalid User"};
+        json responseJson;
 
-        if(responseValue > 0){
-            message getInsertedDataMessage = database:repositorySelectFromName(name);
-            json getInsertedDataJson = messages:getJsonPayload(getInsertedDataMessage);
-            responseJson = {"responseType":"Done","responseMessage":" ","repositoryId":jsons:toString(getInsertedDataJson[0].REPOSITORY_ID)};
+        if(services:getIsValidUser()){
+            name = jsons:toString(requestJson.data[0]);
+            language = jsons:toString(requestJson.data[1]);
+            buildable,_ =  <boolean>(jsons:toString(requestJson.data[2]));
+            nexus,_ = <boolean>(jsons:toString(requestJson.data[3]));
+            private,_ = <boolean>(jsons:toString(requestJson.data[4]));
+            description = jsons:toString(requestJson.data[5]);
+            groupId = jsons:toString(requestJson.data[6]);
+            license,_ = <int>(jsons:toString(requestJson.data[7]));
+            team,_ = <int>(jsons:toString(requestJson.data[8]));
+            organization,_ = <int>(jsons:toString(requestJson.data[9]));
+            repoType,_ = <int>(jsons:toString(requestJson.data[10]));
+            requestBy = jsons:toString(requestJson.data[11]);
+
+            responseValue = database:repositoryInsertData(name,language,buildable,nexus,private,description,groupId,license,team,organization,repoType,requestBy);
+
+
+
+
+            if(responseValue > 0){
+                message getInsertedDataMessage = database:repositorySelectFromName(name);
+                json getInsertedDataJson = messages:getJsonPayload(getInsertedDataMessage);
+                responseJson = {"responseType":"Done","responseMessage":" ","repositoryId":jsons:toString(getInsertedDataJson[0].REPOSITORY_ID)};
+            }else{
+                responseJson = {"responseType":"Error","responseMessage":" "};
+            }
+
+            messages:setJsonPayload(response,responseJson);
         }else{
-            responseJson = {"responseType":"Error","responseMessage":" "};
+            messages:setJsonPayload(response,inValidUserJson);
         }
 
-        messages:setJsonPayload(response,responseJson);
+
+
         reply response;
     }
 
@@ -418,7 +434,7 @@ service<http> MainService {
         json requestJson = messages:getJsonPayload(m);
         string webToken = jsons:toString(requestJson.token);
         boolean responseValue = services:isAdminUser(webToken);
-        json responseJson = {"isValid":responseValue};
+        json responseJson = {"isAdmin":responseValue};
         messages:setJsonPayload(response,responseJson);
         reply response;
     }

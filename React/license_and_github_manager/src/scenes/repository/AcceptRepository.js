@@ -37,15 +37,6 @@ class AcceptRepository extends Component{
       
     }
     
-
-    ValidateUser.isAdminUser().then(function(response){
-      console.log("call2" + response)
-      if(response !== true){
-        ValidateUser.redirectToAdminLoginErrorPage();
-      }
-      
-    }.bind(this));
-    
   }
 
   

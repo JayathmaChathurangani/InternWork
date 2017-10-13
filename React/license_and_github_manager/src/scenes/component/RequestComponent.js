@@ -1,8 +1,9 @@
 import React,{Component} from 'react';
 import LM_COMPONENT from '../../services/database/LM_COMPONENT'
 
-class RequestComponent extends Component{
 
+class RequestComponent extends Component{
+  
   /* Validation functions*/
   validateInputRepositoryName(e){
     var inputRepositoryName = this.refs.inputRepositoryName.value;

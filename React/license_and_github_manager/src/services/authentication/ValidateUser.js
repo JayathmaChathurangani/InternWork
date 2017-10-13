@@ -1,30 +1,28 @@
 import {Component} from 'react';
 import Token from './Token';
-import LM_USER from '../database/LM_USER';
+import axios from 'axios';
 import {browserHistory} from 'react-router';
+import MainData from '../MainData';
 
 class ValidateUser extends Component{
 
-    constructor(){
-        super();
-        this.validUser = false;
-    }
-
-    setValidUser(){
-        console.log("ok")
-        this.validUser = true;
-    }
-
-    getValidUser(){
-        console.log("get");
-        return this.validUser;
-    }
+    
     isAdminUser(){
-        
-        var userEmail = Token.getEmail();
-        var flag = false;
-        return LM_USER.isAdminUser(userEmail).then(function(response){
-            console.log(response)
+        var token = Token.getToken();
+        var url = MainData.ballerinaURL + "authentication/isAdminUser";
+        var requestData = {"token":token};
+        return axios.post(
+            url,
+            requestData
+        )
+        .then(function (response) {
+            console.log(response.data);
+            return response.data;
+            
+            
+        })
+        .catch(function (error) {
+            console.log(error);
         });
         
         
@@ -33,20 +31,20 @@ class ValidateUser extends Component{
     isValidUser(){
         
         var token = Token.getToken();
-        if(token === null){
-            browserHistory.push('/loginError');
-            return false;
-        }
-
-        var userEmail = Token.getEmail();
-        
-        if(userEmail.endsWith("@wso2.com") === true){
-            return true;
-        }else{
-            browserHistory.push('/loginError');
-            return false;
-        }
-        
+        var url = MainData.ballerinaURL + "authentication/isValidUser";
+        var requestData = {"token":token};
+        return axios.post(
+            url,
+            requestData
+        )
+        .then(function (response) {
+            
+            
+            return response.data;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
         
         
     }

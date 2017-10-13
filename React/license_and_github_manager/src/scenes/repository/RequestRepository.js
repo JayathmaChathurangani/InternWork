@@ -10,8 +10,6 @@ import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreati
 import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
 import StringValidations from '../../services/validations/StringValidations';
 import {Link} from 'react-router';
-import ValidateUser from '../../services/authentication/ValidateUser';
-
 import '../../App.css';
 
 
@@ -19,7 +17,7 @@ class RequestRepository extends Component{
   
   constructor(){
     super();
-    ValidateUser.isValidUser();
+   
     this.state = {
       mainUsers:[],
       languages:[],
