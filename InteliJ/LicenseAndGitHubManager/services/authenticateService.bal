@@ -6,6 +6,7 @@ import ballerina.utils;
 import ballerina.lang.jsons;
 import ballerina.lang.time;
 import database;
+import ballerina.lang.system;
 
 
 
@@ -88,6 +89,7 @@ function getIsValidUser ()(boolean returnIsValid)  {
         isValidUser,_ = (boolean )http:getAttribute(userSession,"isValid");
         epocTimeInt,_ = (int)http:getAttribute(userSession,"loginTime");
         if((isValidUser == true) && (currentTimeInt < (epocTimeInt + 86400))){
+            system:println("ok");
             returnIsValid = true;
             return;
         }else {
