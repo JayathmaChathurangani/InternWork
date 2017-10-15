@@ -15,29 +15,37 @@ import ballerina.lang.blobs;
 string gitHubApiUrl = "https://api.github.com/";
 
 function createGitHubRepository(int repositoryId)(json ){
+
+    message responseDataFromDb = {};
+    message requestMessageForGitHub = {};
+    message responseFromGitHubApi = {};
     json response;
+    json responseDataFromDbJson;
+    json requestDataJsonForGitHubApi;
+    string accessToken = "";
+    string repositoryName;
+    string repositoryLanguage;
+    string repositoryDescription = " ";
+    string repositoryLicense;
+    string repositoryOrganization;
+    string repositoryPrivateString;
+    string postUrl;
+    int repositoryTeam
+    boolean repositoryPrivate = false;
+
     try{
-        json responseDataFromDbJson;
-        message responseDataFromDb = {};
-        string accessToken = "";
+
         accessToken = system:getEnv("GitHubToken");
-
-
         responseDataFromDb = database:repositorySelectFromId(repositoryId);
-
         responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
 
 
-        string repositoryName = jsons:toString(responseDataFromDbJson[0].REPOSITORY_NAME);
-        string repositoryLanguage = jsons:toString(responseDataFromDbJson[0].REPOSITORY_LANGUAGE);
-        string repositoryDescription = " ";
-        string repositoryLicense = jsons:toString(responseDataFromDbJson[0].LICENSE_KEY);
-        string repositoryOrganization = jsons:toString(responseDataFromDbJson[0].ORGANIZATION_NAME);
-        string repositoryPrivateString = jsons:toString(responseDataFromDbJson[0].REPOSITORY_PRIVATE);
-        int repositoryTeam;
+        repositoryName = jsons:toString(responseDataFromDbJson[0].REPOSITORY_NAME);
+        repositoryLanguage = jsons:toString(responseDataFromDbJson[0].REPOSITORY_LANGUAGE);
+        repositoryLicense = jsons:toString(responseDataFromDbJson[0].LICENSE_KEY);
+        repositoryOrganization = jsons:toString(responseDataFromDbJson[0].ORGANIZATION_NAME);
+        repositoryPrivateString = jsons:toString(responseDataFromDbJson[0].REPOSITORY_PRIVATE);
         repositoryTeam,_ = <int>(jsons:toString(responseDataFromDbJson[0].REPOSITORY_TEAM));
-
-        boolean repositoryPrivate = false;
 
         if(repositoryPrivateString == "true"){
             repositoryPrivate = true;
@@ -47,9 +55,9 @@ function createGitHubRepository(int repositoryId)(json ){
 
 
 
-        string postUrl = "orgs/"+repositoryOrganization + "/repos?access_token=" + accessToken;
+        postUrl = "orgs/"+repositoryOrganization + "/repos?access_token=" + accessToken;
 
-        json requestDataJsonForGitHubApi = {
+        requestDataJsonForGitHubApi = {
                                                "name":repositoryName,
                                                "description":repositoryDescription,
                                                "private":repositoryPrivate,
@@ -58,11 +66,10 @@ function createGitHubRepository(int repositoryId)(json ){
                                                "team_id":repositoryTeam
                                            };
 
-        message requestMessageForGitHub = {};
+
         messages:setJsonPayload(requestMessageForGitHub,requestDataJsonForGitHubApi);
         http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
-        message responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
-        system:println(responseFromGitHubApi);
+        responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
         response = {"responseType":"Done","responseMessage":"done"};
 
     }catch(errors:Error err){
@@ -78,7 +85,6 @@ function createGitHubRepository(int repositoryId)(json ){
 function getAllLanguages(message m)(message){
     message response = {};
     http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
-
     response = httpConnector.get("gitignore/templates",m);
 
     return response;
@@ -114,15 +120,14 @@ function setIssueTemplate(string organization,string repositoryName)(message){
 }
 
 function setPullRequestTemplate(string organization,string repositoryName)(message){
-    system:println(organization + repositoryName);
+
+
     message getAdminUserMessage = database:userSelectAdminUsers();
     json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
-    system:println(getAdminUserJson);
     string accessToken = system:getEnv("GitHubToken");
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/pull_request_template.md?access_token=" + accessToken + "&content=base64&branch=master";
-
 
     files:File issueFile = {path:"./conf/pull_request_template.md"};
     files:open(issueFile,"r");

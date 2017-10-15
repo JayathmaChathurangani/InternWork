@@ -6,13 +6,11 @@ import ballerina.utils;
 import ballerina.lang.jsons;
 import ballerina.lang.time;
 import database;
-import ballerina.lang.system;
-
-
 
 http:Session userSession;
 
 function validateUser(string webToken)(boolean isValid){
+
     string email = "";
     string epocTimeString = "";
     string[] webTokenArray;
@@ -25,8 +23,6 @@ function validateUser(string webToken)(boolean isValid){
     webTokenArray= strings:split(webToken,"\\.");
     dencodedString = utils:base64decode(webTokenArray[1]);
     decodedJson = jsons:parse(dencodedString);
-
-
     email = jsons:toString(decodedJson["http://wso2.org/claims/emailaddress"]);
     epocTimeString = jsons:toString(decodedJson["exp"]);
     epocTime,_ = <int>epocTimeString;
@@ -50,12 +46,14 @@ function validateUser(string webToken)(boolean isValid){
 }
 
 function isAdminUser(string webToken)(boolean isAdmin){
+
     string email = "";
     string[] webTokenArray;
     string dencodedString;
     json decodedJson;
     json returnJson;
     boolean isAdminFromDb = false;
+
     if(!validateUser(webToken)){
         isAdmin = false;
         return;
@@ -80,23 +78,29 @@ function isAdminUser(string webToken)(boolean isAdmin){
 }
 
 function getIsValidUser ()(boolean returnIsValid)  {
+
     boolean isValidUser;
     time:Time currentTime = time:currentTime();
     int currentTimeInt;
     int epocTimeInt;
     currentTimeInt = currentTime.time / 1000;
+
     if(userSession != null){
+
         isValidUser,_ = (boolean )http:getAttribute(userSession,"isValid");
         epocTimeInt,_ = (int)http:getAttribute(userSession,"loginTime");
+
         if((isValidUser == true) && (currentTimeInt < (epocTimeInt + 86400))){
-            system:println("ok");
+
             returnIsValid = true;
             return;
         }else {
+
             returnIsValid = false;
             return;
         }
     }else{
+
         returnIsValid = false;
         return;
     }
