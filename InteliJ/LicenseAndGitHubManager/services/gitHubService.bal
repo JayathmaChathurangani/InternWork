@@ -30,7 +30,7 @@ function createGitHubRepository(int repositoryId)(json ){
     string repositoryOrganization;
     string repositoryPrivateString;
     string postUrl;
-    int repositoryTeam
+    int repositoryTeam;
     boolean repositoryPrivate = false;
 
     try{
@@ -159,8 +159,9 @@ function setReadMe(string organization,string repositoryName,string repositoryDe
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/README.md?access_token=" + accessToken + "&content=base64&branch=master";
 
 
-
-    string encodeString = utils:base64encode(repositoryDescription);
+    system:println("1."+repositoryDescription);
+    system:println("2." + correctString(repositoryDescription));
+    string encodeString = utils:base64encode(correctString(repositoryDescription));
 
     message gitHubRequestMessage = {};
     json gitHubRequestJson = {"message":"Add README.md","committer":{"name": userName,"email": userEmail},"content":encodeString};
@@ -168,6 +169,7 @@ function setReadMe(string organization,string repositoryName,string repositoryDe
 
     http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
     message response = httpConnector.put(requestUrl,gitHubRequestMessage);
+    system:println(response);
     json responseMessage = {"responseType":"Done","responseMessage":"done"};
     messages:setJsonPayload(response,responseMessage);
     return response;

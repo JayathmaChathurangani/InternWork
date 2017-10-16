@@ -148,6 +148,22 @@ class LM_REPOSITORY extends Component{
             console.log(error);
         });
     }
+
+    selectWaitingRequests(){
+        var url = MainData.ballerinaDatabaseURL + "repository/selectWaitingRequests" ;
+        
+        return axios.get(
+            url
+        )
+        .then(function (response) {
+            
+            return(response.data) ;
+            
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
 }
 
 

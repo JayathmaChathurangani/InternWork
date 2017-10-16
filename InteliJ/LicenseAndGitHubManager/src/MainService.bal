@@ -6,6 +6,7 @@ import database;
 import ballerina.lang.messages;
 import ballerina.lang.jsons;
 import ballerina.lang.strings;
+import ballerina.lang.system;
 
 
 
@@ -92,7 +93,7 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/gitHub/setReadMe"}
     resource gitHubSetReadMeResource(message m){
-
+        system:println(m);
         message response = {};
         json requestJson;
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
@@ -228,7 +229,7 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/databaseService/repository/insertData"}
     resource repositoryInsertDataResource(message m){
-
+        system:println(m);
         message getInsertedDataMessage = {};
         message response = {};
         json requestJson = messages:getJsonPayload(m);
@@ -468,6 +469,22 @@ service<http> MainService {
 
         if(services:getIsValidUser()){
             response = database:repositorySelectFromRequestByAndWaiting(requestBy);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/repository/selectWaitingRequests"}
+    resource repositorySelectWaitingRequests(message m){
+        system:println("call");
+        message response = {};
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
+        if(services:getIsValidUser()){
+            response = database:repositorySelectWaitingRequests();
         }else{
             messages:setJsonPayload(response,inValidUserJson);
         }

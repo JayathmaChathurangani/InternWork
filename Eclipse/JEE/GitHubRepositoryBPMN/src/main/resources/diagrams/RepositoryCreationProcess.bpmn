@@ -75,7 +75,7 @@ There is a repository request with following details. <br /><br />
 <li><b>${mailColumns[9]}</b>:&nbsp;${mailData[9]}</li>
 <li><b>${mailColumns[10]}</b>:&nbsp;${mailData[10]}</li>
 <li><b>${mailColumns[11]}</b>:&nbsp;${mailData[11]}</li>
-<li><b>${mailColumns[5]}</b>:&nbsp;<br/><br/>&emsp;${mailData[5].replaceAll("\\\\\\\\n","<br/>&emsp;")}</li><br/>
+<li><b>${mailColumns[5]}</b>:&nbsp;<br/><br/>&emsp;${mailData[5].replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}</li><br/>
 
 <strong>In order to accept or reject the request please click the following button.</strong>
 <br /><br/>
@@ -138,14 +138,13 @@ There is a repository request with following details. <br /><br />
 <b>${mailColumns[2]}</b>:${repoUpdatedDetails.REPOSITORY_BUILDABLE}<br />
 <b>${mailColumns[3]}</b>:${repoUpdatedDetails.REPOSITORY_NEXUS}<br />
 <b>${mailColumns[4]}</b>:${repoUpdatedDetails.REPOSITORY_PRIVATE}<br />
-<b>${mailColumns[5]}</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION}<br />
 <b>${mailColumns[6]}</b>:${repoUpdatedDetails.REPOSITORY_GROUPID}<br />
 <b>${mailColumns[7]}</b>:${repoUpdatedDetails.LICENSE_NAME}<br />
 <b>${mailColumns[8]}</b>:${repoUpdatedDetails.TEAM_NAME}<br />
 <b>${mailColumns[9]}</b>:${repoUpdatedDetails.ORGANIZATION_NAME}<br />
 <b>${mailColumns[10]}</b>:${repoUpdatedDetails.REPOSITORYTYPE_NAME}<br />
 <b>${mailColumns[11]}</b>:${repoUpdatedDetails.REPOSITORY_REQUEST_BY}<br />
-
+<b>${mailColumns[5]}</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}<br />
 
 </p>]]></activiti:expression>
         </activiti:field>
@@ -275,14 +274,13 @@ There is a repository request with following details. <br /><br />
 <b>${mailColumns[2]}</b>:${repoUpdatedDetails.REPOSITORY_BUILDABLE}<br />
 <b>${mailColumns[3]}</b>:${repoUpdatedDetails.REPOSITORY_NEXUS}<br />
 <b>${mailColumns[4]}</b>:${repoUpdatedDetails.REPOSITORY_PRIVATE}<br />
-<b>${mailColumns[5]}</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION}<br />
 <b>${mailColumns[6]}</b>:${repoUpdatedDetails.REPOSITORY_GROUPID}<br />
 <b>${mailColumns[7]}</b>:${repoUpdatedDetails.LICENSE_NAME}<br />
 <b>${mailColumns[8]}</b>:${repoUpdatedDetails.TEAM_NAME}<br />
 <b>${mailColumns[9]}</b>:${repoUpdatedDetails.ORGANIZATION_NAME}<br />
 <b>${mailColumns[10]}</b>:${repoUpdatedDetails.REPOSITORYTYPE_NAME}<br />
 <b>${mailColumns[11]}</b>:${repoUpdatedDetails.REPOSITORY_REQUEST_BY}<br />
-
+<b>${mailColumns[5]}</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}<br />
 
 </p>]]></activiti:expression>
         </activiti:field>
@@ -292,6 +290,9 @@ There is a repository request with following details. <br /><br />
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Error" || outputTypeJenkins == "Error" ||  outputTypeNexus == "Error"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow61" sourceRef="mailtask5" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow62" sourceRef="inclusivegateway2" targetRef="inclusivegateway3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${repoUpdatedDetails.REPOSITORY_BUILDABLE == false && repoUpdatedDetails.REPOSITORY_NEXUS == false}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_repositoryCreationProcess">
     <bpmndi:BPMNPlane bpmnElement="repositoryCreationProcess" id="BPMNPlane_repositoryCreationProcess">
@@ -448,6 +449,12 @@ There is a repository request with following details. <br /><br />
         <omgdi:waypoint x="2279.0" y="279.0"></omgdi:waypoint>
         <omgdi:waypoint x="2443.0" y="280.0"></omgdi:waypoint>
         <omgdi:waypoint x="2505.0" y="196.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
+        <omgdi:waypoint x="1723.0" y="196.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1722.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2188.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2211.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

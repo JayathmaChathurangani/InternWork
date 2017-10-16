@@ -322,6 +322,35 @@ function repositorySelectFromRequestByAndWaiting(string requestBy)(message){
 
 }
 
+function repositorySelectWaitingRequests()(message){
+    message response = {};
+
+    if(connection == null){
+
+        setConnection();
+    }
+
+    try{
+
+        string query = "SELECT * FROM LM_REPOSITORY WHERE REPOSITORY_ACCEPT IS NULL";
+
+
+        sql:Parameter[] parameterArray = [];
+
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        var resultJSON,_ = <json>responseDataFromDb;
+        messages:setJsonPayload(response,resultJSON);
+
+
+    }catch(errors:Error err){
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
+        messages:setJsonPayload(response,errorMessage);
+
+    }
+    return response;
+
+}
+
 function organizationSelectAll()(message){
     message response = {};
 

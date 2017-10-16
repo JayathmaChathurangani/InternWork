@@ -8,6 +8,7 @@ import AcceptRepository from './scenes/repository/AcceptRepository';
 import RejectRepository from './scenes/repository/RejectRepository';
 import OtherRepository from './scenes/repository/OtherRepository';
 import PendingRequests from './scenes/common/PendingRequests';
+import WaitingRequests from './scenes/common/WaitingRequests';
 import LoginError from './scenes/common/LoginError';
 import RequestComponent from './scenes/component/RequestComponent';
 import ShowComponent from './scenes/component/ShowComponent';
@@ -23,6 +24,7 @@ class App extends Component {
 
           {/* PendingRequests routes start */}
           <Route path={"pendingRequests"} component={PendingRequests}></Route>
+          <Route path={"waitingRequests"} component={WaitingRequests}></Route>
           {/* PendingRequests routes ends */}
 
           {/* Request routes start */}
@@ -30,6 +32,7 @@ class App extends Component {
           <Route path={"acceptRepository"} component={AcceptRepository}></Route>
           <Route path={"rejectRepository"} component={RejectRepository}></Route>
           <Route path={"otherRepository"} component={OtherRepository}></Route>
+
           {/* Request routes ends */}
 
           {/* Component routes start */}

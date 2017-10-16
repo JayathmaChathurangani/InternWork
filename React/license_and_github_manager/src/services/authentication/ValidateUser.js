@@ -16,7 +16,7 @@ class ValidateUser extends Component{
             requestData
         )
         .then(function (response) {
-            console.log(response.data);
+            
             return response.data;
             
             
@@ -50,6 +50,7 @@ class ValidateUser extends Component{
     }
 
     redirectToAdminLoginErrorPage(){
+        console.log("cl")
         browserHistory.push('/loginError');
         return;
     }

@@ -6,7 +6,7 @@ import LM_TEAM from '../../services/database/LM_TEAM';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
 import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
-import ValidateUser from '../../services/authentication/ValidateUser';
+import StringValidations from '../../services/validations/StringValidations';
 import {Link} from 'react-router';
 import '../../App.css';
 
@@ -15,7 +15,7 @@ class AcceptRepository extends Component{
   
   constructor(props){
     super(props);
-    ValidateUser.isValidUser();
+    
     this.repo = null;
     this.state = {
       languages:[],
@@ -45,7 +45,7 @@ class AcceptRepository extends Component{
     var options = this.refs.selectOrganization.options;
     var selectOrganization = options[options.selectedIndex].text;
     LM_TEAM.getAllTeams(selectOrganization).then(function(response){
-      console.log("got",response)
+      
       this.setState(function(){
         return {
           teams:response
@@ -54,13 +54,7 @@ class AcceptRepository extends Component{
     }.bind(this));
   }
   /* component did mount */
-  componentWillMount(){
-    console.log("call")
-    
-
-    
-
-  }
+  
 
   componentDidMount(){
     /*get all organizations types from database*/
@@ -108,10 +102,10 @@ class AcceptRepository extends Component{
 
     /* get repository details from ID*/
     LM_REPOSITORY.selectDataFromId(this.state.repositoryId).then(function(response){
-      console.log(response);
+      
       this.setState(function(){
         if((response[0].REPOSITORY_ACCEPTED_BY === null) && (response[0].REPOSITORY_DEACTIVATED_BY === null)){
-          console.log("this");
+          
           return{
             repositoryDetails:response[0],
             groupIdInputRequired:response[0].REPOSITORY_NEXUS,
@@ -134,7 +128,8 @@ class AcceptRepository extends Component{
       this.refs.inputGroupId.value = response[0].REPOSITORY_GROUPID;
       this.refs.inputBuildable.value = response[0].REPOSITORY_BUILDABLE;
       this.refs.inputPrivate.value = response[0].REPOSITORY_PRIVATE;
-      this.refs.textDescription.value = response[0].REPOSITORY_DESCRIPTION;
+      this.refs.textDescription.value = StringValidations.setStringToShow(response[0].REPOSITORY_DESCRIPTION);
+      console.log(StringValidations.setStringToShow(this.refs.textDescription.value) );
       
     }.bind(this));
     /* get repository details from ID ends*/
@@ -222,17 +217,17 @@ class AcceptRepository extends Component{
         return false ;
      }
 
-      var repositoryName =  this.refs.inputRepositoryName.value.toString();
+      var repositoryName =  StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString());
       var repositoryType = this.refs.selectRepositoryType.value;
       var organization = this.refs.selectOrganization.value;
       var team = this.refs.selectTeam.value;
       var license = this.refs.selectLicense.value;
       var language =  this.refs.selectLanguage.value ;
-      var groupId =  this.refs.inputGroupId.value.toString() ;
+      var groupId =  StringValidations.escapeCharacters(this.refs.inputGroupId.value.toString());
       var buildable = this.refs.inputBuildable.checked;
       var nexus = this.refs.inputNexus.checked;
       var isPrivate = this.refs.inputPrivate.checked;
-      var description =  this.refs.textDescription.value.toString();
+      var description =  StringValidations.escapeCharacters(this.refs.textDescription.value.toString());
       var accept = true;
       var acceptBy = "buddhi@wso2.com";
 
@@ -299,7 +294,7 @@ class AcceptRepository extends Component{
       
       <form className="form-horizontal"  onSubmit={this.acceptRequest.bind(this)}>
         <h2 className="text-center">GitHub Repository Request</h2>
-          {console.log("admin: "+this.state.isAdminUser)}
+          
         <fieldset style={{display:this.state.displayFieldset}}>
           
           <br/>
