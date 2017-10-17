@@ -271,11 +271,18 @@ function repositorySelectFromId(int id)(message){
     }
     try{
 
-        string query = "SELECT LM_REPOSITORY.*,LM_LICENSE.LICENSE_NAME,LM_LICENSE.LICENSE_KEY,LM_ORGANIZATION.ORGANIZATION_NAME,LM_REPOSITORYTYPE.REPOSITORYTYPE_KEY,LM_REPOSITORYTYPE.REPOSITORYTYPE_NAME from LM_REPOSITORY
-        INNER JOIN LM_LICENSE ON LM_REPOSITORY.REPOSITORY_LICENSE = LM_LICENSE.LICENSE_ID
-        INNER JOIN LM_ORGANIZATION ON LM_REPOSITORY.REPOSITORY_ORGANIZATION = LM_ORGANIZATION.ORGANIZATION_ID
-        INNER JOIN LM_REPOSITORYTYPE ON LM_REPOSITORY.REPOSITORY_TYPE = LM_REPOSITORYTYPE.REPOSITORYTYPE_ID
-        WHERE REPOSITORY_ID=?;";
+        string query = "SELECT
+                        LM_REPOSITORY.*,
+                        LM_LICENSE.LICENSE_NAME,
+                        LM_LICENSE.LICENSE_KEY,
+                        LM_ORGANIZATION.ORGANIZATION_NAME,
+                        LM_REPOSITORYTYPE.REPOSITORYTYPE_KEY,
+                        LM_REPOSITORYTYPE.REPOSITORYTYPE_NAME
+                        FROM LM_REPOSITORY
+                        INNER JOIN LM_LICENSE ON LM_REPOSITORY.REPOSITORY_LICENSE = LM_LICENSE.LICENSE_ID
+                        INNER JOIN LM_ORGANIZATION ON LM_REPOSITORY.REPOSITORY_ORGANIZATION = LM_ORGANIZATION.ORGANIZATION_ID
+                        INNER JOIN LM_REPOSITORYTYPE ON LM_REPOSITORY.REPOSITORY_TYPE = LM_REPOSITORYTYPE.REPOSITORYTYPE_ID
+                        WHERE REPOSITORY_ID=?;";
 
         sql:Parameter paraName = {sqlType:"integer", value:id};
         sql:Parameter[] parameterArray = [paraName];
@@ -303,7 +310,18 @@ function repositorySelectFromRequestByAndWaiting(string requestBy)(message){
 
     try{
 
-        string query = "SELECT * FROM LM_REPOSITORY WHERE REPOSITORY_REQUEST_BY = ? AND REPOSITORY_ACCEPT IS NULL";
+        string query = "SELECT
+                        LM_REPOSITORY.*,
+                        LM_LICENSE.LICENSE_NAME,
+                        LM_LICENSE.LICENSE_KEY,
+                        LM_ORGANIZATION.ORGANIZATION_NAME,
+                        LM_REPOSITORYTYPE.REPOSITORYTYPE_KEY,
+                        LM_REPOSITORYTYPE.REPOSITORYTYPE_NAME
+                        FROM LM_REPOSITORY
+                        INNER JOIN LM_LICENSE ON LM_REPOSITORY.REPOSITORY_LICENSE = LM_LICENSE.LICENSE_ID
+                        INNER JOIN LM_ORGANIZATION ON LM_REPOSITORY.REPOSITORY_ORGANIZATION = LM_ORGANIZATION.ORGANIZATION_ID
+                        INNER JOIN LM_REPOSITORYTYPE ON LM_REPOSITORY.REPOSITORY_TYPE = LM_REPOSITORYTYPE.REPOSITORYTYPE_ID
+                        WHERE REPOSITORY_REQUEST_BY = ? AND REPOSITORY_ACCEPT IS NULL";
 
         sql:Parameter paraName = {sqlType:"varchar", value:requestBy};
         sql:Parameter[] parameterArray = [paraName];
@@ -332,7 +350,18 @@ function repositorySelectWaitingRequests()(message){
 
     try{
 
-        string query = "SELECT * FROM LM_REPOSITORY WHERE REPOSITORY_ACCEPT IS NULL";
+        string query = "SELECT
+                        LM_REPOSITORY.*,
+                        LM_LICENSE.LICENSE_NAME,
+                        LM_LICENSE.LICENSE_KEY,
+                        LM_ORGANIZATION.ORGANIZATION_NAME,
+                        LM_REPOSITORYTYPE.REPOSITORYTYPE_KEY,
+                        LM_REPOSITORYTYPE.REPOSITORYTYPE_NAME
+                        FROM LM_REPOSITORY
+                        INNER JOIN LM_LICENSE ON LM_REPOSITORY.REPOSITORY_LICENSE = LM_LICENSE.LICENSE_ID
+                        INNER JOIN LM_ORGANIZATION ON LM_REPOSITORY.REPOSITORY_ORGANIZATION = LM_ORGANIZATION.ORGANIZATION_ID
+                        INNER JOIN LM_REPOSITORYTYPE ON LM_REPOSITORY.REPOSITORY_TYPE = LM_REPOSITORYTYPE.REPOSITORYTYPE_ID
+                        WHERE REPOSITORY_ACCEPT IS NULL";
 
 
         sql:Parameter[] parameterArray = [];

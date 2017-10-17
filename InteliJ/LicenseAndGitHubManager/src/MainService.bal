@@ -218,6 +218,7 @@ service<http> MainService {
 
         if(services:getIsValidUser()){
             response = services:getAllLanguages(m);
+
         }else{
             messages:setJsonPayload(response,inValidUserJson);
         }
@@ -479,7 +480,7 @@ service<http> MainService {
     @http:GET {}
     @http:Path {value:"/databaseService/repository/selectWaitingRequests"}
     resource repositorySelectWaitingRequests(message m){
-        system:println("call");
+
         message response = {};
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
 

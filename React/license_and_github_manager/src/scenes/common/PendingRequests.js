@@ -18,7 +18,7 @@ class PendingRequests extends Component{
     componentDidMount(){
         var requestBy = "buddhik@wso2.com";
         /*get all number of requests from database*/
-        LM_REPOSITORY.selectDataFromRequestBy(requestBy).then(function(response){
+        LM_REPOSITORY.selectWaitingRequests(requestBy).then(function(response){
             this.setState(function(){
                 return {
                     pendingRequests:response
@@ -38,7 +38,7 @@ class PendingRequests extends Component{
                 <div className="row">
                 {this.state.pendingRequests.map((request)=>
                     <div className="row" key={request.REPOSITORY_ID}>
-                        <div className="col-lg-12">
+                        <div className="col-md-12" id="showBpmnImage">
                             <div className="panel panel-primary">
                                 <div className="panel-heading">
                                     <h3 className="panel-title">{( request.REPOSITORY_NAME)}</h3>

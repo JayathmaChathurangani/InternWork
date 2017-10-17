@@ -18,7 +18,7 @@ class AcceptRepository extends Component{
     
     this.repo = null;
     this.state = {
-      languages:[],
+      languages:['Java','Go'],
       licenseNames:[],
       repositoryTypes:[],
       organizations:[],
@@ -27,6 +27,7 @@ class AcceptRepository extends Component{
       buttonState:false,
       repositoryId:props.location.query.repositoryId,
       repositoryDetails:null,
+      repositoryIsAcceptOrReject:null,
       groupIdInputRequired:false,
       groupIdInputSpan:" ",
       displayFieldset:'block',
@@ -83,8 +84,9 @@ class AcceptRepository extends Component{
     /*get all languages from github api*/
     Common.getAllLanguages().then(function(response){
       this.setState(function(){
+        
         return {
-          languages:response
+          languages:['Java','Go']
         }
       })
     }.bind(this));
@@ -107,6 +109,8 @@ class AcceptRepository extends Component{
         if((response[0].REPOSITORY_ACCEPTED_BY === null) && (response[0].REPOSITORY_DEACTIVATED_BY === null)){
           
           return{
+            repositoryIsAcceptOrReject:false,
+            repositoryDetails:response[0],
             repositoryDetails:response[0],
             groupIdInputRequired:response[0].REPOSITORY_NEXUS,
             groupIdInputSpan:((response[0].REPOSITORY_NEXUS)?<span className="required">*</span>:" ")
@@ -114,6 +118,7 @@ class AcceptRepository extends Component{
           }
         }else{
           return{
+            repositoryIsAcceptOrReject:true,
             displayFieldset:'none',
             displayAlrearyAccept:'block',
             repositoryDetails:response[0]
@@ -418,7 +423,13 @@ class AcceptRepository extends Component{
         <div className="alert alert-dismissible alert-warning" style={{display:this.state.displayAlrearyAccept}}>
           
           <button type="button" className="close" data-dismiss="alert">&times;</button>
-          <strong>This repository request already accepted by {(this.state.repositoryDetails !== null)?this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY:" "}</strong> 
+          <strong>This repository request already {
+            (this.state.repositoryIsAcceptOrReject === true)?
+            ((this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY !== null)?
+            (" accepted by "+this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY):
+            (" rejected by "+this.state.repositoryDetails.REPOSITORY_DEACTIVATED_BY+" because of " +this.state.repositoryDetails.REPOSITORY_DEACTIVATED_REASON)):
+            " "
+            }</strong> 
         </div>
 
         <div className="modal" style={{display:this.state.displaySuceessBox}}>

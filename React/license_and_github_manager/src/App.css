@@ -30,9 +30,13 @@
   background-color: #222222 !important;
 }
 
-.col-md-12, .col-md-2{
-  padding-left:  0px !important;
+.col-md-12, .col-md-2,.col-md-10{
+  
   padding-right:  0px !important;
+}
+
+.col-md-10{
+  width: 85.5%;
 }
 
 #header{
@@ -46,6 +50,11 @@
      width:200px !important;
      height: 710px !important;
    }
+
+   #showBpmnImage{
+     height: 265px !important;
+   }
+
 }
 /*navbar and header ends*/
 /*form elements*/

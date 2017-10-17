@@ -188,115 +188,106 @@ class RequestRepository extends Component{
 
   /* submit function start*/
 
-    submitRequest(e){
-      e.preventDefault();
-      e.stopPropagation();
-      e.nativeEvent.stopImmediatePropagation();
-      
-      if (confirm("Are you sure to request it?") === false ) {
-        return false ;
-      }
-      var repositoryTypeOptions = this.refs.selectRepositoryType.options;
-      var organizationOptions = this.refs.selectOrganization.options;
-      var teamOptions = this.refs.selectTeam.options;
-      var licenseOptions = this.refs.selectLicense.options;
-      var languageOptions = this.refs.selectLanguage.options;
-      
-      var repositoryTypeText = repositoryTypeOptions[repositoryTypeOptions.selectedIndex].text;
-      var organizationText = organizationOptions[organizationOptions.selectedIndex].text;
-      var teamText = teamOptions[teamOptions.selectedIndex].text;
-      var licenseText = licenseOptions[licenseOptions.selectedIndex].text;
-      var languageText = languageOptions[languageOptions.selectedIndex].text;
-      
-      
-      var repoName = StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString());
-      var repositoryName = StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString()) ;
-      var repositoryType = this.refs.selectRepositoryType.value;
-      var organization = this.refs.selectOrganization.value;
-      var team = this.refs.selectTeam.value;
-      var license = this.refs.selectLicense.value;
-      var language = StringValidations.escapeCharacters(this.refs.selectLanguage.value) ;
-      var groupId = StringValidations.escapeCharacters(this.refs.inputGroupId.value.toString()) ;
-      var buildable = this.refs.inputBuildable.checked;
-      var nexus = this.refs.inputNexus.checked;
-      var isPrivate = this.refs.inputPrivate.checked;
-      var description = StringValidations.escapeCharacters(this.refs.textDescription.value.toString()) ;
-      var requestedBy = StringValidations.escapeCharacters("buddhik@wso2.com") ;
-
-      var data = [
-        repositoryName,
-        language,
-        buildable,
-        nexus,
-        isPrivate,
-        description,
-        groupId,
-        license,
-        team,
-        organization,
-        repositoryType,
-        requestedBy
-      ];   
-
-      var mailData = [
-        repositoryName,
-        languageText,
-        buildable,
-        nexus,
-        isPrivate,
-        description,
-        groupId,
-        licenseText,
-        teamText,
-        organizationText,
-        repositoryTypeText,
-        requestedBy
-      ]; 
+  submitRequest(e){
+    e.preventDefault();
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
     
+    if (confirm("Are you sure to request it?") === false ) {
+      return false ;
+    }
+    var repositoryTypeOptions = this.refs.selectRepositoryType.options;
+    var organizationOptions = this.refs.selectOrganization.options;
+    var teamOptions = this.refs.selectTeam.options;
+    var licenseOptions = this.refs.selectLicense.options;
+    var languageOptions = this.refs.selectLanguage.options;
+    
+    var repositoryTypeText = repositoryTypeOptions[repositoryTypeOptions.selectedIndex].text;
+    var organizationText = organizationOptions[organizationOptions.selectedIndex].text;
+    var teamText = teamOptions[teamOptions.selectedIndex].text;
+    var licenseText = licenseOptions[licenseOptions.selectedIndex].text;
+    var languageText = languageOptions[languageOptions.selectedIndex].text;
+    
+    
+    var repoName = StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString());
+    var repositoryName = StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString()) ;
+    var repositoryType = this.refs.selectRepositoryType.value;
+    var organization = this.refs.selectOrganization.value;
+    var team = this.refs.selectTeam.value;
+    var license = this.refs.selectLicense.value;
+    var language = StringValidations.escapeCharacters(this.refs.selectLanguage.value) ;
+    var groupId = StringValidations.escapeCharacters(this.refs.inputGroupId.value.toString()) ;
+    var buildable = this.refs.inputBuildable.checked;
+    var nexus = this.refs.inputNexus.checked;
+    var isPrivate = this.refs.inputPrivate.checked;
+    var description = StringValidations.escapeCharacters(this.refs.textDescription.value.toString()) ;
+    var requestedBy = StringValidations.escapeCharacters("buddhik@wso2.com") ;
 
-      this.setState(function(){
-        return{
-          displayFieldset:'none',
-          displayLoader:'block'
-        }
-      })
+    var data = [
+      repositoryName,
+      language,
+      buildable,
+      nexus,
+      isPrivate,
+      description,
+      groupId,
+      license,
+      team,
+      organization,
+      repositoryType,
+      requestedBy
+    ];   
+
+    var mailData = [
+      repositoryName,
+      languageText,
+      buildable,
+      nexus,
+      isPrivate,
+      description,
+      groupId,
+      licenseText,
+      teamText,
+      organizationText,
+      repositoryTypeText,
+      requestedBy
+    ]; 
+  
+
+    this.setState(function(){
+      return{
+        displayFieldset:'none',
+        displayLoader:'block'
+      }
+    })
+    
+    GitHubRepositoryCreation.startProcess(data,mailData,this.state.mainUsers).then(function(response) {
       
-      GitHubRepositoryCreation.startProcess(data,mailData,this.state.mainUsers).then(function(response) {
-        
-        if(response.data.completed === false){
-          try{
-              
-              GitHubRepositoryTask.getTasks().then(function(responseTasks){
-              var i = 0;
-              var taskArraylength = responseTasks.data.length;
+      if(response.data.completed === false){
+        try{
+            
+            GitHubRepositoryTask.getTasks().then(function(responseTasks){
+            var i = 0;
+            var taskArraylength = responseTasks.data.length;
 
-              var task;
-                for(i=0;i<taskArraylength;i++){
-                    task = responseTasks.data[i];
-                    if(task.processInstanceId === response.data.id){
-                        LM_REPOSITORY.updateTaskAndProcessIds([task.id,response.data.id,repoName]);
-                        this.setState(function(){
-                          return{
-                            
-                            displayLoader:'none',
-                            displaySuceessBox:'block'
-                          }
-                        });
-                        break;
-                    }
-                }
-              }.bind(this));
-
-          }catch(err){
-            this.setState(function(){
-              return{
-                
-                displayLoader:'none',
-                displayErrorBox:'block'
+            var task;
+              for(i=0;i<taskArraylength;i++){
+                  task = responseTasks.data[i];
+                  if(task.processInstanceId === response.data.id){
+                      LM_REPOSITORY.updateTaskAndProcessIds([task.id,response.data.id,repoName]);
+                      this.setState(function(){
+                        return{
+                          
+                          displayLoader:'none',
+                          displaySuceessBox:'block'
+                        }
+                      });
+                      break;
+                  }
               }
-            });
-          }
-        }else{
+            }.bind(this));
+
+        }catch(err){
           this.setState(function(){
             return{
               
@@ -305,19 +296,28 @@ class RequestRepository extends Component{
             }
           });
         }
+      }else{
         this.setState(function(){
           return{
-           
-            displayLoader:'none'
+            
+            displayLoader:'none',
+            displayErrorBox:'block'
           }
-        });         
+        });
+      }
+      this.setState(function(){
+        return{
+          
+          displayLoader:'none'
+        }
+      });         
     }.bind(this));
      
     
       
       
       
-    }
+  }
     /* submit function ends*/
 
   render(){
