@@ -184,6 +184,31 @@ service<http> MainService {
     }
 
     @http:POST {}
+    @http:Path {value:"/createNexusStagingProfile"}
+    resource createNexusStagingProfileResource (message m) {
+
+        message response = {};
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        json requestJson;
+        json responseJson;
+        string groupId;
+
+        if(services:getIsValidUser()){
+
+            requestJson = messages:getJsonPayload(m);
+            groupId = jsons:toString(requestJson.groupId);
+            responseJson = services:createNexusStagingProfile(groupId);
+            messages:setJsonPayload(response,responseJson);
+
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        reply response;
+
+    }
+
+    @http:POST {}
     @http:Path {value:"/createJenkins"}
     resource createJenkins (message m) {
 
@@ -616,6 +641,7 @@ service<http> MainService {
         boolean responseValue = services:validateUser(webToken);
         json responseJson = {"isValid":responseValue};
         messages:setJsonPayload(response,responseJson);
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -628,6 +654,7 @@ service<http> MainService {
         boolean responseValue = services:isAdminUser(webToken);
         json responseJson = {"isAdmin":responseValue};
         messages:setJsonPayload(response,responseJson);
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 

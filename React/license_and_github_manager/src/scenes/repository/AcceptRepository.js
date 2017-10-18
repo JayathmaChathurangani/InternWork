@@ -211,6 +211,15 @@ class AcceptRepository extends Component{
   
   /* Validation functions end*/
 
+  /** show error box function starts */
+  showErrorBox(){
+    this.setState(function(){
+      return{
+        showErrorBox:'block'
+      }
+    });
+  }
+  /** show error box function ends */
   /* accept request function start */
 
     acceptRequest(e){
@@ -428,7 +437,7 @@ class AcceptRepository extends Component{
             ((this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY !== null)?
             (" accepted by "+this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY):
             (" rejected by "+this.state.repositoryDetails.REPOSITORY_DEACTIVATED_BY+" because of " +this.state.repositoryDetails.REPOSITORY_DEACTIVATED_REASON)):
-            " "
+            this.showErrorBox.bind(this)
             }</strong> 
         </div>
 

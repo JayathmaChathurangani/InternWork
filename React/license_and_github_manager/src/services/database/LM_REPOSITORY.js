@@ -22,9 +22,11 @@ class LM_REPOSITORY extends Component{
             'REPOSITORY_REQUEST_BY'
         ];
         var requestData = {"tableName":"LM_REPOSITORY","columns":columns,"data":data};
+        var headersData = {headers:{'Access-Control-Allow-Origin':"*"}};
         return axios.post(
             url,
-            requestData
+            requestData,
+            headersData
         )
         .then(function (response) {
             
@@ -45,9 +47,11 @@ class LM_REPOSITORY extends Component{
     updateTaskAndProcessIds(data){
         var url = MainData.ballerinaDatabaseURL + "repository/updateBpmnAndTaskIds";
         var requestData = {"data":data};
+        var headersData = {headers:{'Access-Control-Allow-Origin':"*"}};
         return axios.post(
             url,
-            requestData
+            requestData,
+            headersData
         )
         .then(function (response) {
             
@@ -64,9 +68,11 @@ class LM_REPOSITORY extends Component{
     updateRejectDetails(data){
         var url = MainData.ballerinaDatabaseURL + "repository/updateRejectDetails";
         var requestData = {"data":data};
+        var headersData = {headers:{'Access-Control-Allow-Origin':"*"}};
         return axios.post(
             url,
-            requestData
+            requestData,
+            headersData
         )
         .then(function (response) {
             
@@ -83,9 +89,11 @@ class LM_REPOSITORY extends Component{
     updateAll(data,repoId){
         var url = MainData.ballerinaDatabaseURL + "repository/updateAll";
         var requestData = {"data":data,"repoId":repoId};
+        var headersData = {headers:{'Access-Control-Allow-Origin':"*"}};
         return axios.post(
             url,
-            requestData
+            requestData,
+            headersData
         )
         .then(function (response) {
             
@@ -102,9 +110,10 @@ class LM_REPOSITORY extends Component{
 
     selectDataFromName(data){
         var url = MainData.ballerinaDatabaseURL + "repository/selectFromName?name=" + data;
-        
+        var headersData = {headers:{'Access-Control-Allow-Origin':"*"}};
         return axios.get(
-            url
+            url,
+            headersData
         )
         .then(function (response) {
             
@@ -118,9 +127,10 @@ class LM_REPOSITORY extends Component{
 
     selectDataFromRequestBy(data){
         var url = MainData.ballerinaDatabaseURL + "repository/selectFromRequestByAndWaiting?requestBy=" + data;
-        
+        var headersData = {headers:{'Access-Control-Allow-Origin':"*"}};
         return axios.get(
-            url
+            url,
+            headersData
             
         )
         .then(function (response) {

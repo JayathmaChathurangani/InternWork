@@ -5,6 +5,9 @@ import ballerina.net.http;
 import ballerina.lang.errors;
 import ballerina.lang.system;
 import ballerina.lang.xmls;
+import ballerina.lang.files;
+import ballerina.lang.blobs;
+import ballerina.lang.jsons;
 
 
 
@@ -85,4 +88,50 @@ function createNexusRepositoryTarget(string id,string name,string contentClass,s
     json returnJson = {"responseType":"Done","responseMessage":""};
     return returnJson;
 
+}
+
+function createNexusStagingProfile(string groupId)(json){
+    string fileName;
+    string xmlString;
+    string requestNexusUrl;
+    string authenticateToken;
+    files:File issueFile;
+    xmls:Options xmlOption = {};
+    jsons:Options jsonOptions = {};
+    xml readXml;
+    json readJson;
+    json returnJson;
+    message requestNexusMessage = {};
+
+    try{
+
+        fileName = "./conf/nexusStagingProfileConf.xml";
+        issueFile = {path:fileName};
+        files:open(issueFile,"r");
+        var content, _ = files:read(issueFile, 100000);
+
+        xmlString = blobs:toString(content, "utf-8");
+        readXml = xmls:parse(xmlString);
+        readJson = xmls:toJSON(readXml,xmlOption);
+        readJson.profileRequest.data.name = groupId;
+        readJson.profileRequest.data.repositoryTargetId = groupId;
+        readXml = jsons:toXML(readJson,jsonOptions);
+        authenticateToken = "Basic " + system:getEnv("NexusToken");
+        system:println(readXml);
+        messages:setXmlPayload(requestNexusMessage,readXml);
+        messages:setHeader(requestNexusMessage,"Content-Type","application/xml");
+        messages:setHeader(requestNexusMessage,"Authorization",authenticateToken);
+        http:ClientConnector nexusClientConnector = create http:ClientConnector(nexusApiUrl);
+        requestNexusUrl = "nexus/service/local/staging/profiles";
+        message responseNexus = nexusClientConnector.post(requestNexusUrl,requestNexusMessage);
+        returnJson = {"responseType":"Done","responseMessage":""};
+
+    }catch(errors:Error err){
+        returnJson = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
+
+
+    }
+
+    return returnJson;
 }

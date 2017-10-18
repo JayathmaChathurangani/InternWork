@@ -22,60 +22,76 @@
       <file leaf-file-name="MainService.bal" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MainService.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
-              <caret line="464" column="80" lean-forward="false" selection-start-line="464" selection-start-column="51" selection-end-line="464" selection-end-column="80" />
+            <state relative-caret-position="276">
+              <caret line="656" column="71" lean-forward="false" selection-start-line="656" selection-start-column="71" selection-end-line="656" selection-end-column="71" />
               <folding>
+                <element signature="e#269#1517#0" expanded="false" />
                 <element signature="e#1523#2284#0" expanded="false" />
                 <element signature="e#2290#3069#0" expanded="false" />
+                <element signature="e#3075#3988#0" expanded="false" />
                 <element signature="e#3994#4491#0" expanded="false" />
                 <element signature="e#4497#5180#0" expanded="false" />
                 <element signature="e#5186#6180#0" expanded="false" />
-                <element signature="e#6186#7034#0" expanded="false" />
-                <element signature="e#7452#9821#0" expanded="false" />
-                <element signature="e#9827#11029#0" expanded="false" />
-                <element signature="e#11035#12234#0" expanded="false" />
-                <element signature="e#12240#14501#0" expanded="false" />
-                <element signature="e#14507#14971#0" expanded="false" />
-                <element signature="e#14977#15494#0" expanded="false" />
-                <element signature="e#15500#16002#0" expanded="false" />
-                <element signature="e#16581#17073#0" expanded="false" />
-                <element signature="e#17079#17534#0" expanded="false" />
-                <element signature="e#17540#18010#0" expanded="false" />
-                <element signature="e#18016#18476#0" expanded="false" />
-                <element signature="e#18482#18928#0" expanded="false" />
-                <element signature="e#18934#19395#0" expanded="false" />
-                <element signature="e#19401#19865#0" expanded="false" />
-                <element signature="e#19871#20467#0" expanded="false" />
-                <element signature="e#20473#20950#0" expanded="false" />
-                <element signature="e#20956#21431#0" expanded="false" />
+                <element signature="e#6186#6918#0" expanded="false" />
+                <element signature="e#6924#7772#0" expanded="false" />
+                <element signature="e#7778#8183#0" expanded="false" />
+                <element signature="e#8190#10559#0" expanded="false" />
+                <element signature="e#10565#11767#0" expanded="false" />
+                <element signature="e#11773#12972#0" expanded="false" />
+                <element signature="e#12978#15239#0" expanded="false" />
+                <element signature="e#15245#15709#0" expanded="false" />
+                <element signature="e#15715#16232#0" expanded="false" />
+                <element signature="e#16238#16740#0" expanded="false" />
+                <element signature="e#16746#17313#0" expanded="false" />
+                <element signature="e#17319#17811#0" expanded="false" />
+                <element signature="e#17817#18272#0" expanded="false" />
+                <element signature="e#18278#18748#0" expanded="false" />
+                <element signature="e#18754#19214#0" expanded="false" />
+                <element signature="e#19220#19666#0" expanded="false" />
+                <element signature="e#19672#20133#0" expanded="false" />
+                <element signature="e#20139#20603#0" expanded="false" />
+                <element signature="e#20609#21205#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db.bal" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/database/db.bal">
+      <file leaf-file-name="productJenkinsConf.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/conf/productJenkinsConf.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="40">
-              <caret line="302" column="48" lean-forward="false" selection-start-line="302" selection-start-column="9" selection-end-line="302" selection-end-column="48" />
-              <folding>
-                <element signature="e#192#568#1" expanded="false" />
-                <element signature="e#570#3302#1" expanded="false" />
-                <element signature="e#3304#4361#1" expanded="false" />
-                <element signature="e#4363#5302#1" expanded="false" />
-                <element signature="e#5304#8298#1" expanded="false" />
-                <element signature="e#8300#8924#1" expanded="false" />
-                <element signature="e#8926#10269#1" expanded="false" />
-                <element signature="e#13254#14649#1" expanded="false" />
-                <element signature="e#14651#15280#1" expanded="false" />
-                <element signature="e#15282#15958#1" expanded="false" />
-                <element signature="e#15960#16653#1" expanded="false" />
-                <element signature="e#16655#17330#1" expanded="false" />
-                <element signature="e#17332#18013#1" expanded="false" />
-                <element signature="e#18015#18753#1" expanded="false" />
-                <element signature="e#18755#19463#1" expanded="false" />
-                <element signature="e#19465#20398#1" expanded="false" />
-              </folding>
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nexusStagingProfileConf.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/conf/nexusStagingProfileConf.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="7" column="28" lean-forward="false" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="otherJenkinsConf.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/conf/otherJenkinsConf.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="17" column="10" lean-forward="true" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nexusServices.bal" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/services/nexusServices.bal">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="703">
+              <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -156,13 +172,14 @@
         <option value="$PROJECT_DIR$/conf/normalJenkinsConf.xml" />
         <option value="$PROJECT_DIR$/conf/carbonJenkinsConf.xml" />
         <option value="$PROJECT_DIR$/services/jenkinServices.bal" />
-        <option value="$PROJECT_DIR$/services/nexusServices.bal" />
         <option value="$PROJECT_DIR$/conf/configData.bal" />
         <option value="$PROJECT_DIR$/services/authenticateService.bal" />
         <option value="$PROJECT_DIR$/services/gitHubService.bal" />
         <option value="$PROJECT_DIR$/services/strings.bal" />
-        <option value="$PROJECT_DIR$/src/MainService.bal" />
         <option value="$PROJECT_DIR$/database/db.bal" />
+        <option value="$PROJECT_DIR$/conf/nexusStagingProfileConf.xml" />
+        <option value="$PROJECT_DIR$/services/nexusServices.bal" />
+        <option value="$PROJECT_DIR$/src/MainService.bal" />
       </list>
     </option>
   </component>
@@ -189,7 +206,8 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -221,8 +239,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -373,7 +390,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="121" y="16" width="1559" height="912" extended-state="6" />
+    <frame x="43" y="-4" width="1557" height="904" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.4950364" order="6" side_tool="false" content_ui="tabs" />
@@ -382,18 +400,18 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.13964263" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32903227" sideWeight="0.8603574" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32774192" sideWeight="0.49238914" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46967742" sideWeight="0.8603574" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32947233" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24487095" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25148907" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5832258" sideWeight="0.77829254" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5832258" sideWeight="0.77829254" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -446,12 +464,11 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="34" />
+      <option name="time" value="35" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/gitHubService.bal" />
     <entry file="file://$PROJECT_DIR$/src/databaseService.bal" />
     <entry file="file://$PROJECT_DIR$/src/mailService.bal" />
     <entry file="file://$PROJECT_DIR$/src/gitHubService.bal" />
@@ -514,22 +531,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/conf/otherJenkinsConf.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="17" column="10" lean-forward="true" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/conf/productJenkinsConf.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/conf/carbonJenkinsConf.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -539,32 +540,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/services/mainData.bal" />
-    <entry file="file://$PROJECT_DIR$/services/nexusServices.bal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="45" lean-forward="false" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="45" />
-          <folding>
-            <element signature="e#217#3100#1" expanded="false" />
-            <element signature="e#3102#4317#1" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/conf/configData.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
           <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/services/jenkinServices.bal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="17" lean-forward="false" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
-          <folding>
-            <element signature="e#276#1930#1" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -603,7 +582,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/database/db.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
+        <state relative-caret-position="1116">
           <caret line="302" column="48" lean-forward="false" selection-start-line="302" selection-start-column="9" selection-end-line="302" selection-end-column="48" />
           <folding>
             <element signature="e#192#568#1" expanded="false" />
@@ -626,34 +605,77 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/conf/productJenkinsConf.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/services/jenkinServices.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-101">
+          <caret line="24" column="8" lean-forward="false" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conf/otherJenkinsConf.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="10" lean-forward="true" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/services/nexusServices.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="703">
+          <caret line="127" column="0" lean-forward="false" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conf/nexusStagingProfileConf.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="28" lean-forward="false" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/MainService.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="464" column="80" lean-forward="false" selection-start-line="464" selection-start-column="51" selection-end-line="464" selection-end-column="80" />
+        <state relative-caret-position="276">
+          <caret line="656" column="71" lean-forward="false" selection-start-line="656" selection-start-column="71" selection-end-line="656" selection-end-column="71" />
           <folding>
+            <element signature="e#269#1517#0" expanded="false" />
             <element signature="e#1523#2284#0" expanded="false" />
             <element signature="e#2290#3069#0" expanded="false" />
+            <element signature="e#3075#3988#0" expanded="false" />
             <element signature="e#3994#4491#0" expanded="false" />
             <element signature="e#4497#5180#0" expanded="false" />
             <element signature="e#5186#6180#0" expanded="false" />
-            <element signature="e#6186#7034#0" expanded="false" />
-            <element signature="e#7452#9821#0" expanded="false" />
-            <element signature="e#9827#11029#0" expanded="false" />
-            <element signature="e#11035#12234#0" expanded="false" />
-            <element signature="e#12240#14501#0" expanded="false" />
-            <element signature="e#14507#14971#0" expanded="false" />
-            <element signature="e#14977#15494#0" expanded="false" />
-            <element signature="e#15500#16002#0" expanded="false" />
-            <element signature="e#16581#17073#0" expanded="false" />
-            <element signature="e#17079#17534#0" expanded="false" />
-            <element signature="e#17540#18010#0" expanded="false" />
-            <element signature="e#18016#18476#0" expanded="false" />
-            <element signature="e#18482#18928#0" expanded="false" />
-            <element signature="e#18934#19395#0" expanded="false" />
-            <element signature="e#19401#19865#0" expanded="false" />
-            <element signature="e#19871#20467#0" expanded="false" />
-            <element signature="e#20473#20950#0" expanded="false" />
-            <element signature="e#20956#21431#0" expanded="false" />
+            <element signature="e#6186#6918#0" expanded="false" />
+            <element signature="e#6924#7772#0" expanded="false" />
+            <element signature="e#7778#8183#0" expanded="false" />
+            <element signature="e#8190#10559#0" expanded="false" />
+            <element signature="e#10565#11767#0" expanded="false" />
+            <element signature="e#11773#12972#0" expanded="false" />
+            <element signature="e#12978#15239#0" expanded="false" />
+            <element signature="e#15245#15709#0" expanded="false" />
+            <element signature="e#15715#16232#0" expanded="false" />
+            <element signature="e#16238#16740#0" expanded="false" />
+            <element signature="e#16746#17313#0" expanded="false" />
+            <element signature="e#17319#17811#0" expanded="false" />
+            <element signature="e#17817#18272#0" expanded="false" />
+            <element signature="e#18278#18748#0" expanded="false" />
+            <element signature="e#18754#19214#0" expanded="false" />
+            <element signature="e#19220#19666#0" expanded="false" />
+            <element signature="e#19672#20133#0" expanded="false" />
+            <element signature="e#20139#20603#0" expanded="false" />
+            <element signature="e#20609#21205#0" expanded="false" />
           </folding>
         </state>
       </provider>

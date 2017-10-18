@@ -6,7 +6,7 @@ mail1 = "buddhik@wso2.com"
 mail2 = "ishika@wso2.com"
 mail3 = "b.wathsala.bw@gmail.com"
 
-mail = mail2
+mail = mail3
 print(mail)
 data = {
   "iss": "wso2.org/products/appm",
