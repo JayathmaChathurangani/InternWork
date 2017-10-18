@@ -43,6 +43,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -65,6 +66,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -87,6 +89,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -111,6 +114,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -127,6 +131,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -149,6 +154,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
 
     }
@@ -179,6 +185,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
 
     }
@@ -204,6 +211,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
 
     }
@@ -231,6 +239,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -248,6 +257,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -307,6 +317,7 @@ service<http> MainService {
 
 
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -342,6 +353,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -377,6 +389,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -435,6 +448,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -451,6 +465,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -467,6 +482,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -483,6 +499,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -499,6 +516,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -515,6 +533,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -531,6 +550,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -547,6 +567,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -563,6 +584,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -579,6 +601,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -595,6 +618,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -611,6 +635,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
@@ -629,6 +654,7 @@ service<http> MainService {
             messages:setJsonPayload(response,inValidUserJson);
         }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
