@@ -8,15 +8,17 @@ import ValidateUser from '../services/authentication/ValidateUser';
 
 class Root extends Component{
 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
+    
     this.state = {
       isAdminUser: null,
       isValidUser:null,
       displayChildren:'block',
       displayError:'none',
       displayNav:'block',
-      displayHeader:'block'
+      displayHeader:'block',
+      userDetails:[{"isValid":false,"userDetails":null}]
     }
     
     
@@ -30,7 +32,8 @@ class Root extends Component{
       if(response.isValid){
         this.setState(function(){
           return {
-            isValidUser:response.isValid
+            isValidUser:response.isValid,
+            userDetails:response
           }
         });
       }else{
@@ -70,6 +73,8 @@ class Root extends Component{
         
   
     }.bind(this));
+
+   
   }
   
   render(){
@@ -77,9 +82,11 @@ class Root extends Component{
     return(
 
       <div className="container-fluid">
+        
+       
         <div className="row" id="header">
           <div className="col-md-12" style={{display:this.state.displayHeader}}>
-          {(this.state.isAdminUser === true)?<AdminHeader />:<AppHeader />}
+          {(this.state.isAdminUser === true)?<AdminHeader userDetails={this.state.userDetails}/>:<AppHeader userDetails={this.state.userDetails}/>}
             
           </div>
         

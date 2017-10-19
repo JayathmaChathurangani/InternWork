@@ -16,6 +16,8 @@ function setConnection(){
         string password = conf:databasePassword;
         map propertiesMap = {"jdbcUrl":dbURL, "username":username, "password":password,"maximumPoolSize":20};
         connection = create sql:ClientConnector(propertiesMap);
+        //sql:ConnectionProperties options = {};
+        //connection = create sql:ClientConnector("mysql",dbURL,3306,"licensemanager",username,password,options);
     }
 
 }
@@ -324,10 +326,13 @@ function repositorySelectFromRequestByAndWaiting(string requestBy)(message){
                         WHERE REPOSITORY_REQUEST_BY = ? AND REPOSITORY_ACCEPT IS NULL";
 
         sql:Parameter paraName = {sqlType:"varchar", value:requestBy};
+        system:println(requestBy);
+
         sql:Parameter[] parameterArray = [paraName];
 
         datatable responseDataFromDb = connection.select(query ,parameterArray);
         var resultJSON,_ = <json>responseDataFromDb;
+        system:println(resultJSON);
         messages:setJsonPayload(response,resultJSON);
 
 

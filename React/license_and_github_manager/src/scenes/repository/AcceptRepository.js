@@ -8,6 +8,7 @@ import Common from '../../services/github/Common';
 import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
 import StringValidations from '../../services/validations/StringValidations';
 import {Link} from 'react-router';
+import ValidateUser from '../../services/authentication/ValidateUser';
 import '../../App.css';
 
 
@@ -134,11 +135,24 @@ class AcceptRepository extends Component{
       this.refs.inputBuildable.value = response[0].REPOSITORY_BUILDABLE;
       this.refs.inputPrivate.value = response[0].REPOSITORY_PRIVATE;
       this.refs.textDescription.value = StringValidations.setStringToShow(response[0].REPOSITORY_DESCRIPTION);
-      console.log(StringValidations.setStringToShow(this.refs.textDescription.value) );
+      
       
     }.bind(this));
     /* get repository details from ID ends*/
     
+    /* store user detaills */
+    ValidateUser.getUserDetails().then(function(response){
+      
+      this.setState(function(){
+        return {
+          userDetails:response
+        }
+      });
+
+    }.bind(this));
+    
+    /* store user detaills ends*/
+
   }
    /* component will mount ends*/
 
@@ -186,7 +200,7 @@ class AcceptRepository extends Component{
         }
       });
     }
-    console.log(this.refs.inputGroupId.value);
+   
     
   }
   /* make group id required function ends*/
@@ -222,82 +236,82 @@ class AcceptRepository extends Component{
   /** show error box function ends */
   /* accept request function start */
 
-    acceptRequest(e){
-      e.preventDefault();
-      e.stopPropagation();
-      e.nativeEvent.stopImmediatePropagation();
+  acceptRequest(e){
+    e.preventDefault();
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
 
-      if (confirm("Are you sure to accept this repository request?") === false ) {
-        return false ;
-     }
-
-      var repositoryName =  StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString());
-      var repositoryType = this.refs.selectRepositoryType.value;
-      var organization = this.refs.selectOrganization.value;
-      var team = this.refs.selectTeam.value;
-      var license = this.refs.selectLicense.value;
-      var language =  this.refs.selectLanguage.value ;
-      var groupId =  StringValidations.escapeCharacters(this.refs.inputGroupId.value.toString());
-      var buildable = this.refs.inputBuildable.checked;
-      var nexus = this.refs.inputNexus.checked;
-      var isPrivate = this.refs.inputPrivate.checked;
-      var description =  StringValidations.escapeCharacters(this.refs.textDescription.value.toString());
-      var accept = true;
-      var acceptBy = "buddhi@wso2.com";
-
-      var data = [
-        repositoryName,
-        language,
-        buildable,
-        nexus,
-        isPrivate,
-        description,
-        groupId,
-        license,
-        team,
-        organization,
-        repositoryType,
-        accept,
-        acceptBy
-      ];  
-
-      
-      var variables = [
-        {
-          "name":"outputType",
-          "value":"Done"
-        },
-        {
-          "name":"repositoryId",
-          "value":this.state.repositoryDetails.REPOSITORY_ID
-        }
-
-      ];
-
-      try{
-        LM_REPOSITORY.updateAll(data,this.state.repositoryDetails.REPOSITORY_ID);
-        CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
-        this.setState(function(){
-          return{
-            displaySuceessBox:'block',
-            displayFieldset:'none',
-            displayErrorBox:'none'
-          }
-        })
-      }catch(err){
-        this.setState(function(){
-          return{
-            displaySuceessBox:'none',
-            displayFieldset:'none',
-            displayErrorBox:'block'
-          }
-        })
-      }
-      
-      
-  
-      
+    if (confirm("Are you sure to accept this repository request?") === false ) {
+      return false ;
     }
+
+    var repositoryName =  StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString());
+    var repositoryType = this.refs.selectRepositoryType.value;
+    var organization = this.refs.selectOrganization.value;
+    var team = this.refs.selectTeam.value;
+    var license = this.refs.selectLicense.value;
+    var language =  this.refs.selectLanguage.value ;
+    var groupId =  StringValidations.escapeCharacters(this.refs.inputGroupId.value.toString());
+    var buildable = this.refs.inputBuildable.checked;
+    var nexus = this.refs.inputNexus.checked;
+    var isPrivate = this.refs.inputPrivate.checked;
+    var description =  StringValidations.escapeCharacters(this.refs.textDescription.value.toString());
+    var accept = true;
+    var acceptBy = StringValidations.escapeCharacters(this.state.userDetails.userEmail);
+
+    var data = [
+      repositoryName,
+      language,
+      buildable,
+      nexus,
+      isPrivate,
+      description,
+      groupId,
+      license,
+      team,
+      organization,
+      repositoryType,
+      accept,
+      acceptBy
+    ];  
+
+    
+    var variables = [
+      {
+        "name":"outputType",
+        "value":"Done"
+      },
+      {
+        "name":"repositoryId",
+        "value":this.state.repositoryDetails.REPOSITORY_ID
+      }
+
+    ];
+
+    try{
+      LM_REPOSITORY.updateAll(data,this.state.repositoryDetails.REPOSITORY_ID);
+      CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
+      this.setState(function(){
+        return{
+          displaySuceessBox:'block',
+          displayFieldset:'none',
+          displayErrorBox:'none'
+        }
+      })
+    }catch(err){
+      this.setState(function(){
+        return{
+          displaySuceessBox:'none',
+          displayFieldset:'none',
+          displayErrorBox:'block'
+        }
+      })
+    }
+    
+    
+
+    
+  }
     /* accept request function ends */
 
     
@@ -422,7 +436,7 @@ class AcceptRepository extends Component{
 
           <div className="form-group">
             <div className="col-lg-10 col-lg-offset-2">
-            <Link to={"/root/rejectRepository?repositoryId="+this.state.repositoryId} ><button  className="btn btn-danger">Reject</button></Link>
+            <Link to={"/root/rejectRepository?repositoryId="+this.state.repositoryId}  ><button  className="btn btn-danger">Reject</button></Link>
               &nbsp;&nbsp;&nbsp;
               <button type="submit" className="btn btn-info" id="form-horizontal" disabled={this.state.buttonState} >Accept</button>
             </div>

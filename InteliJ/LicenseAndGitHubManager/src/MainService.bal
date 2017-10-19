@@ -16,6 +16,7 @@ service<http> MainService {
 
     @http:POST {}
     @http:Path {value:"/createRepositories"}
+
     resource createRepositories (message m) {
 
         message response = {};
@@ -661,28 +662,49 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/authentication/isValidUser"}
     resource authenticateIsValidUsersResource(message m){
+        system:println("call");
         message response = {};
         json requestJson = messages:getJsonPayload(m);
         string webToken = jsons:toString(requestJson.token);
-        boolean responseValue = services:validateUser(webToken);
-        json responseJson = {"isValid":responseValue};
+        json responseValue = services:validateUser(webToken);
+        json responseJson = {"isValid":responseValue.isValid,"userEmail":responseValue.userEmail};
         messages:setJsonPayload(response,responseJson);
-        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        messages:setHeader(response,"Access-Control-Allow-Origin","http://localhost:3000");
+        messages:setHeader(response,"Access-Control-Request-Headers","Content-Type, Authorization");
+        messages:setHeader(response,"Content-Type","application/json");
+        system:println(response);
         reply response;
     }
 
     @http:POST{}
     @http:Path {value:"/authentication/isAdminUser"}
     resource authenticateIsAdminUsersResource(message m){
+        system:println("call admin");
         message response = {};
         json requestJson = messages:getJsonPayload(m);
         string webToken = jsons:toString(requestJson.token);
-        boolean responseValue = services:isAdminUser(webToken);
-        json responseJson = {"isAdmin":responseValue};
+        json responseValue = services:isAdminUser(webToken);
+        json responseJson = {"isAdmin":responseValue.isAdmin,"userEmail":responseValue.userEmail};
         messages:setJsonPayload(response,responseJson);
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        system:println(response);
         reply response;
     }
+
+    @http:GET{}
+    @http:Path {value:"/authentication/getUserDetails"}
+    resource authenticateGetSessionDetails(message m){
+        system:println("call admin");
+        message response = {};
+
+        json responseJson = services:getSessionDetails();
+
+        messages:setJsonPayload(response,responseJson);
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        system:println(response);
+        reply response;
+    }
+
 
 
 }

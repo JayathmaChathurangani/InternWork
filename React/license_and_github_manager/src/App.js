@@ -13,7 +13,10 @@ import LoginError from './scenes/common/LoginError';
 import RequestComponent from './scenes/component/RequestComponent';
 import ShowComponent from './scenes/component/ShowComponent';
 
+
 class App extends Component {
+
+
   render() {
     return (
       <Router history={browserHistory}>
@@ -30,7 +33,7 @@ class App extends Component {
           {/* Request routes start */}
           <Route path={"requestRepository"} component={RequestRepository}></Route>
           <Route path={"acceptRepository"} component={AcceptRepository}></Route>
-          <Route path={"rejectRepository"} component={RejectRepository}></Route>
+          <Route path={"rejectRepository"} component={RejectRepository} ></Route>
           <Route path={"otherRepository"} component={OtherRepository}></Route>
 
           {/* Request routes ends */}

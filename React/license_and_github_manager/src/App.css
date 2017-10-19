@@ -51,8 +51,14 @@
      height: 710px !important;
    }
 
-   #showBpmnImage{
-     height: 265px !important;
+   #pendingRequestsImage{
+     height: 300px !important;
+     width: 2500px !important;
+   }
+
+   #pendingRequestsPanelBody{
+     padding: 0px !important;
+     height: 300px !important;
    }
 
 }

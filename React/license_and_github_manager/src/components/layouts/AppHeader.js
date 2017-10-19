@@ -3,21 +3,23 @@ import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import {Link} from 'react-router';
 import logo from '../../assets/images/logo.svg';
 import '../../App.css'
+import ValidateUser from '../../services/authentication/ValidateUser';
+
 class AppHeader extends Component{
   /* constructor*/
   constructor(){
     super();
     this.state = {
-      pendingRequests:0
+      pendingRequests:0,
+      userDetails:[]
     }
   }
    /* constructor ends*/
+  setPendingRequests(requestBy){
 
-  /* component did mount */
-  componentDidMount(){
-    var requestBy = "buddhik@wso2.com";
     /*get all number of requests from database*/
     LM_REPOSITORY.selectDataFromRequestBy(requestBy).then(function(response){
+      
       this.setState(function(){
         return {
           pendingRequests:response.length
@@ -27,7 +29,23 @@ class AppHeader extends Component{
     /*get all number of requests from database*/
 
   }
-  /* component did mount ends */
+  /* component will mount */
+  componentWillMount(){
+    
+    /* store user detaills */
+    ValidateUser.isValidUser().then(function(response){
+      
+        this.setState(function(){
+          return {
+            userDetails:response
+          }
+        });
+        this.setPendingRequests(response.userEmail)
+    }.bind(this));
+    /* store user detaills ends*/
+
+  }
+  /* component will mount ends */
   render(){
 
     return(

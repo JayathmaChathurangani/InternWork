@@ -1,20 +1,23 @@
 import React,{Component} from 'react';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
-import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
+import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreation';
 import {Link} from 'react-router';
 import '../../App.css';
+import ValidateUser from '../../services/authentication/ValidateUser';
 
 class RejectRepository extends Component{
   
   constructor(props){
     super(props);
+    
     this.state = {
         repositoryId:props.location.query.repositoryId,
         repositoryDetails:null,
         displayFieldset:'block',
         displayAlrearyAccept:'none',
         displayErrorBox:'none',
-        displaySuceessBox:'none'
+        displaySuceessBox:'none',
+        userDetails:[]
     }   
   }
 
@@ -46,6 +49,16 @@ class RejectRepository extends Component{
       });
     }.bind(this));
     /* get repository details from ID ends*/
+
+    ValidateUser.getUserDetails().then(function(response){
+      
+      this.setState(function(){
+        return {
+          userDetails:response
+        }
+      });
+
+    }.bind(this));
   }
 
   rejectRequest(e){
@@ -58,7 +71,7 @@ class RejectRepository extends Component{
    }
 
     var reasonForRejecting = this.refs.textReasonForRejecting.value.toString();
-    var rejectBy = "buddhi@wso2.com";
+    var rejectBy = this.state.userDetails.userEmail;
 
     var data = [
       rejectBy,
@@ -77,7 +90,7 @@ class RejectRepository extends Component{
 
     try{
       LM_REPOSITORY.updateRejectDetails(data);
-      CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
+      GitHubRepositoryCreation.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
       this.setState(function(){
         return{
           displaySuceessBox:'block',

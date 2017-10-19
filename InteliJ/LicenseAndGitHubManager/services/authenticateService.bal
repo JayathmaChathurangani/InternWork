@@ -7,10 +7,11 @@ import ballerina.lang.jsons;
 import ballerina.lang.time;
 import database;
 import ballerina.lang.errors;
+import ballerina.lang.system;
 
 http:Session userSession;
 
-function validateUser(string webToken)(boolean isValid){
+function validateUser(string webToken)(json responseJson){
 
     string email = "";
     string epocTimeString = "";
@@ -20,7 +21,10 @@ function validateUser(string webToken)(boolean isValid){
     int currentTimeInt;
     json decodedJson;
     message sessionMessage = {};
+    boolean isValid = false;
+
     try{
+        responseJson = {"isValid":false,"userEmail":""};
         webTokenArray= strings:split(webToken,"\\.");
         dencodedString = utils:base64decode(webTokenArray[1]);
         decodedJson = jsons:parse(dencodedString);
@@ -37,33 +41,39 @@ function validateUser(string webToken)(boolean isValid){
             http:setAttribute(userSession,"isValid",isValid);
             http:setAttribute(userSession,"userEmail",email);
             http:setAttribute(userSession,"loginTime",epocTime);
-
+            responseJson = {"isValid":isValid,"userEmail":email};
 
         }else{
             userSession = null;
             isValid = false;
+            responseJson = {"isValid":isValid,"userEmail":""};
 
         }
     }catch(errors:Error err){
         isValid = false;
-
+        responseJson = {"isValid":isValid,"userEmail":""};
     }
+    system:println(responseJson);
+
     return;
 
 }
 
-function isAdminUser(string webToken)(boolean isAdmin){
+function isAdminUser(string webToken)(json responseJson){
 
     string email = "";
     string[] webTokenArray;
     string dencodedString;
     json decodedJson;
     json returnJson;
+    json isValidJson;
     boolean isAdminFromDb = false;
-
+    boolean isValid = false;
     try{
-        if(!validateUser(webToken)){
-            isAdmin = false;
+        isValidJson = validateUser(webToken);
+        isValid,_ = <boolean>jsons:toString(isValidJson.isValid);
+        if(!isValid){
+            responseJson = {"isAdmin":false,"userEmail":""};
             return;
         }
 
@@ -75,18 +85,21 @@ function isAdminUser(string webToken)(boolean isAdmin){
         returnJson = database:userCheckAdminUsers(email);
         isAdminFromDb,_ = <boolean>jsons:toString(returnJson.isAdmin);
         if(isAdminFromDb){
-            isAdmin = true;
-            http:setAttribute(userSession,"isValid",isAdmin);
+            responseJson = {"isAdmin":true,"userEmail":email};
+            http:setAttribute(userSession,"isValid",true);
 
         }else{
-            isAdmin = false;
+            responseJson = {"isAdmin":false,"userEmail":""};
+
 
         }
 
     }catch(errors:Error err){
-        isAdmin = false;
+        responseJson = {"isAdmin":false,"userEmail":""};
+
 
     }
+    system:println(responseJson);
     return;
 }
 
@@ -118,4 +131,15 @@ function getIsValidUser ()(boolean returnIsValid)  {
         return;
     }
 
+}
+
+function getSessionDetails()(json sessionDetails){
+    string email;
+
+    if(userSession != null){
+        email,_ = (string) http:getAttribute(userSession,"userEmail");
+        sessionDetails = {"userEmail":email};
+    }
+
+    return;
 }

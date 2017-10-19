@@ -9,15 +9,16 @@ import Common from '../../services/github/Common';
 import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreation';
 import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
 import StringValidations from '../../services/validations/StringValidations';
+import ValidateUser from '../../services/authentication/ValidateUser';
 import {Link} from 'react-router';
 import '../../App.css';
 
 
 class RequestRepository extends Component{
   
-  constructor(){
-    super();
-   
+  constructor(props){
+    super(props);
+    
     this.state = {
       mainUsers:[],
       languages:[],
@@ -32,7 +33,8 @@ class RequestRepository extends Component{
       displaySuceessBox:'none',
       displayErrorBox:'none',
       groupIdInputRequired:false,
-      groupIdInputSpan:" "
+      groupIdInputSpan:" ",
+      userDetails:[]
     }
   }
 
@@ -107,7 +109,20 @@ class RequestRepository extends Component{
     }.bind(this));
     /* get all license from database*/
 
+    /* store user detaills */
+    ValidateUser.getUserDetails().then(function(response){
+      
+      this.setState(function(){
+        return {
+          userDetails:response
+        }
+      });
+
+    }.bind(this));
+    /* store user detaills ends*/
+
   }
+  
    /* component did mount ends*/
 
 
@@ -115,7 +130,7 @@ class RequestRepository extends Component{
   validateInputRepositoryName(e){
     var inputRepositoryName = this.refs.inputRepositoryName.value;
     
-    
+    console.log(this.props)
     LM_REPOSITORY.selectDataFromName(inputRepositoryName).then(function(response){
       if(response.length > 0){
         this.setState(function(){
@@ -221,7 +236,7 @@ class RequestRepository extends Component{
     var nexus = this.refs.inputNexus.checked;
     var isPrivate = this.refs.inputPrivate.checked;
     var description = StringValidations.escapeCharacters(this.refs.textDescription.value.toString()) ;
-    var requestedBy = StringValidations.escapeCharacters("buddhik@wso2.com") ;
+    var requestedBy = StringValidations.escapeCharacters(this.state.userDetails.userEmail) ;
 
     var data = [
       repositoryName,

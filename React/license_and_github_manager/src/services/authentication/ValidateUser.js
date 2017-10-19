@@ -58,6 +58,24 @@ class ValidateUser extends Component{
         browserHistory.push('/loginError');
         return;
     }
+
+    getUserDetails(){
+        
+        var url = MainData.ballerinaURL + "authentication/getUserDetails";
+        var headersData = {headers:{'Access-Control-Allow-Origin':"*"}};
+        return axios.get(
+            url,
+            headersData
+        )
+        .then(function (response) {
+            
+            
+            return response.data;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
 }
 
 export default (new ValidateUser());
