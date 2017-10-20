@@ -149,18 +149,13 @@ function setPullRequestTemplate(string organization,string repositoryName)(messa
 }
 
 function setReadMe(string organization,string repositoryName,string repositoryDescription)(message){
-    system:println(organization + repositoryName);
+
     message getAdminUserMessage = database:userSelectAdminUsers();
     json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
-    system:println(getAdminUserJson);
     string accessToken = system:getEnv("GitHubToken");
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/README.md?access_token=" + accessToken + "&content=base64&branch=master";
-
-
-    system:println("1."+repositoryDescription);
-    system:println("2." + correctString(repositoryDescription));
     string encodeString = utils:base64encode(correctString(repositoryDescription));
 
     message gitHubRequestMessage = {};
@@ -169,7 +164,7 @@ function setReadMe(string organization,string repositoryName,string repositoryDe
 
     http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
     message response = httpConnector.put(requestUrl,gitHubRequestMessage);
-    system:println(response);
+
     json responseMessage = {"responseType":"Done","responseMessage":"done"};
     messages:setJsonPayload(response,responseMessage);
     return response;

@@ -14,7 +14,7 @@ function setConnection(){
         string dbURL = conf:databaseUrl;
         string username = conf:databaseUserName;
         string password = conf:databasePassword;
-        map propertiesMap = {"jdbcUrl":dbURL, "username":username, "password":password,"maximumPoolSize":20};
+        map propertiesMap = {"jdbcUrl":dbURL, "username":username, "password":password,"maximumPoolSize":50};
         connection = create sql:ClientConnector(propertiesMap);
         //sql:ConnectionProperties options = {};
         //connection = create sql:ClientConnector("mysql",dbURL,3306,"licensemanager",username,password,options);

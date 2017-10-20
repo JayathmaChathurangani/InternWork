@@ -85,6 +85,14 @@ class RejectRepository extends Component{
       {
         "name":"outputType",
         "value":"Reject"
+      },
+      {
+        "name":"rejectBy",
+        "value":rejectBy
+      },
+      {
+        "name":"reasonForReject",
+        "value":reasonForRejecting
       }
     ];
 
@@ -117,7 +125,7 @@ class RejectRepository extends Component{
     return(
       <form className="form-horizontal" onSubmit={this.rejectRequest.bind(this)} >
         <h2 className="text-center">Request GitHub Repository Here</h2>
-        
+        {console.log(this.state.userDetails)}
         <fieldset style={{display:this.state.displayFieldset}} >
           <br/>
           <div className="form-group">

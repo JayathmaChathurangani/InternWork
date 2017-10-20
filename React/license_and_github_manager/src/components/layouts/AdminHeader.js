@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import {Link} from 'react-router';
-import logo from '../../assets/images/logo.svg';
+import logo from '../../assets/images/logo-inverse.svg';
 import '../../App.css'
 class AdminHeader extends Component{
   /* constructor*/
@@ -32,10 +32,10 @@ class AdminHeader extends Component{
 
     return(
       <nav className="navbar navbar-default">
-        <div className="container-fluid">
+        <div className="container-fluid" style={{'padding-left':'0px'}}>
           <div className="navbar-header">
             
-            <img id="logo" src={logo}  alt="wso2" />
+            <img id="logo" src={logo}  alt="wso2" /><strong style={{'color':'white','font-size':'25px','margin-top':'2px'}}>License and Repository Manager</strong>
           </div>
 
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

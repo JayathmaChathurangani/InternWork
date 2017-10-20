@@ -92,11 +92,11 @@ class Root extends Component{
         
         </div>
         <div className="row">
-          <div className="col-md-2" id="leftNav" style={{display:this.state.displayNav}}>
+          <div className="col-md-2" id="leftNav" style={{display:this.state.displayNav,'paddingLeft':'0px'}}>
             
           {(this.state.isAdminUser === true)?<AdminLeftNav />:<LeftNav />}
           </div>
-          <div className="col-md-10" style={{display:this.state.displayChildren}} >
+          <div className="col-md-10" style={{display:this.state.displayChildren,'height':'90vh','overflowY':'auto','overflowX':'hidden'}} >
             
             {
               this.props.children

@@ -104,7 +104,10 @@ Thank You.
           <activiti:expression><![CDATA[<p>
 Hi all!<br /><br />
 
-The repository request with following details is rejected. <br /><br />
+The repository request with following details is rejected. <br/><br/>
+<li><b>Rejected by</b>:&nbsp;${rejectBy}</li>
+<li><b>Reason for rejection</b>:&nbsp;${reasonForReject}</li>
+<br /><br />
 
 <li><b>${mailColumns[0]}</b>:&nbsp;${mailData[0]}</li>
 <li><b>${mailColumns[1]}</b>:&nbsp;${mailData[1]}</li>
@@ -543,7 +546,7 @@ Thank You.
         <omgdi:waypoint x="1695.0" y="254.0"></omgdi:waypoint>
         <omgdi:waypoint x="1740.0" y="200.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="12.0" width="100.0" x="1320.0" y="235.0"></omgdc:Bounds>
+          <omgdc:Bounds height="12.0" width="60.0" x="1320.0" y="235.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

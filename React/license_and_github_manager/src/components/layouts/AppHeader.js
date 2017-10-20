@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import {Link} from 'react-router';
-import logo from '../../assets/images/logo.svg';
+import logo from '../../assets/images/logo-inverse.svg';
 import '../../App.css'
 import ValidateUser from '../../services/authentication/ValidateUser';
 
@@ -53,7 +53,8 @@ class AppHeader extends Component{
         <div className="container-fluid">
           <div className="navbar-header">
             
-            <img id="logo" src={logo}  alt="wso2" />
+            <img id="logo" src={logo}  alt="wso2" /><strong style={{'color':'white','fontSize':'25px','marginTop':'2px'}}>License and Repository Manager</strong>
+
           </div>
 
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

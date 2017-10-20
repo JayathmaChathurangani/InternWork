@@ -7,7 +7,7 @@ import ballerina.lang.jsons;
 import ballerina.lang.time;
 import database;
 import ballerina.lang.errors;
-import ballerina.lang.system;
+
 
 http:Session userSession;
 
@@ -53,7 +53,7 @@ function validateUser(string webToken)(json responseJson){
         isValid = false;
         responseJson = {"isValid":isValid,"userEmail":""};
     }
-    system:println(responseJson);
+
 
     return;
 
@@ -99,7 +99,7 @@ function isAdminUser(string webToken)(json responseJson){
 
 
     }
-    system:println(responseJson);
+
     return;
 }
 
