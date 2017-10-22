@@ -5,7 +5,7 @@ import LM_ORGANIZATION from '../../services/database/LM_ORGANIZATION';
 import LM_TEAM from '../../services/database/LM_TEAM';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
 import Common from '../../services/github/Common';
-import CommGitHubRepositoryCreationon from '../../services/bpmn/GitHubRepositoryCreation';
+import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreation';
 import StringValidations from '../../services/validations/StringValidations';
 import {Link} from 'react-router';
 import ValidateUser from '../../services/authentication/ValidateUser';
@@ -290,7 +290,7 @@ class AcceptRepository extends Component{
 
     try{
       LM_REPOSITORY.updateAll(data,this.state.repositoryDetails.REPOSITORY_ID);
-      CommGitHubRepositoryCreationon.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
+      GitHubRepositoryCreation.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
       this.setState(function(){
         return{
           displaySuceessBox:'block',
@@ -413,7 +413,7 @@ class AcceptRepository extends Component{
                 <br/><br/>
                 <label>
                 {((this.state.repositoryDetails !== null))?<input onChange={this.makeGroupIdRequired.bind(this)} type="checkbox" ref="inputNexus" defaultChecked={this.state.repositoryDetails.REPOSITORY_NEXUS}/>:" "}
-                   Make Private Repository
+                  Create Nexus Repository
                 </label>
               </div>
             </div>

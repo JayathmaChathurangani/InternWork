@@ -14,6 +14,8 @@ string jenkinsApiUrl = "http://localhost:8080/";
 function createJenkinsJob(string jenkinsJobName,string jenkinsJobType)(json ){
     message responseJenkins = {};
     json response;
+    int createJobStatusCode;
+    int addJobStatusCode;
     try{
 
         string fileName = "./conf/" + jenkinsJobType + "JenkinsConf.xml";
@@ -32,13 +34,21 @@ function createJenkinsJob(string jenkinsJobName,string jenkinsJobType)(json ){
         messages:setHeader(requestJenkinsMessage,"Authorization",authenticateToken);
         http:ClientConnector jenkinsClientConnector = create http:ClientConnector(jenkinsApiUrl);
         responseJenkins = jenkinsClientConnector.post(requestJenkinsUrl,requestJenkinsMessage);
-
+        createJobStatusCode = http:getStatusCode(responseJenkins);
         requestJenkinsUrl = "view/" + jenkinsJobType +  "/addJobToView?name=" + jenkinsJobName;
         requestJenkinsMessage = {};
         messages:setHeader(requestJenkinsMessage,"Authorization",authenticateToken);
         responseJenkins = jenkinsClientConnector.post(requestJenkinsUrl,requestJenkinsMessage);
+        addJobStatusCode = http:getStatusCode(responseJenkins);
 
-        response = {"responseType":"Done","responseMessage":"done"};
+        if(createJobStatusCode == 200 && addJobStatusCode == 200){
+            system:println("done jenkins");
+            response = {"responseType":"Done","responseMessage":"done"};
+        }else{
+            system:println("fail jenkins");
+            response = {"responseType":"Error","responseMessage":"Jenkins Error"};
+        }
+
         return response;
     }catch(errors:Error err){
         response = {"responseType":"Error","responseMessage":err.msg};

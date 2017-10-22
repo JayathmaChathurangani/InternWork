@@ -19,7 +19,7 @@
       </extensionElements>
     </serviceTask>
     <userTask id="approveGitHubREpositoryUserTask" name="Waiting for approval" activiti:assignee="admin"></userTask>
-    <serviceTask id="createGitHubRepositoryRestTask" name="Create GitHub Repository" isForCompensation="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+    <serviceTask id="createGitHubRepositoryRestTask" name="Create GitHub Repository" activiti:async="true" activiti:exclusive="false" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
           <activiti:string>http://localhost:9090/createRepositories</activiti:string>
@@ -31,7 +31,7 @@
           <activiti:expression>{"repositoryId":${repositoryId}}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
-          <activiti:string>outputTypeGitHub:responseType,repoUpdatedDetails:repoUpdatedDetails,outputTypeJenkins:responseDefault,outputTypeNexus:responseDefault</activiti:string>
+          <activiti:string>outputTypeGitHub:responseType,repoUpdatedDetails:repoUpdatedDetails,outputTypeGitHubIssue:responseDefault,outputTypeGitHubPullRequest:responseDefault,outputTypeGitHubReadMe:responseDefault,outputTypeJenkins:responseDefault,outputTypeNexusStaging:responseDefault,outputTypeNexusRepoTarget:responseDefault</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -47,7 +47,7 @@
     <sequenceFlow id="flow13" name="Approve" sourceRef="exclusivegateway3" targetRef="createGitHubRepositoryRestTask">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputType == "Done"}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="mailtask1" name="Send e-mail for approval" isForCompensation="true" activiti:type="mail">
+    <serviceTask id="mailtask1" name="Send e-mail for approval" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${sendToList}]]></activiti:expression>
@@ -89,7 +89,7 @@ Thank You.
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputType == "Done"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="mailtask1" targetRef="approveGitHubREpositoryUserTask"></sequenceFlow>
-    <serviceTask id="mailtask2" name="Send Acknowledement" activiti:type="mail">
+    <serviceTask id="mailtask2" name="Send Acknowledement" activiti:async="true" activiti:exclusive="false" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${sendToList} ${data[11]}]]></activiti:expression>
@@ -159,6 +159,15 @@ The repository request with following details is accepted and successfully creat
 <b>${mailColumns[5]}</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}<br />
 
 <br/><br/>
+<strong>Process Status :&nbsp;</strong><br/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubIssue=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubPullRequest=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubReadMe=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeJenkins=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
+<br/><br/>
 Thank You.
 </p>]]></activiti:expression>
         </activiti:field>
@@ -171,7 +180,7 @@ Thank You.
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow32" sourceRef="mailtask4" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Set Issue Template" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+    <serviceTask id="servicetask1" name="Set Issue Template" activiti:async="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
           <activiti:string>http://localhost:9090/gitHub/setIssueTemplate</activiti:string>
@@ -187,7 +196,7 @@ Thank You.
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="Nexus Repository Target" activiti:async="true" isForCompensation="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+    <serviceTask id="servicetask2" name="Nexus Repository Target" activiti:async="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
           <activiti:string>http://localhost:9090/createNexusRepositoryTarget</activiti:string>
@@ -199,7 +208,7 @@ Thank You.
           <activiti:expression>{"groupId":"${repoUpdatedDetails.REPOSITORY_GROUPID}","contentClass":"maven2"}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
-          <activiti:string>outputTypeNexus:responseType</activiti:string>
+          <activiti:string>outputTypeNexusRepoTarget:responseType</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -226,7 +235,7 @@ Thank You.
     <sequenceFlow id="flow47" name="Create Nexus" sourceRef="inclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${repoUpdatedDetails.REPOSITORY_NEXUS == true && outputTypeGitHub == "Done"}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Set PR Template" isForCompensation="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+    <serviceTask id="servicetask4" name="Set PR Template" activiti:async="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
           <activiti:string>http://localhost:9090/gitHub/setPullRequestTemplate</activiti:string>
@@ -242,7 +251,7 @@ Thank You.
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Set ReadMe file" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+    <serviceTask id="servicetask5" name="Set ReadMe file" activiti:async="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
           <activiti:string>http://localhost:9090/gitHub/setReadMe</activiti:string>
@@ -290,13 +299,22 @@ The repository request with following details is accepted but error occurs durin
 <b>${mailColumns[5]}</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}<br />
 
 <br/><br/>
+<strong>Process Status :&nbsp;</strong><br/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubIssue=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubPullRequest=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubReadMe=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeJenkins=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
+<br/><br/>
 Thank You.
 </p>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow61" sourceRef="mailtask5" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Nexus Staging Profile" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+    <serviceTask id="servicetask7" name="Nexus Staging Profile" activiti:async="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
           <activiti:string>http://localhost:9090/createNexusStagingProfile</activiti:string>
@@ -308,7 +326,7 @@ Thank You.
           <activiti:expression>{"groupId":"${repoUpdatedDetails.REPOSITORY_GROUPID}","contentClass":"maven2"}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
-          <activiti:string>outputTypeNexus:responseType</activiti:string>
+          <activiti:string>outputTypeNexusStaging:responseType</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -327,10 +345,10 @@ Thank You.
     <sequenceFlow id="flow73" sourceRef="servicetask3" targetRef="inclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow74" sourceRef="servicetask7" targetRef="inclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow75" name="Repository Creation Fails" sourceRef="inclusivegateway3" targetRef="mailtask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Error" || outputTypeJenkins=="Error" || outputTypeNexus=="Error"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Error" || outputTypeGitHubIssue=="Error" || outputTypeGitHubPullRequest=="Error" || outputTypeGitHubReadMe=="Error" || outputTypeJenkins=="Error" || outputTypeNexusRepoTarget=="Error" || outputTypeNexusStaging == "Error"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow76" name="Repository Creation Successful" sourceRef="inclusivegateway3" targetRef="mailtask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Done" && outputTypeJenkins=="Done" && outputTypeNexus=="Done"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outputTypeGitHub == "Done" && outputTypeGitHubIssue=="Done" && outputTypeGitHubPullRequest=="Done" && outputTypeGitHubReadMe=="Done" && outputTypeJenkins=="Done" && outputTypeNexusRepoTarget=="Done" && outputTypeNexusStaging == "Done"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow77" name="Default Flow" sourceRef="inclusivegateway2" targetRef="inclusivegateway3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${repoUpdatedDetails.REPOSITORY_BUILDABLE == false && repoUpdatedDetails.REPOSITORY_NEXUS == false}]]></conditionExpression>

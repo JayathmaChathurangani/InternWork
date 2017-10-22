@@ -26,6 +26,7 @@ service<http> MainService {
         json finalResponseJson = {"responseType":"Done","responseMessage":" ","toSend":" "};
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
         json requestDataJson;
+        string responseType;
         int repositoryId;
 
         if(services:getIsValidUser()){
@@ -36,7 +37,13 @@ service<http> MainService {
             responseGitHubJson = services:createGitHubRepository(repositoryId);
             responseDataFromDb = database:repositorySelectFromId(repositoryId);
             responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
-            finalResponseJson = {"responseType":"Done","responseMessage":" ","responseDefault":"Done","repoUpdatedDetails":responseDataFromDbJson[0]};
+            responseType = jsons:toString(responseGitHubJson.responseType);
+            if(responseType == "Done"){
+                finalResponseJson = {"responseType":"Done","responseMessage":" ","responseDefault":"Done","repoUpdatedDetails":responseDataFromDbJson[0]};
+            }else{
+                finalResponseJson = {"responseType":"Error","responseMessage":" ","responseDefault":"Done","repoUpdatedDetails":responseDataFromDbJson[0]};
+            }
+            system:println(finalResponseJson);
             messages:setJsonPayload(response,finalResponseJson);
 
 
@@ -662,7 +669,7 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/authentication/isValidUser"}
     resource authenticateIsValidUsersResource(message m){
-        system:println("call");
+
         message response = {};
         json requestJson = messages:getJsonPayload(m);
         string webToken = jsons:toString(requestJson.token);
@@ -672,14 +679,14 @@ service<http> MainService {
         messages:setHeader(response,"Access-Control-Allow-Origin","http://localhost:3000");
         messages:setHeader(response,"Access-Control-Request-Headers","Content-Type, Authorization");
         messages:setHeader(response,"Content-Type","application/json");
-        system:println(response);
+
         reply response;
     }
 
     @http:POST{}
     @http:Path {value:"/authentication/isAdminUser"}
     resource authenticateIsAdminUsersResource(message m){
-        system:println("call admin");
+
         message response = {};
         json requestJson = messages:getJsonPayload(m);
         string webToken = jsons:toString(requestJson.token);
@@ -687,21 +694,23 @@ service<http> MainService {
         json responseJson = {"isAdmin":responseValue.isAdmin,"userEmail":responseValue.userEmail};
         messages:setJsonPayload(response,responseJson);
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
-        system:println(response);
+        messages:setHeader(response,"Content-Type","application/json");
+
         reply response;
     }
 
     @http:GET{}
     @http:Path {value:"/authentication/getUserDetails"}
     resource authenticateGetSessionDetails(message m){
-        system:println("call admin");
+
         message response = {};
 
         json responseJson = services:getSessionDetails();
 
         messages:setJsonPayload(response,responseJson);
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
-        system:println(response);
+        messages:setHeader(response,"Content-Type","application/json");
+
         reply response;
     }
 

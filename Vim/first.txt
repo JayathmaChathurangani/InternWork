@@ -1,1 +1,6 @@
 
+hello worlld helloe
+hi i'm new To Vim 
+'m intern student at WSO2
+I'm a Computer Science student at University of Colombo School of Computing
+

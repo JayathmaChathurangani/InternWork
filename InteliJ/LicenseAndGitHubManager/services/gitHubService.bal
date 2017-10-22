@@ -22,6 +22,7 @@ function createGitHubRepository(int repositoryId)(json ){
     json response;
     json responseDataFromDbJson;
     json requestDataJsonForGitHubApi;
+    json responseFromGitHubApiJson;
     string accessToken = "";
     string repositoryName;
     string repositoryLanguage;
@@ -30,6 +31,7 @@ function createGitHubRepository(int repositoryId)(json ){
     string repositoryOrganization;
     string repositoryPrivateString;
     string postUrl;
+    string headerValue;
     int repositoryTeam;
     boolean repositoryPrivate = false;
 
@@ -70,7 +72,21 @@ function createGitHubRepository(int repositoryId)(json ){
         messages:setJsonPayload(requestMessageForGitHub,requestDataJsonForGitHubApi);
         http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
         responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
-        response = {"responseType":"Done","responseMessage":"done"};
+        system:println("github create");
+        system:println(messages:getHeader(responseFromGitHubApi,"Status"));
+        headerValue = messages:getHeader(responseFromGitHubApi,"Status");
+        if(headerValue == "201 Created"){
+            system:println("done");
+            response = {"responseType":"Done","responseMessage":"done"};
+        }else{
+            system:println("fail");
+            response = {"responseType":"Error","responseMessage":"error"};
+        }
+
+
+
+
+
 
     }catch(errors:Error err){
         response = {"responseType":"Error","responseMessage":err.msg};
@@ -84,8 +100,10 @@ function createGitHubRepository(int repositoryId)(json ){
 
 function getAllLanguages(message m)(message){
     message response = {};
+    string accessToken = system:getEnv("GitHubToken");
+    string requestUrl = "gitignore/templates?access_token=" + accessToken;
     http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
-    response = httpConnector.get("gitignore/templates",m);
+    response = httpConnector.get(requestUrl,m);
 
     return response;
 }
@@ -98,7 +116,7 @@ function setIssueTemplate(string organization,string repositoryName)(message){
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/issue_template.md?access_token=" + accessToken + "&content=base64&branch=master";
-
+    string headerValue;
 
     files:File issueFile = {path:"./conf/issue_template.md"};
     files:open(issueFile,"r");
@@ -112,6 +130,16 @@ function setIssueTemplate(string organization,string repositoryName)(message){
 
     http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
     message response = httpConnector.put(requestUrl,gitHubRequestMessage);
+    system:println("github issue");
+    system:println(response);
+    system:println(messages:getHeader(response,"Status"));
+    headerValue = messages:getHeader(response,"Status");
+    if(headerValue == "201 Created"){
+        system:println("done");
+    }else{
+        system:println("fail");
+    }
+
     json responseMessage = {"responseType":"Done","responseMessage":"done"};
     messages:setJsonPayload(response,responseMessage);
     return response;
@@ -128,6 +156,7 @@ function setPullRequestTemplate(string organization,string repositoryName)(messa
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/pull_request_template.md?access_token=" + accessToken + "&content=base64&branch=master";
+    string headerValue;
 
     files:File issueFile = {path:"./conf/pull_request_template.md"};
     files:open(issueFile,"r");
@@ -141,6 +170,16 @@ function setPullRequestTemplate(string organization,string repositoryName)(messa
 
     http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
     message response = httpConnector.put(requestUrl,gitHubRequestMessage);
+    system:println("github pr");
+    system:println(response);
+    system:println(messages:getHeader(response,"Status"));
+    headerValue = messages:getHeader(response,"Status");
+    if(headerValue == "201 Created"){
+        system:println("done");
+    }else{
+        system:println("fail");
+    }
+
     json responseMessage = {"responseType":"Done","responseMessage":"done"};
     messages:setJsonPayload(response,responseMessage);
     return response;
@@ -157,6 +196,7 @@ function setReadMe(string organization,string repositoryName,string repositoryDe
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/README.md?access_token=" + accessToken + "&content=base64&branch=master";
     string encodeString = utils:base64encode(correctString(repositoryDescription));
+    string headerValue;
 
     message gitHubRequestMessage = {};
     json gitHubRequestJson = {"message":"Add README.md","committer":{"name": userName,"email": userEmail},"content":encodeString};
@@ -164,6 +204,15 @@ function setReadMe(string organization,string repositoryName,string repositoryDe
 
     http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
     message response = httpConnector.put(requestUrl,gitHubRequestMessage);
+    system:println("github r");
+    system:println(response);
+    system:println(messages:getHeader(response,"Status"));
+    headerValue = messages:getHeader(response,"Status");
+    if(headerValue == "201 Created"){
+        system:println("done");
+    }else{
+        system:println("fail");
+    }
 
     json responseMessage = {"responseType":"Done","responseMessage":"done"};
     messages:setJsonPayload(response,responseMessage);

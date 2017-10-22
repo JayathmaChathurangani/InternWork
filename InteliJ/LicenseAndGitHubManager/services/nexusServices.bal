@@ -69,7 +69,7 @@ function createNexus(string nexusRepositoryName,string nexusRepositoryId)(json )
 }
 
 function createNexusRepositoryTarget(string id,string name,string contentClass,string pattern)(json){
-
+    int statusCode;
     string idString = "<id>" + id + "</id>";
     string contentClassString = "<contentClass>"+ contentClass + "</contentClass>";
     string nameString = "<name>" + name + "</name>";
@@ -77,15 +77,30 @@ function createNexusRepositoryTarget(string id,string name,string contentClass,s
     string xmlString = "<repo-target><data>" + idString + contentClassString + nameString + patternString + "</data></repo-target>";
     string requestNexusUrl = "nexus/service/local/repo_targets";
     string authenticateToken = "Basic " + system:getEnv("NexusToken");
-    xml requestXml = xmls:parse(xmlString);
-    message requestNexusMessage = {};
-    messages:setXmlPayload(requestNexusMessage,requestXml);
-    messages:setHeader(requestNexusMessage,"Content-Type","application/xml");
-    messages:setHeader(requestNexusMessage,"Authorization",authenticateToken);
-    http:ClientConnector nexusClientConnector = create http:ClientConnector(nexusApiUrl);
-    message responseNexus = nexusClientConnector.post(requestNexusUrl,requestNexusMessage);
+    json returnJson;
+    try{
+        xml requestXml = xmls:parse(xmlString);
+        message requestNexusMessage = {};
+        messages:setXmlPayload(requestNexusMessage,requestXml);
+        messages:setHeader(requestNexusMessage,"Content-Type","application/xml");
+        messages:setHeader(requestNexusMessage,"Authorization",authenticateToken);
+        http:ClientConnector nexusClientConnector = create http:ClientConnector(nexusApiUrl);
+        message responseNexus = nexusClientConnector.post(requestNexusUrl,requestNexusMessage);
+        statusCode = http:getStatusCode(responseNexus);
+        if(statusCode >=200 && statusCode < 300){
+            system:println("done nexus target");
+            returnJson = {"responseType":"Done","responseMessage":""};
+        }else{
+            system:println("error nexus target");
+            returnJson = {"responseType":"Error","responseMessage":""};
+        }
+    }catch(errors:Error err){
+        returnJson = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
 
-    json returnJson = {"responseType":"Done","responseMessage":""};
+
+    }
+
     return returnJson;
 
 }
@@ -102,6 +117,7 @@ function createNexusStagingProfile(string groupId)(json){
     json readJson;
     json returnJson;
     message requestNexusMessage = {};
+    int statusCode;
 
     try{
 
@@ -124,7 +140,15 @@ function createNexusStagingProfile(string groupId)(json){
         http:ClientConnector nexusClientConnector = create http:ClientConnector(nexusApiUrl);
         requestNexusUrl = "nexus/service/local/staging/profiles";
         message responseNexus = nexusClientConnector.post(requestNexusUrl,requestNexusMessage);
-        returnJson = {"responseType":"Done","responseMessage":""};
+        statusCode = http:getStatusCode(responseNexus);
+        if(statusCode >=200 && statusCode < 300){
+            system:println("done nexus staging");
+            returnJson = {"responseType":"Done","responseMessage":""};
+        }else{
+            system:println("error nexus staging");
+            returnJson = {"responseType":"Error","responseMessage":""};
+        }
+
 
     }catch(errors:Error err){
         returnJson = {"responseType":"Error","responseMessage":err.msg};
