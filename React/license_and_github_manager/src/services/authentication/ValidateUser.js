@@ -36,6 +36,7 @@ class ValidateUser extends Component{
         var url = MainData.ballerinaURL + "authentication/isValidUser";
         var requestData = {"token":token};
         var headersData = {headers:{'Access-Control-Allow-Origin':"*"}};
+        
         return axios.post(
             url,
             requestData,

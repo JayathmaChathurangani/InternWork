@@ -174,6 +174,22 @@ class LM_REPOSITORY extends Component{
             console.log(error);
         });
     }
+
+    selectAll(){
+        var url = MainData.ballerinaDatabaseURL + "repository/selectAll" ;
+        
+        return axios.get(
+            url
+        )
+        .then(function (response) {
+            
+            return(response.data) ;
+            
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
 }
 
 

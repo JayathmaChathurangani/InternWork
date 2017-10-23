@@ -676,9 +676,7 @@ service<http> MainService {
         json responseValue = services:validateUser(webToken);
         json responseJson = {"isValid":responseValue.isValid,"userEmail":responseValue.userEmail};
         messages:setJsonPayload(response,responseJson);
-        messages:setHeader(response,"Access-Control-Allow-Origin","http://localhost:3000");
-        messages:setHeader(response,"Access-Control-Request-Headers","Content-Type, Authorization");
-        messages:setHeader(response,"Content-Type","application/json");
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
 
         reply response;
     }

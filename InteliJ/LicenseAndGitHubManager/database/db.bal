@@ -198,12 +198,23 @@ function repositorySelectAll()(message){
     }
     try{
 
-        string query = "SELECT * FROM LM_REPOSITORY";
+        string query = "SELECT
+                        LM_REPOSITORY.*,
+                        LM_LICENSE.LICENSE_NAME,
+                        LM_LICENSE.LICENSE_KEY,
+                        LM_ORGANIZATION.ORGANIZATION_NAME,
+                        LM_REPOSITORYTYPE.REPOSITORYTYPE_KEY,
+                        LM_REPOSITORYTYPE.REPOSITORYTYPE_NAME
+                        FROM LM_REPOSITORY
+                        INNER JOIN LM_LICENSE ON LM_REPOSITORY.REPOSITORY_LICENSE = LM_LICENSE.LICENSE_ID
+                        INNER JOIN LM_ORGANIZATION ON LM_REPOSITORY.REPOSITORY_ORGANIZATION = LM_ORGANIZATION.ORGANIZATION_ID
+                        INNER JOIN LM_REPOSITORYTYPE ON LM_REPOSITORY.REPOSITORY_TYPE = LM_REPOSITORYTYPE.REPOSITORYTYPE_ID
+                        ORDER BY LM_REPOSITORY.REPOSITORY_NAME";
         sql:Parameter[] parameterArray = [];
         datatable responseDataFromDb = connection.select(query ,parameterArray);
         var resultJSON,_ = <json>responseDataFromDb;
         messages:setJsonPayload(response,resultJSON);
-
+        system:println(resultJSON);
 
     }catch(errors:Error err){
         json errorMessage = {"responseType":"Error","responseMessage":err.msg};

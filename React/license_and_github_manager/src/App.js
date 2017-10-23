@@ -6,7 +6,7 @@ import './App.css';
 import RequestRepository from './scenes/repository/RequestRepository';
 import AcceptRepository from './scenes/repository/AcceptRepository';
 import RejectRepository from './scenes/repository/RejectRepository';
-import OtherRepository from './scenes/repository/OtherRepository';
+import SearchRepository from './scenes/repository/SearchRepository';
 import PendingRequests from './scenes/common/PendingRequests';
 import WaitingRequests from './scenes/common/WaitingRequests';
 import LoginError from './scenes/common/LoginError';
@@ -23,7 +23,7 @@ class App extends Component {
         <Route path={"/root"} component={Root}>
 
           {/* Index route for Root */}
-          <IndexRoute component={RequestComponent} />
+          <IndexRoute component={RequestRepository} />
 
           {/* PendingRequests routes start */}
           <Route path={"pendingRequests"} component={PendingRequests}></Route>
@@ -34,7 +34,7 @@ class App extends Component {
           <Route path={"requestRepository"} component={RequestRepository}></Route>
           <Route path={"acceptRepository"} component={AcceptRepository}></Route>
           <Route path={"rejectRepository"} component={RejectRepository} ></Route>
-          <Route path={"otherRepository"} component={OtherRepository}></Route>
+          <Route path={"searchRepository"} component={SearchRepository} ></Route>
 
           {/* Request routes ends */}
 

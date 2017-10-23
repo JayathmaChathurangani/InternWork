@@ -135,11 +135,20 @@ function getIsValidUser ()(boolean returnIsValid)  {
 
 function getSessionDetails()(json sessionDetails){
     string email;
+    try{
+        if(userSession != null){
+            email,_ = (string) http:getAttribute(userSession,"userEmail");
+            sessionDetails = {"userEmail":email};
+        }else{
+            sessionDetails = null;
+        }
+    }catch(errors:Error err){
+        sessionDetails = null;
 
-    if(userSession != null){
-        email,_ = (string) http:getAttribute(userSession,"userEmail");
-        sessionDetails = {"userEmail":email};
+
     }
+
+
 
     return;
 }

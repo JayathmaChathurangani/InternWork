@@ -42,10 +42,10 @@ function createJenkinsJob(string jenkinsJobName,string jenkinsJobType)(json ){
         addJobStatusCode = http:getStatusCode(responseJenkins);
 
         if(createJobStatusCode == 200 && addJobStatusCode == 200){
-            system:println("done jenkins");
+
             response = {"responseType":"Done","responseMessage":"done"};
         }else{
-            system:println("fail jenkins");
+
             response = {"responseType":"Error","responseMessage":"Jenkins Error"};
         }
 
