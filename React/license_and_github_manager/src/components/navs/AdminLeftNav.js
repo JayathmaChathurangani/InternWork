@@ -11,7 +11,7 @@ class AdminLeftNav extends Component{
 
         {/*Repository dropdown start*/}
         <li className="dropdown">
-          <Link className="dropdown-toggle" data-toggle="dropdown" >
+          <Link className="dropdown-toggle" data-toggle="dropdown" id="leftNavBarLink">
             <span><i className="fa fa-files-o"></i></span>
               &nbsp;&nbsp;Repository&nbsp;&nbsp;
             <span className="caret"></span>
@@ -35,7 +35,7 @@ class AdminLeftNav extends Component{
 
         {/*Component dropdown start*/}
         <li className="dropdown">
-          <Link className="dropdown-toggle" data-toggle="dropdown" >
+          <Link className="dropdown-toggle" data-toggle="dropdown" id="leftNavBarLink">
             <span><i className="fa fa-folder-open"></i></span>
               &nbsp;&nbsp;Component&nbsp;&nbsp;
             <span className="caret"></span>
@@ -59,7 +59,7 @@ class AdminLeftNav extends Component{
 
         {/*Library dropdown start*/}
         <li className="dropdown">
-          <Link className="dropdown-toggle" data-toggle="dropdown" >
+          <Link className="dropdown-toggle" data-toggle="dropdown" id="leftNavBarLink">
             <span><i className="fa fa-book"></i></span>
               &nbsp;&nbsp;Library&nbsp;&nbsp;
             <span className="caret"></span>
@@ -79,7 +79,7 @@ class AdminLeftNav extends Component{
 
         {/*License dropdown start*/}
         <li className="dropdown">
-          <Link className="dropdown-toggle" data-toggle="dropdown" >
+          <Link className="dropdown-toggle" data-toggle="dropdown" id="leftNavBarLink">
             <span><i className="fa fa-id-card-o"></i></span>
               &nbsp;&nbsp;License&nbsp;&nbsp;
             <span className="caret"></span>
@@ -99,7 +99,7 @@ class AdminLeftNav extends Component{
 
         {/*Package dropdown start*/}
         <li className="dropdown">
-          <Link className="dropdown-toggle" data-toggle="dropdown" >
+          <Link className="dropdown-toggle" data-toggle="dropdown" id="leftNavBarLink">
             <span><i className="fa fa-briefcase"></i></span>
               &nbsp;&nbsp;Package&nbsp;&nbsp;
             <span className="caret"></span>

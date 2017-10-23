@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {Link} from 'react-router';
+import '../../App.css';
 
 
 class LeftNav extends Component{
@@ -11,7 +12,7 @@ class LeftNav extends Component{
 
         {/*Repository dropdown start*/}
         <li className="dropdown">
-          <Link className="dropdown-toggle" data-toggle="dropdown" >
+          <Link className="dropdown-toggle" data-toggle="dropdown" id="leftNavBarLink">
             <span><i className="fa fa-files-o"></i></span>
               &nbsp;&nbsp;Repository&nbsp;&nbsp;
             <span className="caret"></span>

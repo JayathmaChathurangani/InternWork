@@ -50,7 +50,7 @@
     <serviceTask id="mailtask1" name="Send e-mail for approval" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sendToList}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sendToList} ${data[11]}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:expression><![CDATA[${data[11]}]]></activiti:expression>
@@ -160,13 +160,14 @@ The repository request with following details is accepted and successfully creat
 
 <br/><br/>
 <strong>Process Status :&nbsp;</strong><br/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubIssue=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubPullRequest=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubReadMe=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeJenkins=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}</li>
+<li><b>GitHub Issue Template :</b>${(outputTypeGitHubIssue=="Done")?"Completed":"Failed"}</li>
+<li><b>GitHub PR Template :</b>${(outputTypeGitHubPullRequest=="Done")?"Completed":"Failed"}</li>
+<li><b>GitHub ReadMe File :</b>${(outputTypeGitHubReadMe=="Done")?"Completed":"Failed"}</li>
+<li><b>Jenkins :</b>${(repoUpdatedDetails.REPOSITORY_BUILDABLE == true)?((outputTypeJenkins=="Done")?"Completed":"Failed"):"Not requested"}</li>
+<li><b>Nexus Repository Target :</b>${(repoUpdatedDetails.REPOSITORY_NEXUS == true)?((outputTypeNexusRepoTarget=="Done")?"Completed":"Failed"):"Not requested"}</li>
+<li><b>Staging Profile :</b>${(repoUpdatedDetails.REPOSITORY_NEXUS == true)?((outputTypeNexusStaging=="Done")?"Completed":"Failed"):"Not requested"}</li>
+
 <br/><br/>
 Thank You.
 </p>]]></activiti:expression>
@@ -300,13 +301,14 @@ The repository request with following details is accepted but error occurs durin
 
 <br/><br/>
 <strong>Process Status :&nbsp;</strong><br/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubIssue=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubPullRequest=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHubReadMe=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeJenkins=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
-<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}<li/>
+<li><b>GitHub Repository Creation :</b>${(outputTypeGitHub=="Done")?"Completed":"Failed"}</li>
+<li><b>GitHub Issue Template :</b>${(outputTypeGitHubIssue=="Done")?"Completed":"Failed"}</li>
+<li><b>GitHub PR Template :</b>${(outputTypeGitHubPullRequest=="Done")?"Completed":"Failed"}</li>
+<li><b>GitHub ReadMe File :</b>${(outputTypeGitHubReadMe=="Done")?"Completed":"Failed"}</li>
+<li><b>Jenkins :</b>${(repoUpdatedDetails.REPOSITORY_BUILDABLE == true)?((outputTypeJenkins=="Done")?"Completed":"Failed"):"Not requested"}</li>
+<li><b>Nexus Repository Target :</b>${(repoUpdatedDetails.REPOSITORY_NEXUS == true)?((outputTypeNexusRepoTarget=="Done")?"Completed":"Failed"):"Not requested"}</li>
+<li><b>Staging Profile :</b>${(repoUpdatedDetails.REPOSITORY_NEXUS == true)?((outputTypeNexusStaging=="Done")?"Completed":"Failed"):"Not requested"}</li>
+
 <br/><br/>
 Thank You.
 </p>]]></activiti:expression>

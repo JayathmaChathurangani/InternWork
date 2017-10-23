@@ -61,6 +61,9 @@
      height: 300px !important;
    }
 
+   #leftNavBarLink{
+     color:#fff !important;
+   }
 }
 /*navbar and header ends*/
 /*form elements*/
