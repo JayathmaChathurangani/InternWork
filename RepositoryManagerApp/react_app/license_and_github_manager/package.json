@@ -1,0 +1,21 @@
+{
+  "name": "license_and_github_manager",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "prop-types": "^15.5.10",
+    "react": "^15.*",
+    "react-dom": "^15.6.1",
+    "react-router": "^2.8.1",
+    "react-scripts": "0.9.5",
+    "jwt-decode": "^1.1.0",
+    "jquery":"3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build --history-api-fallback",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
