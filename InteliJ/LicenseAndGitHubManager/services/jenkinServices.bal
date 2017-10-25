@@ -7,41 +7,55 @@ import ballerina.lang.errors;
 import ballerina.lang.files;
 import ballerina.lang.blobs;
 import ballerina.lang.xmls;
-import ballerina.lang.system;
+import database;
+import ballerina.lang.jsons;
+import conf;
 
-string jenkinsApiUrl = "http://localhost:8080/";
 
-function createJenkinsJob(string jenkinsJobName,string jenkinsJobType)(json ){
+string jenkinsApiUrl = conf:getConfigData("jenkinsApiUrl");
+
+function createJenkinsJob(string jenkinsJobName)(json ){
     message responseJenkins = {};
+    message requestJenkinsMessage = {};
     json response;
+    json responseDb;
+    xml jenkinsRequestXml;
     int createJobStatusCode;
-    int addJobStatusCode;
-    try{
 
-        string fileName = "./conf/" + jenkinsJobType + "JenkinsConf.xml";
+    string view;
+    string folder;
+    string confFile;
+    string requestJenkinsUrl;
+    string fileName;
+    string s;
+    string authenticateToken;
+    http:ClientConnector jenkinsClientConnector = create http:ClientConnector(jenkinsApiUrl);
+
+    try{
+        responseDb = database:jenkinsFolderMatchRegex(jenkinsJobName);
+        view = jsons:toString(responseDb[0].JF_VIEW);
+        folder = jsons:toString(responseDb[0].JF_FOLDER);
+        confFile = jsons:toString(responseDb[0].JF_CONF);
+
+        fileName = "./conf/" + confFile;
         files:File issueFile = {path:fileName};
         files:open(issueFile,"r");
         var content, _ = files:read(issueFile, 100000);
-        string s = blobs:toString(content, "utf-8");
-        string authenticateToken = "Basic " + system:getEnv("JenkinsToken");
-        xml jenkinsRequestXml = xmls:parse(s);
+        s = blobs:toString(content, "utf-8");
+        authenticateToken = "Basic " + conf:getConfigData("jenkinsToken");
+        jenkinsRequestXml = xmls:parse(s);
 
 
-        string requestJenkinsUrl =  "createItem?name=" +jenkinsJobName;
-        message requestJenkinsMessage = {};
         messages:setXmlPayload(requestJenkinsMessage,jenkinsRequestXml);
         messages:setHeader(requestJenkinsMessage,"Content-Type","application/xml");
         messages:setHeader(requestJenkinsMessage,"Authorization",authenticateToken);
-        http:ClientConnector jenkinsClientConnector = create http:ClientConnector(jenkinsApiUrl);
+        requestJenkinsUrl = "view/"+view+"/job/"+folder+"/createItem?name=" +jenkinsJobName;
+
         responseJenkins = jenkinsClientConnector.post(requestJenkinsUrl,requestJenkinsMessage);
         createJobStatusCode = http:getStatusCode(responseJenkins);
-        requestJenkinsUrl = "view/" + jenkinsJobType +  "/addJobToView?name=" + jenkinsJobName;
-        requestJenkinsMessage = {};
-        messages:setHeader(requestJenkinsMessage,"Authorization",authenticateToken);
-        responseJenkins = jenkinsClientConnector.post(requestJenkinsUrl,requestJenkinsMessage);
-        addJobStatusCode = http:getStatusCode(responseJenkins);
 
-        if(createJobStatusCode == 200 && addJobStatusCode == 200){
+
+        if(createJobStatusCode == 200){
 
             response = {"responseType":"Done","responseMessage":"done"};
         }else{

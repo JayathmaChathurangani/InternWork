@@ -1,11 +1,21 @@
 package conf;
 
+import ballerina.lang.files;
+import ballerina.lang.blobs;
+import ballerina.lang.jsons;
 
-string jenkinsToken = "QnVkZGhpV2F0aHNhbGE6YjZlZjBjNGU0MDkzYzM3NmNkMjZkMWQ1NDYxOGIwM2Q=";
-string jenkinsApiUrl = "http://localhost:8080/";
-string nexusToken = "YWRtaW46YWRtaW4xMjM=";
-string nexusApiUrl = "http://localhost:8081/";
-string databaseUrl = "jdbc:mysql://localhost:3306/licensemanager?useSSL=false";
-string databaseUserName = "root";
-string databasePassword = "Incorrect";
-string gitHubApiUrl = "https://api.github.com/";
+function getConfigData(string key)(string value){
+    string fileName;
+    string s;
+    json configJson;
+
+    fileName = "./conf/configData.json";
+    files:File issueFile = {path:fileName};
+    files:open(issueFile,"r");
+    var content, _ = files:read(issueFile, 100000);
+    s = blobs:toString(content, "utf-8");
+    configJson = jsons:parse(s);
+    value = jsons:toString(configJson[key]);
+    return;
+
+}

@@ -93,7 +93,7 @@ class RequestRepository extends Component{
     Common.getAllLanguages().then(function(response){
       this.setState(function(){
         return {
-          languages:['Java','Go']
+          languages:response
         }
       })
     }.bind(this));
@@ -492,7 +492,7 @@ class RequestRepository extends Component{
               </div>
               <div className="modal-footer">
                 <button onClick={this.goBackToRequest.bind(this)} type="button" className="btn btn-default" data-dismiss="modal">Back</button>&nbsp;&nbsp;
-                <Link to={"/root/requestRepository"} ><button type="button" className="btn btn-success">New Request</button></Link>
+                <Link to={"/requestRepository"} ><button type="button" className="btn btn-success">New Request</button></Link>
               </div>
             </div>
           </div>

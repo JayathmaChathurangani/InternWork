@@ -26,7 +26,7 @@ class Root extends Component{
   }
 
   componentWillMount(){
-    var adminPages = ['/root/acceptRepository','/root/waitingRequests'];
+    var adminPages = ['/acceptRepository','/waitingRequests'];
     ValidateUser.isValidUser().then(function(response){
       
       if(response.isValid){

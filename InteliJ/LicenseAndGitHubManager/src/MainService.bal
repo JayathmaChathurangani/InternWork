@@ -10,7 +10,9 @@ import ballerina.lang.system;
 
 
 
-@http:configuration {basePath:"/"}
+@http:configuration {basePath:"/",httpsPort: 9080, keyStoreFile: "${ballerina.home}/bre/security/wso2carbon.jks",
+                     keyStorePass: "wso2carbon", certPass: "wso2carbon"}
+
 
 service<http> MainService {
 
@@ -233,14 +235,14 @@ service<http> MainService {
         json requestJson;
         json responseJson;
         string jenkinsJobName;
-        string jenkinsRepositoryType;
+
 
         if(services:getIsValidUser()){
 
             requestJson = messages:getJsonPayload(m);
             jenkinsJobName = jsons:toString(requestJson.name);
-            jenkinsRepositoryType = jsons:toString(requestJson.repositoryType);
-            responseJson = services:createJenkinsJob(jenkinsJobName,jenkinsRepositoryType);
+
+            responseJson = services:createJenkinsJob(jenkinsJobName);
             messages:setJsonPayload(response,responseJson);
 
         }else{
@@ -677,7 +679,6 @@ service<http> MainService {
         json responseJson = {"isValid":responseValue.isValid,"userEmail":responseValue.userEmail};
         messages:setJsonPayload(response,responseJson);
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
-
         reply response;
     }
 
@@ -712,6 +713,15 @@ service<http> MainService {
         reply response;
     }
 
+    @http:GET {}
+    @http:Path {value:"/databaseService/jenkinsFolder/selectFolders"}
+    resource jenkinsSelectFromNameRegex(@http:QueryParam {value:"name"} string name){
 
+        message response = {};
+        json responseJson = database:jenkinsFolderMatchRegex(name);
+        messages:setJsonPayload(response,responseJson);
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
 
 }

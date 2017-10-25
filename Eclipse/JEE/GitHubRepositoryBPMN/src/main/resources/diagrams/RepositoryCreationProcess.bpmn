@@ -77,7 +77,7 @@ There is a repository request with following details. <br /><br />
 <li><b>${mailColumns[11]}</b>:&nbsp;${mailData[11]}</li>
 <li><b>${mailColumns[5]}</b>:&nbsp;<br/><br/>&emsp;${mailData[5].replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}</li><br/>
 
-<strong>In order to accept or reject the request please click <a href=http://localhost:3000/root/acceptRepository?repositoryId=${repositoryId}>here.</a></strong>
+<strong>In order to accept or reject the request please click <a href=http://localhost:3000/acceptRepository?repositoryId=${repositoryId}>here.</a></strong>
 
 <br/><br/>
 Thank You.

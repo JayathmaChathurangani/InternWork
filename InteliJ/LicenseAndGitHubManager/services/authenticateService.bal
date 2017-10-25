@@ -8,7 +8,6 @@ import ballerina.lang.time;
 import database;
 import ballerina.lang.errors;
 
-
 http:Session userSession;
 
 function validateUser(string webToken)(json responseJson){
@@ -58,6 +57,7 @@ function validateUser(string webToken)(json responseJson){
     return;
 
 }
+
 
 function isAdminUser(string webToken)(json responseJson){
 

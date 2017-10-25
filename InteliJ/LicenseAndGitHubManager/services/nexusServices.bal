@@ -8,10 +8,11 @@ import ballerina.lang.xmls;
 import ballerina.lang.files;
 import ballerina.lang.blobs;
 import ballerina.lang.jsons;
+import conf;
 
 
 
-string nexusApiUrl = "http://localhost:8081/";
+string nexusApiUrl = conf:getConfigData("nexusApiUrl");
 
 function createNexus(string nexusRepositoryName,string nexusRepositoryId)(json ){
 
@@ -48,7 +49,7 @@ function createNexus(string nexusRepositoryName,string nexusRepositoryId)(json )
                                   };
         messages:setJsonPayload(requestNexusMessage,requestJsonPayload);
         messages:setHeader(requestNexusMessage,"Content-Type","application/json");
-        string authenticateToken = "Basic " + system:getEnv("NexusToken");
+        string authenticateToken = "Basic " + conf:getConfigData("nexusToken");
         messages:setHeader(requestNexusMessage,"Authorization",authenticateToken);
         http:ClientConnector nexusClientConnector = create http:ClientConnector(nexusApiUrl);
         message responseNexus = nexusClientConnector.post(requestNexusUrl,requestNexusMessage);
@@ -76,7 +77,7 @@ function createNexusRepositoryTarget(string id,string name,string contentClass,s
     string patternString = "<patterns><pattern>" + pattern + "</pattern></patterns>";
     string xmlString = "<repo-target><data>" + idString + contentClassString + nameString + patternString + "</data></repo-target>";
     string requestNexusUrl = "nexus/service/local/repo_targets";
-    string authenticateToken = "Basic " + system:getEnv("NexusToken");
+    string authenticateToken = "Basic " + conf:getConfigData("nexusToken");
     json returnJson;
     try{
         xml requestXml = xmls:parse(xmlString);
@@ -132,7 +133,7 @@ function createNexusStagingProfile(string groupId)(json){
         readJson.profileRequest.data.name = groupId;
         readJson.profileRequest.data.repositoryTargetId = groupId;
         readXml = jsons:toXML(readJson,jsonOptions);
-        authenticateToken = "Basic " + system:getEnv("NexusToken");
+        authenticateToken = "Basic " + conf:getConfigData("nexusToken");
 
         messages:setXmlPayload(requestNexusMessage,readXml);
         messages:setHeader(requestNexusMessage,"Content-Type","application/xml");

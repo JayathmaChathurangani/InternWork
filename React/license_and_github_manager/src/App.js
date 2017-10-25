@@ -20,7 +20,7 @@ class App extends Component {
   render() {
     return (
       <Router history={browserHistory}>
-        <Route path={"/root"} component={Root}>
+        <Route path={"/"} component={Root}>
 
           {/* Index route for Root */}
           <IndexRoute component={RequestRepository} />
@@ -47,7 +47,7 @@ class App extends Component {
 
         </Route>
 
-        <Route path={"/"} component={Main}></Route>
+        <Route path={"/main"} component={Main}></Route>
         <Route path={"/loginError"} component={LoginError}></Route>
       </Router>
     );

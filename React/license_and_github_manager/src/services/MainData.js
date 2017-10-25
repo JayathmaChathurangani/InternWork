@@ -4,7 +4,7 @@ class MainData extends Component{
 
   constructor(){
     super();
-    this.ballerinaDatabaseURL = "http://localhost:9090/databaseService/";
+    this.ballerinaDatabaseURL = "https://localhost:9090/databaseService/";
     this.ballerinaMailURL = "http://localhost:9090/mailService/";
     this.ballerinaGitHubURL = "http://localhost:9090/";
     this.ballerinaURL = "http://localhost:9090/";

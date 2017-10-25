@@ -10,9 +10,10 @@ import database;
 import ballerina.utils;
 import ballerina.lang.files;
 import ballerina.lang.blobs;
+import conf;
 
 
-string gitHubApiUrl = "https://api.github.com/";
+string gitHubApiUrl = conf:getConfigData("gitHubApiUrl");
 
 function createGitHubRepository(int repositoryId)(json ){
 
@@ -37,7 +38,7 @@ function createGitHubRepository(int repositoryId)(json ){
 
     try{
 
-        accessToken = system:getEnv("GitHubToken");
+        accessToken = conf:getConfigData("gitHubToken");
         responseDataFromDb = database:repositorySelectFromId(repositoryId);
         responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
 
@@ -100,7 +101,7 @@ function createGitHubRepository(int repositoryId)(json ){
 
 function getAllLanguages(message m)(message){
     message response = {};
-    string accessToken = system:getEnv("GitHubToken");
+    string accessToken = conf:getConfigData("gitHubToken");
     string requestUrl = "gitignore/templates?access_token=" + accessToken;
     http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
     response = httpConnector.get(requestUrl,m);
@@ -112,7 +113,7 @@ function setIssueTemplate(string organization,string repositoryName)(message){
 
     message getAdminUserMessage = database:userSelectAdminUsers();
     json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
-    string accessToken = system:getEnv("GitHubToken");
+    string accessToken = conf:getConfigData("gitHubToken");
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/issue_template.md?access_token=" + accessToken + "&content=base64&branch=master";
@@ -152,7 +153,7 @@ function setPullRequestTemplate(string organization,string repositoryName)(messa
 
     message getAdminUserMessage = database:userSelectAdminUsers();
     json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
-    string accessToken = system:getEnv("GitHubToken");
+    string accessToken = conf:getConfigData("gitHubToken");
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/pull_request_template.md?access_token=" + accessToken + "&content=base64&branch=master";
@@ -191,7 +192,7 @@ function setReadMe(string organization,string repositoryName,string repositoryDe
 
     message getAdminUserMessage = database:userSelectAdminUsers();
     json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
-    string accessToken = system:getEnv("GitHubToken");
+    string accessToken = conf:getConfigData("gitHubToken");
     string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
     string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
     string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/README.md?access_token=" + accessToken + "&content=base64&branch=master";
@@ -231,7 +232,7 @@ function getTeamsFromOrganization(string organization)(message ){
         string accessToken = "";
         responseDataFromDb = database:userSelectAdminUsers();
         responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
-        accessToken = system:getEnv("GitHubToken");
+        accessToken = conf:getConfigData("gitHubToken");
 
         message requestMessageFromGitHub = {};
         string getUrl = "orgs/"+ organization + "/teams?access_token=" + accessToken;

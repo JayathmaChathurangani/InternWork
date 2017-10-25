@@ -11,13 +11,12 @@ sql:ClientConnector connection = null;
 function setConnection(){
     if(connection == null){
 
-        string dbURL = conf:databaseUrl;
-        string username = conf:databaseUserName;
-        string password = conf:databasePassword;
+        string dbURL = conf:getConfigData("databaseUrl");
+        string username = conf:getConfigData("databaseUserName");
+        string password = conf:getConfigData("databasePassword");
         map propertiesMap = {"jdbcUrl":dbURL, "username":username, "password":password,"maximumPoolSize":50};
         connection = create sql:ClientConnector(propertiesMap);
-        //sql:ConnectionProperties options = {};
-        //connection = create sql:ClientConnector("mysql",dbURL,3306,"licensemanager",username,password,options);
+
     }
 
 }
@@ -613,6 +612,39 @@ function userCheckAdminUsers(string email)(json ){
         }else{
             response = {"responseType":"Done","isAdmin":false,"userDetails":""};
         }
+
+
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+
+        system:println(response);
+
+    }
+    return response;
+
+}
+
+function jenkinsFolderMatchRegex(string jenkinsJobName)(json ){
+    json responseDbJson;
+    json response;
+
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+
+
+
+        string query = "CALL JENKINS_GET_FOLDER(?)";
+        sql:Parameter paraJenkinsJobName = {sqlType:"varchar", value:jenkinsJobName};
+        sql:Parameter[] parameterArray = [paraJenkinsJobName];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        responseDbJson,_ = <json>responseDataFromDb;
+
+        response = responseDbJson;
+
 
 
 

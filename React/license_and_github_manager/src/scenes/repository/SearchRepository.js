@@ -14,7 +14,8 @@ class SearchRepository extends Component{
       
       repositoryDetails:[],
       userDetails:[],
-      repositoryTable:[]
+      repositoryTable:[],
+      repositoryTableDefault:[]
       
     }
     
@@ -47,7 +48,7 @@ class SearchRepository extends Component{
             
             <tr key={character} >
                 <td>
-                    <button style={{'width':'150px'}} type="button" className="btn btn-info" data-toggle="collapse" data-target={"#demo"+character}>{character.toUpperCase()}</button>
+                    <button style={{'width':'150px'}} type="button" className="btn btn-info" data-toggle="collapse" data-target={".demo"+character}>{character.toUpperCase()}</button>
                 </td>
             </tr>
             
@@ -57,7 +58,7 @@ class SearchRepository extends Component{
             console.log(repository.REPOSITORY_NAME[0],character)
             if(repository.REPOSITORY_NAME[0] === character){
                 tableArray.push(
-                    <tr id={"demo"+character}  className="collapse info" key={repository.REPOSITORY_ID}>
+                    <tr id={"demo"+character}  className={"collapse active demo"+character} key={repository.REPOSITORY_ID}>
                         <td>{repository.REPOSITORY_NAME}</td>
                         <td>{repository.REPOSITORYTYPE_NAME}</td>
                         <td>{repository.ORGANIZATION_NAME}</td>
@@ -78,14 +79,14 @@ class SearchRepository extends Component{
                     <tr key={character}>
                         <td>
                             
-                            <button style={{'width':'150px'}} type="button" className="btn btn-info" data-toggle="collapse" data-target={"#demo"+character}>{character.toUpperCase()}</button>
+                            <button style={{'width':'150px'}} type="button" className="btn btn-info" data-toggle="collapse" data-target={".demo"+character}>{character.toUpperCase()}</button>
                         </td>
                     </tr>
                 );
                 
                 
                 tableArray.push(
-                    <tr id={"demo"+character} className="collapse info" key={repository.REPOSITORY_ID}>
+                    <tr id={"demo"+character} className={"collapse active demo"+character} key={repository.REPOSITORY_ID}>
                         <td>{repository.REPOSITORY_NAME}</td>
                         <td>{repository.REPOSITORYTYPE_NAME}</td>
                         <td>{repository.ORGANIZATION_NAME}</td>
@@ -104,7 +105,9 @@ class SearchRepository extends Component{
         }
         this.setState(function(){
             return {
-              repositoryTable:tableArray
+              repositoryTable:tableArray,
+              repositoryDetails:response,
+              repositoryTableDefault:tableArray
             }
           });
     
@@ -133,8 +136,51 @@ class SearchRepository extends Component{
     e.preventDefault();
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
+    
+    if(this.refs.inputRepositoryName.value.length <= 0){
+        this.setState(function(){
+            return {
+              repositoryTable:this.state.repositoryTableDefault
+            }
+          });
+          return;
+    }
+    var tableArray = [];
+    var responseDetails = this.state.repositoryDetails;
+    var inputRepositoryName = new RegExp("^"+this.refs.inputRepositoryName.value,"i");
+    var i=0;
+    var name;
+    var repository;
+    
+    for(i=0;i<responseDetails.length;i++){
+
+        
+        repository = responseDetails[i];
+        name = String(repository.REPOSITORY_NAME);
+        if(inputRepositoryName.test(name)){
+            tableArray.push(
+                <tr id={"demo"} className={"active demo"} key={repository.REPOSITORY_ID}>
+                    <td>{repository.REPOSITORY_NAME}</td>
+                    <td>{repository.REPOSITORYTYPE_NAME}</td>
+                    <td>{repository.ORGANIZATION_NAME}</td>
+                    <td>{repository.LICENSE_NAME}</td>
+                    <td>{repository.REPOSITORY_LANGUAGE}</td>
+                    <td>{(repository.REPOSITORY_NEXUS)?" Yes ":" No "}</td>
+                    <td>{(repository.REPOSITORY_BUILDABLE)?"Yes":"No"}</td>
+                    <td>{repository.REPOSITORY_REQUEST_BY}</td>
+                    <td><Link to={"acceptRepository?repositoryId=" + repository.REPOSITORY_ID}>More</Link></td>
+                </tr>
+            );
+        }
+    }
 
     
+    this.setState(function(){
+        return {
+          repositoryTable:tableArray
+        }
+      });
+
     
     
 
@@ -152,7 +198,7 @@ class SearchRepository extends Component{
           
           
         <fieldset style={{display:this.state.displayFieldset}}>
-          {console.log(this.state.repositoryDetails)}
+          
             <br/><br/>
             <div className="form-group">
                 <div className="row">
@@ -160,7 +206,7 @@ class SearchRepository extends Component{
                   
                     </div>
                     <div className="col-md-6">
-                        <input  type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="Enter repository name to search" />
+                        <input onChange={this.searchRequest.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="Enter repository name to search" />
                     
                     </div>
                     <div className="col-md-3">
@@ -172,7 +218,7 @@ class SearchRepository extends Component{
             <table className="table table-striped table-hover ">
                 <thead>
                 
-                    <tr className="success">
+                    <tr className="info">
                         <th style={{'width':'160px'}}>Name</th>
                         <th>Type</th>
                         <th>Organization</th>
