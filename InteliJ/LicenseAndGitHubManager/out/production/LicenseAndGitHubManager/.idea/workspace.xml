@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="677b3c8e-86ff-4e9f-831d-084e44eac70a" name="Default" comment="update ballerina">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/conf/carbonJenkinsConf.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/conf/configData.bal" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/conf/otherJenkinsConf.xml" />
+    <list default="true" id="677b3c8e-86ff-4e9f-831d-084e44eac70a" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/conf/carbonJenkinsConf.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/conf/configData.bal" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/conf/otherJenkinsConf.xml" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,70 +20,80 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="MainService.bal" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/MainService.bal">
+        <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/MainService.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7128">
-              <caret line="396" column="1" lean-forward="false" selection-start-line="396" selection-start-column="1" selection-end-line="396" selection-end-column="1" />
+            <state relative-caret-position="0">
+              <caret line="0" column="45" lean-forward="false" selection-start-line="0" selection-start-column="45" selection-end-line="0" selection-end-column="45" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="authenticateService.bal" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/authenticateService.bal">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="7" column="53" lean-forward="false" selection-start-line="7" selection-start-column="53" selection-end-line="7" selection-end-column="53" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="db.bal" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/database/db.bal">
+        <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/database/db.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="16" column="36" lean-forward="false" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="45" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="configData.bal" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/conf/configData.bal">
+      <file leaf-file-name="configData.bal" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/conf/configData.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+            <state relative-caret-position="198">
+              <caret line="11" column="60" lean-forward="false" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="60" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="gitHubService.bal" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/services/gitHubService.bal">
+        <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/gitHubService.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="176" column="0" lean-forward="false" selection-start-line="176" selection-start-column="0" selection-end-line="176" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="strings.bal" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/services/strings.bal">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="4" column="22" lean-forward="false" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="22" />
+            <state relative-caret-position="0">
+              <caret line="0" column="54" lean-forward="false" selection-start-line="0" selection-start-column="54" selection-end-line="0" selection-end-column="54" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="jenkinServices.bal" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/services/jenkinServices.bal">
+        <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/jenkinServices.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+            <state relative-caret-position="378">
+              <caret line="39" column="64" lean-forward="false" selection-start-line="39" selection-start-column="64" selection-end-line="39" selection-end-column="64" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nexusServices.bal" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/services/nexusServices.bal">
+      <file leaf-file-name="nexusServices.bal" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/nexusServices.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1062">
-              <caret line="59" column="22" lean-forward="false" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="22" />
+            <state relative-caret-position="126">
+              <caret line="109" column="20" lean-forward="true" selection-start-line="109" selection-start-column="20" selection-end-line="109" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="strings.bal" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/strings.bal">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="7" column="1" lean-forward="false" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -102,35 +112,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>reply</find>
-      <find>sys</find>
-      <find>system</find>
-      <find>type</find>
-      <find>&quot;message&quot;</find>
-      <find>acceptLi</find>
-      <find>sql:ClientConnector = getConnection();</find>
-      <find>sql:ClientConnector connection = getConnection();</find>
-      <find>organization</find>
-      <find>before</find>
-      <find>repositorySe</find>
-      <find>repository</find>
-      <find>createJenkins</find>
-      <find>setI</find>
-      <find>nexus</find>
-      <find>createN</find>
-      <find>createJ</find>
       <find>getA</find>
       <find>string accessToken</find>
       <find>repositorySelectFromId</find>
       <find>gitHubApiUrl</find>
       <find>jenkinsUrl</find>
-      <find>system:getEnv(&quot;JenkinsToken&quot;)</find>
       <find>nexusUrl</find>
-      <find>system:getEnv(&quot;NexusToken&quot;)</find>
       <find>correctString</find>
-      <find>conf:gitHubApiUrl</find>
       <find>&quot;https://api.github.com/&quot;</find>
       <find>system:getEnv(&quot;GitHubToken&quot;);</find>
+      <find>conf:gitHubToken</find>
+      <find>conf:gitHubApiUrl</find>
+      <find>const</find>
+      <find>conf:jenkinsApiUrl</find>
+      <find>conf:nexusApiUrl</find>
+      <find>conf:nexusToken</find>
+      <find>conf:jenkinsToken</find>
+      <find>accessToken</find>
+      <find>decodedJson[&quot;exp&quot;]</find>
+      <find>setR</find>
+      <find>reply response;</find>
+      <find>selectMainUsers</find>
+      <find>jenkins</find>
+      <find>string</find>
+      <find>=</find>
+      <find>;</find>
+      <find>system:getEnv(&quot;NexusToken&quot;)</find>
+      <find>system:getEnv(&quot;JenkinsToken&quot;)</find>
+      <find>createJ</find>
+      <find>system:getEnv(&quot;GitHubToken&quot;)</find>
+      <find>./conf/</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -161,23 +172,40 @@
         <option value="$PROJECT_DIR$/database/LM_ORG.bal" />
         <option value="$PROJECT_DIR$/database/connection.bal" />
         <option value="$PROJECT_DIR$/database/LM_REPOSITORY.bal" />
-        <option value="$PROJECT_DIR$/services/strings.bal" />
         <option value="$PROJECT_DIR$/conf/normalJenkinsConf.xml" />
         <option value="$PROJECT_DIR$/conf/carbonJenkinsConf.xml" />
-        <option value="$PROJECT_DIR$/src/MainService.bal" />
+        <option value="$PROJECT_DIR$/services/strings.bal" />
+        <option value="$PROJECT_DIR$/conf/nexusStagingProfileConf.xml" />
         <option value="$PROJECT_DIR$/services/nexusServices.bal" />
         <option value="$PROJECT_DIR$/services/jenkinServices.bal" />
-        <option value="$PROJECT_DIR$/database/db.bal" />
-        <option value="$PROJECT_DIR$/services/gitHubService.bal" />
         <option value="$PROJECT_DIR$/conf/configData.bal" />
+        <option value="$PROJECT_DIR$/services/authenticateService.bal" />
+        <option value="$PROJECT_DIR$/services/gitHubService.bal" />
+        <option value="$PROJECT_DIR$/conf/configData.json" />
+        <option value="$PROJECT_DIR$/src/MainService.bal" />
+        <option value="$PROJECT_DIR$/database/db.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/license_and_github_manager/MainService.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/license_and_github_manager/services/authenticateService.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/license_and_github_manager/services/gitHubService.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/license_and_github_manager/services/jenkinServices.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/license_and_github_manager/services/strings.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/license_and_github_manager/services/nexusServices.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/strings.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/authenticateService.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/MainService.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/database/db.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/gitHubService.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/conf/configData.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/jenkinServices.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/nexusServices.bal" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="121" />
-    <option name="y" value="16" />
-    <option name="width" value="1400" />
-    <option name="height" value="864" />
+    <option name="x" value="42" />
+    <option name="y" value="-11" />
+    <option name="width" value="1559" />
+    <option name="height" value="912" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -196,7 +224,6 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -207,27 +234,25 @@
             <path>
               <item name="LicenseAndGitHubManager" type="b2602c69:ProjectViewProjectNode" />
               <item name="LicenseAndGitHubManager" type="462c0819:PsiDirectoryNode" />
+              <item name="licensemanager" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="LicenseAndGitHubManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LicenseAndGitHubManager" type="462c0819:PsiDirectoryNode" />
+              <item name="licensemanager" type="462c0819:PsiDirectoryNode" />
               <item name="conf" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="LicenseAndGitHubManager" type="b2602c69:ProjectViewProjectNode" />
               <item name="LicenseAndGitHubManager" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="LicenseAndGitHubManager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="LicenseAndGitHubManager" type="462c0819:PsiDirectoryNode" />
+              <item name="licensemanager" type="462c0819:PsiDirectoryNode" />
               <item name="services" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="LicenseAndGitHubManager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="LicenseAndGitHubManager" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
@@ -235,16 +260,17 @@
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/connectors-master" />
     <property name="Empty file" value="Ballerina File" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/org/wso2/license_and_github_manager" />
       <recent name="$PROJECT_DIR$/conf" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/conf" />
     </key>
   </component>
@@ -264,11 +290,11 @@
     <configuration name="Main" type="BallerinaApplicationRunConfiguration" factoryName="Ballerina">
       <output_file path="$PROJECT_DIR$" />
       <module name="LicenseAndGitHubManager" />
-      <working_directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/src/MainService.bal" />
+      <working_directory value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager" />
+      <filePath value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/MainService.bal" />
       <myRunKind value="SERVICE" />
       <kind value="SERVICE" />
-      <package value="src" />
+      <package value="org/wso2/internalapps/licensemanager/" />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
@@ -368,6 +394,14 @@
       <option name="presentableId" value="Default" />
       <updated>1504585801235</updated>
     </task>
+    <task id="LOCAL-00001" summary="Sample">
+      <created>1508486119534</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1508486119534</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -380,59 +414,82 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="43" y="-4" width="1557" height="904" extended-state="6" />
+    <frame x="42" y="-11" width="1559" height="912" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.4950364" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34451613" sideWeight="0.107213765" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.13964263" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34451613" sideWeight="0.8927862" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32774192" sideWeight="0.49238914" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40129033" sideWeight="0.8603574" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3264516" sideWeight="0.49238914" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32947233" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23163468" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29318333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5225225" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5832258" sideWeight="0.77829254" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.49768364" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.13964263" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5832258" sideWeight="0.77829254" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.4950364" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2683871" sideWeight="0.8603574" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32774192" sideWeight="0.49238914" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32947233" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2614163" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.49768364" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Sample" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sample" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="39" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/mailService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/gitHubService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/databaseService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/mailService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/gitHubService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/databaseService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/mailService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/gitHubService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/databaseService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/mailService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/gitHubService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/databaseService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/mailService.bal" />
-    <entry file="file://$PROJECT_DIR$/src/gitHubService.bal" />
     <entry file="file://$PROJECT_DIR$/src/mailService.bal" />
     <entry file="file://$PROJECT_DIR$/src/databaseService.bal" />
     <entry file="file://$PROJECT_DIR$/src/gitHubService.bal" />
@@ -467,106 +524,105 @@
     <entry file="file://$PROJECT_DIR$/database/LM_LICENSE.bal" />
     <entry file="file://$PROJECT_DIR$/database/LM_REPOTYPE.bal" />
     <entry file="file://$PROJECT_DIR$/database/connection.bal" />
-    <entry file="file://$PROJECT_DIR$/conf/issue_template.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/conf/issue_template.md" />
     <entry file="file://$PROJECT_DIR$/services/mailService.bal" />
     <entry file="file://$PROJECT_DIR$/services/databaseService.bal" />
-    <entry file="file://$PROJECT_DIR$/conf/pull_request_template.md">
+    <entry file="file://$PROJECT_DIR$/conf/pull_request_template.md" />
+    <entry file="file://$PROJECT_DIR$/services/mainData.bal" />
+    <entry file="file://$PROJECT_DIR$/services/strings.bal" />
+    <entry file="file://$PROJECT_DIR$/conf/otherJenkinsConf.xml" />
+    <entry file="file://$PROJECT_DIR$/out/production/LicenseAndGitHubManager/conf/carbonJenkinsConf.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/conf/otherJenkinsConf.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="17" column="10" lean-forward="true" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/conf/productJenkinsConf.xml">
+    <entry file="file://$PROJECT_DIR$/out/production/LicenseAndGitHubManager/conf/configData.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conf/nexusStagingProfileConf.xml" />
+    <entry file="file://$PROJECT_DIR$/conf/productJenkinsConf.xml" />
+    <entry file="file://$PROJECT_DIR$/../../../Software/Ballerina/ballerina-tools-0.91/src/ballerina/net/http/session.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="11" column="32" lean-forward="true" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conf/carbonJenkinsConf.xml" />
+    <entry file="file://$PROJECT_DIR$/services/jenkinServices.bal" />
+    <entry file="file://$PROJECT_DIR$/services/nexusServices.bal" />
+    <entry file="file://$PROJECT_DIR$/services/authenticateService.bal" />
+    <entry file="file://$PROJECT_DIR$/services/gitHubService.bal" />
+    <entry file="file://$PROJECT_DIR$/conf/configData.bal" />
+    <entry file="file://$PROJECT_DIR$/conf/configData.json" />
+    <entry file="file://$PROJECT_DIR$/src/MainService.bal" />
+    <entry file="file://$PROJECT_DIR$/database/db.bal" />
+    <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/strings.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="1" lean-forward="false" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/services/nexusServices.bal">
+    <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/MainService.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1062">
-          <caret line="59" column="22" lean-forward="false" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="22" />
+        <state relative-caret-position="0">
+          <caret line="0" column="45" lean-forward="false" selection-start-line="0" selection-start-column="45" selection-end-line="0" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/conf/carbonJenkinsConf.xml">
+    <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/database/db.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="17" column="10" lean-forward="false" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/services/jenkinServices.bal">
+    <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/authenticateService.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state relative-caret-position="126">
+          <caret line="7" column="53" lean-forward="false" selection-start-line="7" selection-start-column="53" selection-end-line="7" selection-end-column="53" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/services/strings.bal">
+    <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/conf/configData.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="22" lean-forward="false" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="22" />
+        <state relative-caret-position="198">
+          <caret line="11" column="60" lean-forward="false" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="60" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/services/mainData.bal">
+    <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/gitHubService.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="54" lean-forward="false" selection-start-line="0" selection-start-column="54" selection-end-line="0" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MainService.bal">
+    <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/jenkinServices.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7128">
-          <caret line="396" column="1" lean-forward="false" selection-start-line="396" selection-start-column="1" selection-end-line="396" selection-end-column="1" />
+        <state relative-caret-position="378">
+          <caret line="39" column="64" lean-forward="false" selection-start-line="39" selection-start-column="64" selection-end-line="39" selection-end-column="64" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/db.bal">
+    <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/nexusServices.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="36" lean-forward="false" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/services/gitHubService.bal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="176" column="0" lean-forward="false" selection-start-line="176" selection-start-column="0" selection-end-line="176" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/conf/configData.bal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        <state relative-caret-position="126">
+          <caret line="109" column="20" lean-forward="true" selection-start-line="109" selection-start-column="20" selection-end-line="109" selection-end-column="20" />
           <folding />
         </state>
       </provider>
@@ -611,7 +667,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8</last-edited>
+          <last-edited>Ballerina 0.93</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

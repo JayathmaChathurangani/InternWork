@@ -18,9 +18,9 @@ class AdminLeftNav extends Component{
             <br/>
           </Link>
           <ul className="dropdown-menu">
-            <li><Link to={"/root/requestRepository"}  ref="requestRepository"><span><i className="fa fa-plus-square-o" aria-hidden="true"></i></span>&nbsp;&nbsp;Request</Link></li>
+            <li><Link to={"/requestRepository"}  ref="requestRepository"><span><i className="fa fa-plus-square-o" aria-hidden="true"></i></span>&nbsp;&nbsp;Request</Link></li>
             <li className="divider"></li>
-            <li><Link to={"/root/searchRepository"}><span><i className="fa fa-search" aria-hidden="true"></i></span>&nbsp;&nbsp;Search</Link></li>
+            <li><Link to={"/searchRepository"}><span><i className="fa fa-search" aria-hidden="true"></i></span>&nbsp;&nbsp;Search</Link></li>
             <li className="divider"></li>
             <li><Link ><span><i className="fa fa-pencil" aria-hidden="true"></i></span>&nbsp;&nbsp;Edit</Link></li>
             <li className="divider"></li>

@@ -21,7 +21,7 @@ class RequestRepository extends Component{
     
     this.state = {
       mainUsers:[],
-      languages:[],
+      languages:['Java'],
       licenseNames:[],
       repositoryTypes:[],
       organizations:[],
@@ -42,7 +42,7 @@ class RequestRepository extends Component{
     var options = this.refs.selectOrganization.options;
     var selectOrganization = options[options.selectedIndex].text;
     LM_TEAM.getAllTeams(selectOrganization).then(function(response){
-      
+      console.log("call")
       this.setState(function(){
         return {
           teams:response

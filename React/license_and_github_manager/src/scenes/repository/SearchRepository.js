@@ -39,7 +39,7 @@ class SearchRepository extends Component{
 
     LM_REPOSITORY.selectAll().then(function(response){
         
-        console.log(response)
+        
         var tableArray =[];
         var character = response[0].REPOSITORY_NAME[0];
         var repository = {};
@@ -55,7 +55,7 @@ class SearchRepository extends Component{
         );
         for(i=0;i<response.length;i++){
             repository = response[i];
-            console.log(repository.REPOSITORY_NAME[0],character)
+            
             if(repository.REPOSITORY_NAME[0] === character){
                 tableArray.push(
                     <tr id={"demo"+character}  className={"collapse active demo"+character} key={repository.REPOSITORY_ID}>
@@ -67,7 +67,7 @@ class SearchRepository extends Component{
                         <td>{(repository.REPOSITORY_NEXUS)?" Yes ":" No "}</td>
                         <td>{(repository.REPOSITORY_BUILDABLE)?"Yes":"No"}</td>
                         <td>{repository.REPOSITORY_REQUEST_BY}</td>
-                        <td><Link to={"acceptRepository?repositoryId=" + repository.REPOSITORY_ID}>More</Link></td>
+                        <td><Link to={"showRepository?repositoryId=" + repository.REPOSITORY_ID}>More</Link></td>
                     </tr>
                 );
             }else{
@@ -95,7 +95,7 @@ class SearchRepository extends Component{
                         <td>{(repository.REPOSITORY_NEXUS)?" Yes ":" No "}</td>
                         <td>{(repository.REPOSITORY_BUILDABLE)?"Yes":"No"}</td>
                         <td>{repository.REPOSITORY_REQUEST_BY}</td>
-                        <td><Link to={"acceptRepository?repositoryId=" + repository.REPOSITORY_ID}>More</Link></td>
+                        <td><Link to={"showRepository?repositoryId=" + repository.REPOSITORY_ID}>More</Link></td>
                     </tr>
                 );
                 
@@ -147,10 +147,14 @@ class SearchRepository extends Component{
     }
     var tableArray = [];
     var responseDetails = this.state.repositoryDetails;
-    var inputRepositoryName = new RegExp("^"+this.refs.inputRepositoryName.value,"i");
+    var inputRepositoryNameValue = this.refs.inputRepositoryName.value;
+    var inputRepositoryName = new RegExp(inputRepositoryNameValue,"i");
     var i=0;
     var name;
     var repository;
+    var match;
+   
+    
     
     for(i=0;i<responseDetails.length;i++){
 
@@ -158,9 +162,14 @@ class SearchRepository extends Component{
         repository = responseDetails[i];
         name = String(repository.REPOSITORY_NAME);
         if(inputRepositoryName.test(name)){
+            match = name.match(inputRepositoryName);
+            name = name.split(inputRepositoryName);
+            
+            
+
             tableArray.push(
                 <tr id={"demo"} className={"active demo"} key={repository.REPOSITORY_ID}>
-                    <td>{repository.REPOSITORY_NAME}</td>
+                    <td>{name.map((namePart,i)=>(i===0)?<i>{namePart}</i>:<i><strong style={{color:'blue'}}>{match}</strong>{namePart}</i>)}</td>
                     <td>{repository.REPOSITORYTYPE_NAME}</td>
                     <td>{repository.ORGANIZATION_NAME}</td>
                     <td>{repository.LICENSE_NAME}</td>
@@ -168,7 +177,7 @@ class SearchRepository extends Component{
                     <td>{(repository.REPOSITORY_NEXUS)?" Yes ":" No "}</td>
                     <td>{(repository.REPOSITORY_BUILDABLE)?"Yes":"No"}</td>
                     <td>{repository.REPOSITORY_REQUEST_BY}</td>
-                    <td><Link to={"acceptRepository?repositoryId=" + repository.REPOSITORY_ID}>More</Link></td>
+                    <td><Link to={"showRepository?repositoryId=" + repository.REPOSITORY_ID}>More</Link></td>
                 </tr>
             );
         }
@@ -194,56 +203,62 @@ class SearchRepository extends Component{
     
     return(
       
-      <form className="form-horizontal"  onSubmit={this.searchRequest.bind(this)}>
+      <div className="container-fluid"  onSubmit={this.searchRequest.bind(this)}>
           
           
-        <fieldset style={{display:this.state.displayFieldset}}>
-          
-            <br/><br/>
-            <div className="form-group">
-                <div className="row">
-                    <div className="col-md-3">
-                  
-                    </div>
-                    <div className="col-md-6">
-                        <input onChange={this.searchRequest.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="Enter repository name to search" />
-                    
-                    </div>
-                    <div className="col-md-3">
-                  
-                    </div>
-                </div>
-                
-            </div>
-            <table className="table table-striped table-hover ">
-                <thead>
-                
-                    <tr className="info">
-                        <th style={{'width':'160px'}}>Name</th>
-                        <th>Type</th>
-                        <th>Organization</th>
-                        <th>License</th>
-                        <th>Language</th>
-                        <th>Nexus</th>
-                        <th>Jenkins</th>
-                        <th>Requested By</th>
-                        <th>More Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                           
-                    {(this.state.repositoryTable.length > 0)?this.state.repositoryTable.map((repository)=>
-                    
-                        repository
-                    
-                    ):""}
-                </tbody>
-            </table>
-          <br/>
-          
-        </fieldset>
+        <div className="row" style={{display:this.state.displayFieldset}}>
 
-      </form>
+            <div className="row">
+                <br/><br/>
+                <div className="form-group">
+                    <div className="row">
+                        <div className="col-sm-3">
+                    
+                        </div>
+                        <div className="col-sm-6">
+                            <input onChange={this.searchRequest.bind(this)} type="text" className="form-control" ref="inputRepositoryName" id="inputRepositoryName" placeholder="Enter repository name to search" />
+                        
+                        </div>
+                        <div className="col-sm-3">
+                    
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-sm-12">
+                    <table className="table table-striped table-hover ">
+                        <thead>
+                        
+                            <tr className="info">
+                                <th style={{'width':'160px'}}>Name</th>
+                                <th>Type</th>
+                                <th>Organization</th>
+                                <th>License</th>
+                                <th>Language</th>
+                                <th>Nexus</th>
+                                <th>Jenkins</th>
+                                <th>Requested By</th>
+                                <th>More Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                
+                            {(this.state.repositoryTable.length > 0)?this.state.repositoryTable.map((repository)=>
+                            
+                                repository
+                            
+                            ):""}
+                        </tbody>
+                    </table>
+                    <br/>
+                </div>
+            </div>
+        </div>
+
+      </div>
     )
 
   }
