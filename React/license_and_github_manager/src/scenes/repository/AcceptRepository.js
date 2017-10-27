@@ -105,7 +105,7 @@ class AcceptRepository extends Component{
 
     /* get repository details from ID*/
     LM_REPOSITORY.selectDataFromId(this.state.repositoryId).then(function(response){
-      
+      console.log(response[0])
       this.setState(function(){
         if((response[0].REPOSITORY_ACCEPTED_BY === null) && (response[0].REPOSITORY_DEACTIVATED_BY === null)){
           
@@ -127,7 +127,7 @@ class AcceptRepository extends Component{
         }
         
       });
-
+      console.log(response[0].REPOSITORY_DESCRIPTION);
       
       this.refs.inputRepositoryName.value = response[0].REPOSITORY_NAME;
       this.refs.inputGroupId.value = response[0].REPOSITORY_GROUPID;

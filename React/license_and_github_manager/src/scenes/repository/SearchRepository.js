@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Link} from 'react-router';
 import ValidateUser from '../../services/authentication/ValidateUser';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
-
+import SmartDataTable from 'react-smart-data-table';
 
 class SearchRepository extends Component{
   
@@ -15,7 +15,8 @@ class SearchRepository extends Component{
       repositoryDetails:[],
       userDetails:[],
       repositoryTable:[],
-      repositoryTableDefault:[]
+      repositoryTableDefault:[],
+      testData:[{_id:1,name:'buddhi'},{_id:2,name:'buddhi'},{_id:3,name:'buddhi'}]
       
     }
     
@@ -220,7 +221,12 @@ class SearchRepository extends Component{
                         
                         </div>
                         <div className="col-sm-3">
-                    
+                        <SmartDataTable
+                            data={this.state.testData}
+                            name='test-table'
+                            className='ui compact selectable table'
+                            sortable
+                        />
                         </div>
                     </div>
                     
@@ -229,30 +235,7 @@ class SearchRepository extends Component{
 
             <div className="row">
                 <div className="col-sm-12">
-                    <table className="table table-striped table-hover ">
-                        <thead>
-                        
-                            <tr className="info">
-                                <th style={{'width':'160px'}}>Name</th>
-                                <th>Type</th>
-                                <th>Organization</th>
-                                <th>License</th>
-                                <th>Language</th>
-                                <th>Nexus</th>
-                                <th>Jenkins</th>
-                                <th>Requested By</th>
-                                <th>More Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                
-                            {(this.state.repositoryTable.length > 0)?this.state.repositoryTable.map((repository)=>
-                            
-                                repository
-                            
-                            ):""}
-                        </tbody>
-                    </table>
+                    
                     <br/>
                 </div>
             </div>

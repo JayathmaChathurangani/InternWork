@@ -58,7 +58,7 @@ class ShowRepository extends Component{
 
     /* get repository details from ID*/
     LM_REPOSITORY.selectDataFromId(this.state.repositoryId).then(function(response){
-      
+      console.log(response[0])
       this.setState(function(){
           return{
             
@@ -97,73 +97,6 @@ class ShowRepository extends Component{
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
 
-    if (confirm("Are you sure to accept this repository request?") === false ) {
-      return false ;
-    }
-
-    var repositoryName =  StringValidations.escapeCharacters(this.refs.inputRepositoryName.value.toString());
-    var repositoryType = this.refs.selectRepositoryType.value;
-    var organization = this.refs.selectOrganization.value;
-    var team = this.refs.selectTeam.value;
-    var license = this.refs.selectLicense.value;
-    var language =  this.refs.selectLanguage.value ;
-    var groupId =  StringValidations.escapeCharacters(this.refs.inputGroupId.value.toString());
-    var buildable = this.refs.inputBuildable.checked;
-    var nexus = this.refs.inputNexus.checked;
-    var isPrivate = this.refs.inputPrivate.checked;
-    var description =  StringValidations.escapeCharacters(this.refs.textDescription.value.toString());
-    var accept = true;
-    var acceptBy = StringValidations.escapeCharacters(this.state.userDetails.userEmail);
-
-    var data = [
-      repositoryName,
-      language,
-      buildable,
-      nexus,
-      isPrivate,
-      description,
-      groupId,
-      license,
-      team,
-      organization,
-      repositoryType,
-      accept,
-      acceptBy
-    ];  
-
-    
-    var variables = [
-      {
-        "name":"outputType",
-        "value":"Done"
-      },
-      {
-        "name":"repositoryId",
-        "value":this.state.repositoryDetails.REPOSITORY_ID
-      }
-
-    ];
-
-    try{
-      LM_REPOSITORY.updateAll(data,this.state.repositoryDetails.REPOSITORY_ID);
-      GitHubRepositoryCreation.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,variables);
-      this.setState(function(){
-        return{
-          displaySuceessBox:'block',
-          displayFieldset:'none',
-          displayErrorBox:'none'
-        }
-      })
-    }catch(err){
-      this.setState(function(){
-        return{
-          displaySuceessBox:'none',
-          displayFieldset:'none',
-          displayErrorBox:'block'
-        }
-      })
-    }
-    
     
 
     
@@ -178,52 +111,83 @@ class ShowRepository extends Component{
       
       <form className="form-horizontal"  onSubmit={this.acceptRequest.bind(this)}>
         <h2 className="text-center">GitHub Repository Request</h2>
-          {console.log(this.state.repositoryDetails)}
+         
         <fieldset style={{display:this.state.displayFieldset}}>
           
           <br/>
           <div className="form-group">
-            <label htmlFor="inputRepositoryName" className="col-lg-2 control-label">&nbsp;Repository Name</label>
+            <label  className="col-lg-2 control-label">&nbsp;Repository Name</label>
             <div className="col-lg-10">
               <input className="form-control" id="disabledInput" type="text" value={(this.state.repositoryDetails !== null)?this.state.repositoryDetails.REPOSITORY_NAME:" "} readOnly={true} />
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputRepositoryName" className="col-lg-2 control-label">&nbsp;Repository Type</label>
+            <label  className="col-lg-2 control-label">&nbsp;Repository Type</label>
             <div className="col-lg-10">
               <input className="form-control" id="disabledInput" type="text" value={(this.state.repositoryDetails !== null)?this.state.repositoryDetails.REPOSITORYTYPE_NAME:" "} readOnly={true} />
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputRepositoryName" className="col-lg-2 control-label">&nbsp;Organization</label>
+            <label  className="col-lg-2 control-label">&nbsp;Organization</label>
             <div className="col-lg-10">
               <input className="form-control" id="disabledInput" type="text" value={(this.state.repositoryDetails !== null)?this.state.repositoryDetails.ORGANIZATION_NAME:" "} readOnly={true} />
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputRepositoryName" className="col-lg-2 control-label">&nbsp;Team</label>
+            <label  className="col-lg-2 control-label">&nbsp;Team</label>
             <div className="col-lg-10">
               <input className="form-control" id="disabledInput" type="text" value={(this.state.teamDetails !== null)?this.state.teamDetails.name:" "} readOnly={true} />
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputRepositoryName" className="col-lg-2 control-label">&nbsp;License</label>
+            <label  className="col-lg-2 control-label">&nbsp;License</label>
             <div className="col-lg-10">
               <input className="form-control" id="disabledInput" type="text" value={(this.state.repositoryDetails !== null)?this.state.repositoryDetails.LICENSE_NAME:" "} readOnly={true} />
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="inputRepositoryName" className="col-lg-2 control-label">&nbsp;Language</label>
+            <label  className="col-lg-2 control-label">&nbsp;Language</label>
             <div className="col-lg-10">
               <input className="form-control" id="disabledInput" type="text" value={(this.state.repositoryDetails !== null)?this.state.repositoryDetails.REPOSITORY_LANGUAGE:" "} readOnly={true} />
             </div>
           </div>
 
+          <div className="form-group">
+            <label  className="col-lg-2 control-label">&nbsp;Configurations</label>
+            <div className="col-lg-10">
+                
+                <label>
+                  <input type="checkbox"  ref="inputBuildable" checked={(this.state.repositoryDetails !== null)?this.state.repositoryDetails.REPOSITORY_BUILDABLE:false}/> Component Buildable
+                </label>
+                <br/><br/>
+                <label>
+                  <input type="checkbox" ref="inputPrivate" checked={(this.state.repositoryDetails !== null)?this.state.repositoryDetails.REPOSITORY_PRIVATE:false} /> Make Private Repository
+                </label>
+                <br/><br/>
+                <label>
+                  <input type="checkbox" ref="inputNexus" checked={(this.state.repositoryDetails !== null)?this.state.repositoryDetails.REPOSITORY_NEXUS:false}/> Create Nexus Repository
+                </label>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label  className="col-lg-2 control-label">&nbsp;Group ID</label>
+            <div className="col-lg-10">
+              <input className="form-control" id="disabledInput" type="text" value={(this.state.repositoryDetails !== null)?this.state.repositoryDetails.REPOSITORY_GROUPID:" "} readOnly={true} />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label  className="col-lg-2 control-label">&nbsp;Description</label>
+            <div className="col-lg-10">
+              <textarea style={{height:'50vh'}} className="form-control" id="disabledInput" type="text" value={(this.state.repositoryDetails !== null)?StringValidations.setStringToShow(this.state.repositoryDetails.REPOSITORY_DESCRIPTION):" "} readOnly={true} />
+            </div>
+          </div>
           
         </fieldset>
 
