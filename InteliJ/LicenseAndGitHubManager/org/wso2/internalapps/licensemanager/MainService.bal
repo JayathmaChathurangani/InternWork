@@ -505,11 +505,11 @@ service<http> MainService {
         message response = {};
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
 
-        if(services:getIsValidUser()){
+        //if(services:getIsValidUser()){
             response = database:repositorySelectFromName(name);
-        }else{
-            messages:setJsonPayload(response,inValidUserJson);
-        }
+        //}else{
+        //    messages:setJsonPayload(response,inValidUserJson);
+        //}
 
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
