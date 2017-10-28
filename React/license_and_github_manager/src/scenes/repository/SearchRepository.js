@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Link} from 'react-router';
 import ValidateUser from '../../services/authentication/ValidateUser';
 import LM_REPOSITORY from '../../services/database/LM_REPOSITORY';
-import SmartDataTable from 'react-smart-data-table';
+
 
 class SearchRepository extends Component{
   
@@ -221,12 +221,7 @@ class SearchRepository extends Component{
                         
                         </div>
                         <div className="col-sm-3">
-                        <SmartDataTable
-                            data={this.state.testData}
-                            name='test-table'
-                            className='ui compact selectable table'
-                            sortable
-                        />
+                       
                         </div>
                     </div>
                     

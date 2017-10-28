@@ -690,7 +690,6 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/authentication/isValidUser"}
     resource authenticateIsValidUsersResource(message m){
-
         message response = {};
         json requestJson = messages:getJsonPayload(m);
         string webToken = jsons:toString(requestJson.token);
