@@ -353,7 +353,7 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/databaseService/repository/updateBpmnAndTaskIds"}
     resource updateBpmnAndTaskIdsResource(message m){
-
+        system:println(m);
         message response = {};
         json requestJson = messages:getJsonPayload(m);
         json responseJson;

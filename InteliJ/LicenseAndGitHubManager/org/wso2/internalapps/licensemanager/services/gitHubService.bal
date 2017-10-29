@@ -141,7 +141,7 @@ function setIssueTemplate(string organization,string repositoryName)(message){
         string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/issue_template.md?access_token=" + accessToken + "&content=base64&branch=master";
         string headerValue;
 
-        files:File issueFile = {path:"./conf/issue_template.md"};
+        files:File issueFile = {path:"./org/wso2/internalapps/licensemanager/conf/issue_template.md"};
         files:open(issueFile,"r");
         var content, _ = files:read(issueFile, 100000);
         string s = blobs:toString(content, "utf-8");
@@ -193,7 +193,7 @@ function setPullRequestTemplate(string organization,string repositoryName)(messa
         string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/pull_request_template.md?access_token=" + accessToken + "&content=base64&branch=master";
         string headerValue;
 
-        files:File issueFile = {path:"./conf/pull_request_template.md"};
+        files:File issueFile = {path:"./org/wso2/internalapps/licensemanager/conf/pull_request_template.md"};
         files:open(issueFile,"r");
         var content, _ = files:read(issueFile, 100000);
         string s = blobs:toString(content, "utf-8");
