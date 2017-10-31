@@ -145,6 +145,25 @@ service<http> MainService {
         reply response;
     }
 
+    @http:GET {}
+    @http:Path {value:"/gitHub/getTeamsFromId"}
+    resource gitHubGetTeamsFromId(@http:QueryParam {value:"teamId"} string teamId){
+
+        message response = {};
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
+        if(services:getIsValidUser()){
+            responseJson = services:getTeamsFromId(teamId);
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
     @http:POST {}
     @http:Path {value:"/createNexus"}
     resource createNexus (message m) {
@@ -334,7 +353,7 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/databaseService/repository/updateBpmnAndTaskIds"}
     resource updateBpmnAndTaskIdsResource(message m){
-
+        system:println(m);
         message response = {};
         json requestJson = messages:getJsonPayload(m);
         json responseJson;
@@ -671,7 +690,6 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/authentication/isValidUser"}
     resource authenticateIsValidUsersResource(message m){
-
         message response = {};
         json requestJson = messages:getJsonPayload(m);
         string webToken = jsons:toString(requestJson.token);

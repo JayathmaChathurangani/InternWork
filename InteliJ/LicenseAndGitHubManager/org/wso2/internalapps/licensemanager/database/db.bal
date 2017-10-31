@@ -657,3 +657,44 @@ function jenkinsFolderMatchRegex(string jenkinsJobName)(json ){
     return response;
 
 }
+
+function componentInsertData(string key,string url)(int){
+
+    message response = {};
+    int returnValue;
+
+    if(connection == null){
+        setConnection();
+    }
+
+
+    try{
+
+        string query = "INSERT INTO LM_COMPONENT(
+                                                    COMP_KEY,
+                                                    COMP_NAME,
+                                                    COMP_TYPE,
+                                                    COMP_URL,
+                                                    COMP_FILE_NAME
+                                                  )
+                                                   VALUES (?,?,?,?,?)";
+
+        sql:Parameter paraKey = {sqlType:"varchar", value:key};
+        sql:Parameter paraName = {sqlType:"varchar", value:key};
+        sql:Parameter paraType = {sqlType:"boolean", value:"bundle"};
+        sql:Parameter paraUrl = {sqlType:"boolean", value:url};
+        sql:Parameter paraFileName = {sqlType:"boolean", value:key};
+
+
+        sql:Parameter[] parameterArray = [paraKey,paraName,paraType,paraUrl,paraFileName];
+
+        returnValue = connection.update(query,parameterArray);
+    }catch(errors:Error err){
+        returnValue = -1;
+
+    }
+
+    return returnValue;
+
+
+}

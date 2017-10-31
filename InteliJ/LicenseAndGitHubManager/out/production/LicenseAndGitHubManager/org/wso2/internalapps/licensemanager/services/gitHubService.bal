@@ -14,6 +14,13 @@ import org.wso2.internalapps.licensemanager.conf;
 
 
 string gitHubApiUrl = conf:getConfigData("gitHubApiUrl");
+http:ClientConnector httpConnector;
+
+function setGithubConnection(){
+
+    httpConnector = create http:ClientConnector(gitHubApiUrl);
+
+}
 
 function createGitHubRepository(int repositoryId)(json ){
 
@@ -37,6 +44,9 @@ function createGitHubRepository(int repositoryId)(json ){
     boolean repositoryPrivate = false;
 
     try{
+        if(httpConnector == null){
+            setGithubConnection();
+        }
 
         accessToken = conf:getConfigData("gitHubToken");
         responseDataFromDb = database:repositorySelectFromId(repositoryId);
@@ -71,7 +81,7 @@ function createGitHubRepository(int repositoryId)(json ){
 
 
         messages:setJsonPayload(requestMessageForGitHub,requestDataJsonForGitHubApi);
-        http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
+
         responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
         system:println("github create");
         system:println(messages:getHeader(responseFromGitHubApi,"Status"));
@@ -100,123 +110,167 @@ function createGitHubRepository(int repositoryId)(json ){
 }
 
 function getAllLanguages(message m)(message){
+
+    if(httpConnector == null){
+        setGithubConnection();
+    }
+
     message response = {};
     string accessToken = conf:getConfigData("gitHubToken");
     string requestUrl = "gitignore/templates?access_token=" + accessToken;
-    http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
+
     response = httpConnector.get(requestUrl,m);
 
     return response;
 }
 
 function setIssueTemplate(string organization,string repositoryName)(message){
+    message response = {};
 
-    message getAdminUserMessage = database:userSelectAdminUsers();
-    json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
-    string accessToken = conf:getConfigData("gitHubToken");
-    string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
-    string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
-    string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/issue_template.md?access_token=" + accessToken + "&content=base64&branch=master";
-    string headerValue;
+    try{
 
-    files:File issueFile = {path:"./conf/issue_template.md"};
-    files:open(issueFile,"r");
-    var content, _ = files:read(issueFile, 100000);
-    string s = blobs:toString(content, "utf-8");
-    string encodeString = utils:base64encode(s);
+        if(httpConnector == null){
+            setGithubConnection();
+        }
 
-    message gitHubRequestMessage = {};
-    json gitHubRequestJson = {"message":"Add issue template","committer":{"name": userName,"email": userEmail},"content":encodeString};
-    messages:setJsonPayload(gitHubRequestMessage,gitHubRequestJson);
+        message getAdminUserMessage = database:userSelectAdminUsers();
+        json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
+        string accessToken = conf:getConfigData("gitHubToken");
+        string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
+        string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
+        string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/issue_template.md?access_token=" + accessToken + "&content=base64&branch=master";
+        string headerValue;
 
-    http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
-    message response = httpConnector.put(requestUrl,gitHubRequestMessage);
-    system:println("github issue");
-    system:println(response);
-    system:println(messages:getHeader(response,"Status"));
-    headerValue = messages:getHeader(response,"Status");
-    if(headerValue == "201 Created"){
-        system:println("done");
-    }else{
-        system:println("fail");
+        files:File issueFile = {path:"./org/wso2/internalapps/licensemanager/conf/issue_template.md"};
+        files:open(issueFile,"r");
+        var content, _ = files:read(issueFile, 100000);
+        string s = blobs:toString(content, "utf-8");
+        string encodeString = utils:base64encode(s);
+
+        message gitHubRequestMessage = {};
+        json gitHubRequestJson = {"message":"Add issue template","committer":{"name": userName,"email": userEmail},"content":encodeString};
+        messages:setJsonPayload(gitHubRequestMessage,gitHubRequestJson);
+
+
+        response = httpConnector.put(requestUrl,gitHubRequestMessage);
+        system:println("github issue");
+        system:println(response);
+        system:println(messages:getHeader(response,"Status"));
+        headerValue = messages:getHeader(response,"Status");
+        if(headerValue == "201 Created"){
+            system:println("done");
+        }else{
+            system:println("fail");
+        }
+
+        json responseMessage = {"responseType":"Done","responseMessage":"done"};
+        messages:setJsonPayload(response,responseMessage);
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
+
     }
 
-    json responseMessage = {"responseType":"Done","responseMessage":"done"};
-    messages:setJsonPayload(response,responseMessage);
     return response;
 
 
 }
 
 function setPullRequestTemplate(string organization,string repositoryName)(message){
+    message response = {};
+
+    try{
+
+        if(httpConnector == null){
+            setGithubConnection();
+        }
+
+        message getAdminUserMessage = database:userSelectAdminUsers();
+        json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
+        string accessToken = conf:getConfigData("gitHubToken");
+        string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
+        string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
+        string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/pull_request_template.md?access_token=" + accessToken + "&content=base64&branch=master";
+        string headerValue;
+
+        files:File issueFile = {path:"./org/wso2/internalapps/licensemanager/conf/pull_request_template.md"};
+        files:open(issueFile,"r");
+        var content, _ = files:read(issueFile, 100000);
+        string s = blobs:toString(content, "utf-8");
+        string encodeString = utils:base64encode(s);
+
+        message gitHubRequestMessage = {};
+        json gitHubRequestJson = {"message":"Add pull reaquest template","committer":{"name": userName,"email": userEmail},"content":encodeString};
+        messages:setJsonPayload(gitHubRequestMessage,gitHubRequestJson);
 
 
-    message getAdminUserMessage = database:userSelectAdminUsers();
-    json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
-    string accessToken = conf:getConfigData("gitHubToken");
-    string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
-    string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
-    string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/pull_request_template.md?access_token=" + accessToken + "&content=base64&branch=master";
-    string headerValue;
+        response = httpConnector.put(requestUrl,gitHubRequestMessage);
+        system:println("github pr");
+        system:println(response);
+        system:println(messages:getHeader(response,"Status"));
+        headerValue = messages:getHeader(response,"Status");
+        if(headerValue == "201 Created"){
+            system:println("done");
+        }else{
+            system:println("fail");
+        }
 
-    files:File issueFile = {path:"./conf/pull_request_template.md"};
-    files:open(issueFile,"r");
-    var content, _ = files:read(issueFile, 100000);
-    string s = blobs:toString(content, "utf-8");
-    string encodeString = utils:base64encode(s);
+        json responseMessage = {"responseType":"Done","responseMessage":"done"};
+        messages:setJsonPayload(response,responseMessage);
 
-    message gitHubRequestMessage = {};
-    json gitHubRequestJson = {"message":"Add pull reaquest template","committer":{"name": userName,"email": userEmail},"content":encodeString};
-    messages:setJsonPayload(gitHubRequestMessage,gitHubRequestJson);
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
 
-    http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
-    message response = httpConnector.put(requestUrl,gitHubRequestMessage);
-    system:println("github pr");
-    system:println(response);
-    system:println(messages:getHeader(response,"Status"));
-    headerValue = messages:getHeader(response,"Status");
-    if(headerValue == "201 Created"){
-        system:println("done");
-    }else{
-        system:println("fail");
     }
 
-    json responseMessage = {"responseType":"Done","responseMessage":"done"};
-    messages:setJsonPayload(response,responseMessage);
     return response;
 
 
 }
 
 function setReadMe(string organization,string repositoryName,string repositoryDescription)(message){
+    message response = {};
+    try{
 
-    message getAdminUserMessage = database:userSelectAdminUsers();
-    json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
-    string accessToken = conf:getConfigData("gitHubToken");
-    string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
-    string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
-    string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/README.md?access_token=" + accessToken + "&content=base64&branch=master";
-    string encodeString = utils:base64encode(correctString(repositoryDescription));
-    string headerValue;
+        if(httpConnector == null){
+            setGithubConnection();
+        }
 
-    message gitHubRequestMessage = {};
-    json gitHubRequestJson = {"message":"Add README.md","committer":{"name": userName,"email": userEmail},"content":encodeString};
-    messages:setJsonPayload(gitHubRequestMessage,gitHubRequestJson);
+        message getAdminUserMessage = database:userSelectAdminUsers();
+        json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
+        string accessToken = conf:getConfigData("gitHubToken");
+        string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
+        string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
+        string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/README.md?access_token=" + accessToken + "&content=base64&branch=master";
+        string encodeString = utils:base64encode(correctString(repositoryDescription));
+        string headerValue;
 
-    http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
-    message response = httpConnector.put(requestUrl,gitHubRequestMessage);
-    system:println("github r");
-    system:println(response);
-    system:println(messages:getHeader(response,"Status"));
-    headerValue = messages:getHeader(response,"Status");
-    if(headerValue == "201 Created"){
-        system:println("done");
-    }else{
-        system:println("fail");
+        message gitHubRequestMessage = {};
+        json gitHubRequestJson = {"message":"Add README.md","committer":{"name": userName,"email": userEmail},"content":encodeString};
+        messages:setJsonPayload(gitHubRequestMessage,gitHubRequestJson);
+
+
+        response = httpConnector.put(requestUrl,gitHubRequestMessage);
+        system:println("github r");
+        system:println(response);
+        system:println(messages:getHeader(response,"Status"));
+        headerValue = messages:getHeader(response,"Status");
+        if(headerValue == "201 Created"){
+            system:println("done");
+        }else{
+            system:println("fail");
+        }
+
+        json responseMessage = {"responseType":"Done","responseMessage":"done"};
+        messages:setJsonPayload(response,responseMessage);
+    }catch(errors:Error err){
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
+        messages:setJsonPayload(response,errorMessage);
+        return response;
     }
 
-    json responseMessage = {"responseType":"Done","responseMessage":"done"};
-    messages:setJsonPayload(response,responseMessage);
     return response;
 
 
@@ -227,6 +281,11 @@ function getTeamsFromOrganization(string organization)(message ){
 
 
     try{
+
+        if(httpConnector == null){
+            setGithubConnection();
+        }
+
         json responseDataFromDbJson;
         message responseDataFromDb = {};
         string accessToken = "";
@@ -236,7 +295,7 @@ function getTeamsFromOrganization(string organization)(message ){
 
         message requestMessageFromGitHub = {};
         string getUrl = "orgs/"+ organization + "/teams?access_token=" + accessToken;
-        http:ClientConnector httpConnector = create http:ClientConnector(gitHubApiUrl);
+
         message responseFromGitHubApi = httpConnector.get(getUrl,requestMessageFromGitHub);
 
         return responseFromGitHubApi;
@@ -250,3 +309,33 @@ function getTeamsFromOrganization(string organization)(message ){
 
     return response;
 }
+
+function getTeamsFromId(string id)(json ){
+    json response = {};
+    message requestMessageFromGitHub = {};
+    string accessToken = "";
+    string getUrl;
+
+    try{
+
+        if(httpConnector == null){
+            setGithubConnection();
+        }
+
+        accessToken = conf:getConfigData("gitHubToken");
+        getUrl = "teams/"+ id + "?access_token=" + accessToken;
+        message responseFromGitHubApi = httpConnector.get(getUrl,requestMessageFromGitHub);
+        system:println(getUrl);
+        response = messages:getJsonPayload(responseFromGitHubApi);
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
+
+
+    }
+
+
+    return response;
+}
+

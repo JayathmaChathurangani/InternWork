@@ -30,7 +30,6 @@ function createGitHubRepository(int repositoryId)(json ){
     json response;
     json responseDataFromDbJson;
     json requestDataJsonForGitHubApi;
-    json responseFromGitHubApiJson;
     string accessToken = "";
     string repositoryName;
     string repositoryLanguage;
@@ -81,16 +80,13 @@ function createGitHubRepository(int repositoryId)(json ){
 
 
         messages:setJsonPayload(requestMessageForGitHub,requestDataJsonForGitHubApi);
-
         responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
-        system:println("github create");
-        system:println(messages:getHeader(responseFromGitHubApi,"Status"));
         headerValue = messages:getHeader(responseFromGitHubApi,"Status");
         if(headerValue == "201 Created"){
-            system:println("done");
+
             response = {"responseType":"Done","responseMessage":"done"};
         }else{
-            system:println("fail");
+
             response = {"responseType":"Error","responseMessage":"error"};
         }
 

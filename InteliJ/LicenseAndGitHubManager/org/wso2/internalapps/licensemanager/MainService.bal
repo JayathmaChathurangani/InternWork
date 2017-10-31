@@ -481,6 +481,41 @@ service<http> MainService {
         reply response;
     }
 
+    @http:POST {}
+    @http:Path {value:"/databaseService/component/insertData"}
+    resource componentInsertDataResource(message m){
+
+        message response = {};
+        json requestJson = messages:getJsonPayload(m);
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        string componentKey;
+        string componentUrl;
+        int responseValue;
+
+
+        if(services:getIsValidUser()){
+
+            componentKey = jsons:toString(requestJson.componentKey);
+            componentUrl = jsons:toString(requestJson.componentUrl);
+
+            responseValue = database:componentInsertData(componentKey,componentUrl);
+
+            if(responseValue > 0){
+                responseJson = {"responseType":"Done","responseMessage":" "};
+            }else{
+                responseJson = {"responseType":"Error","responseMessage":" "};
+            }
+
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
     @http:GET {}
     @http:Path {value:"/databaseService/repository/selectAll"}
     resource repositorySelectAllResource(message m){
@@ -505,11 +540,11 @@ service<http> MainService {
         message response = {};
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
 
-        //if(services:getIsValidUser()){
+        if(services:getIsValidUser()){
             response = database:repositorySelectFromName(name);
-        //}else{
-        //    messages:setJsonPayload(response,inValidUserJson);
-        //}
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
 
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;

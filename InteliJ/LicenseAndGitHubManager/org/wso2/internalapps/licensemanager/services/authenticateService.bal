@@ -111,25 +111,33 @@ function getIsValidUser ()(boolean returnIsValid)  {
     int epocTimeInt;
     currentTimeInt = currentTime.time / 1000;
 
-    if(userSession != null){
+    try{
+        if(userSession != null){
 
-        isValidUser,_ = (boolean )http:getAttribute(userSession,"isValid");
-        epocTimeInt,_ = (int)http:getAttribute(userSession,"loginTime");
+            isValidUser,_ = (boolean )http:getAttribute(userSession,"isValid");
+            epocTimeInt,_ = (int)http:getAttribute(userSession,"loginTime");
 
-        if((isValidUser == true) && (currentTimeInt < (epocTimeInt + 86400))){
+            if((isValidUser == true) && (currentTimeInt < (epocTimeInt + 86400))){
 
-            returnIsValid = true;
-            return;
-        }else {
+                returnIsValid = true;
+                return;
+            }else {
+
+                returnIsValid = false;
+
+            }
+        }else{
 
             returnIsValid = false;
-            return;
-        }
-    }else{
 
+        }
+    }catch(errors:Error err){
         returnIsValid = false;
-        return;
+
+
     }
+    return;
+
 
 }
 
