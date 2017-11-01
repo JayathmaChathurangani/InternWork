@@ -7,5 +7,5 @@
   "databaseUserName" : "root",
   "databasePassword" : "Incorrect",
   "gitHubApiUrl" : "https://api.github.com/",
-  "gitHubToken":"3ac8b4d776047e892e7a75d0570ecc90250c95ee"
+  "gitHubToken":""
 }
