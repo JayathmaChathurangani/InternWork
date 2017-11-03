@@ -34,11 +34,11 @@ class WaitingRequests extends Component {
             });
         });
     }
-    /** 
+    /**
     * @class WaitingRequests
     * @extends {Component}
     * @description Sample React component
-    */    
+    */
     render() {
         return (
             <div className="container-fluid">

@@ -34,13 +34,14 @@ class Root extends Component {
     * @description Sample React component
     */
     componentWillMount() {
-        const adminPages = ['/acceptRepository', '/waitingRequests'];
+        const adminPages = ['/root/acceptRepository', '/root/waitingRequests'];
         const props = this.props;
         ValidateUser.isValidUser().then((response) => {
             if (response.isValid) {
                 this.setState(() => {
                     return {
                         isValidUser: response.isValid,
+                        isAdminUser: response.isAdmin,
                         userDetails: response,
                     };
                 });
@@ -48,6 +49,7 @@ class Root extends Component {
                 this.setState(() => {
                     return {
                         isValidUser: response.isValid,
+                        isAdminUser: response.isAdmin,
                         displayChildren: 'none',
                         displayError: 'block',
                         displayNav: 'none',
@@ -55,29 +57,30 @@ class Root extends Component {
                     };
                 });
             }
-        });
-
-        ValidateUser.isAdminUser().then((response) => {
-            if (adminPages.indexOf(props.location.pathname) !== -1 && !response.isAdmin) {
+            console.log(props.location.pathname);//eslint-disable-line
+            console.log(this.state.isAdminUser);//eslint-disable-line
+            if (adminPages.indexOf(props.location.pathname) !== -1 && !this.state.isAdminUser) {
                 this.setState(() => {
                     return {
-                        isAdminUser: response.isAdmin,
                         displayChildren: 'none',
                         displayError: 'block',
                         displayNav: 'none',
                         displayHeader: 'none',
                     };
                 });
-            } else {
+            } else if (adminPages.indexOf(props.location.pathname) !== -1 && this.state.isAdminUser) {
                 this.setState(() => {
                     return {
-                        isAdminUser: response.isAdmin,
+                        displayChildren: 'block',
+                        displayError: 'none',
+                        displayNav: 'block',
+                        displayHeader: 'block',
                     };
                 });
             }
         });
     }
-    /** 
+    /**
     * @class Root
     * @extends {Component}
     * @description Sample React component

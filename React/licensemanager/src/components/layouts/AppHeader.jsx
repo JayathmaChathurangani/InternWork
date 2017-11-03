@@ -48,7 +48,7 @@ class AppHeader extends Component {
             });
         });
     }
-    /** 
+    /**
     * @class AppHeader
     * @extends {Component}
     * @description Sample React component

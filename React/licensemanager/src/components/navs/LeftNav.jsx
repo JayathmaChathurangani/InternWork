@@ -7,11 +7,11 @@ import { Link } from 'react-router';
 * @description Get user details
 */
 class LeftNav extends Component {
-    /** 
-      * @class Root
-      * @extends {Component}
-      * @description Sample React component
-      */
+    /**
+    * @class Root
+    * @extends {Component}
+    * @description Sample React component
+    */
     render() {
         return (
             <ul className="nav nav-pills nav-stacked">

@@ -50,7 +50,7 @@ class PendingRequests extends Component {
             });
         });
     }
-    /** 
+    /**
     * @class PendingRequests
     * @extends {Component}
     * @description Sample React component

@@ -46,7 +46,7 @@ function createGitHubRepository(int repositoryId)(json ){
         if(httpConnector == null){
             setGithubConnection();
         }
-
+        system:println("call git");
         accessToken = conf:getConfigData("gitHubToken");
         responseDataFromDb = database:repositorySelectFromId(repositoryId);
         responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);

@@ -122,7 +122,7 @@ class RejectRepository extends Component {
         }
         return false;
     }
-    /** 
+    /**
     * @class RequestRepository
     * @extends {Component}
     * @description Sample React component

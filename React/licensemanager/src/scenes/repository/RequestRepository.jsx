@@ -313,7 +313,7 @@ class RequestRepository extends Component {
         });
         return false;
     }
-    /** 
+    /**
     * @class RequestRepository
     * @extends {Component}
     * @description Sample React component

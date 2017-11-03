@@ -86,7 +86,10 @@ module.exports = {
     },
     devServer: {
         contentBase: path.join(__dirname, 'public'),
-        publicPath: '/dist/',
+        publicPath: '/dist',
+        historyApiFallback: {
+            index: '/dist/bundle.js',
+          }
     },
     
 };

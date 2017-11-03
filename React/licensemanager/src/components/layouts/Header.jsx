@@ -32,7 +32,7 @@ class Header extends Component {
             this.setPendingRequests(response.userEmail);
         });
     }
-    /** 
+    /**
     * @class AppHeader
     * @extends {Component}
     * @description Sample React component

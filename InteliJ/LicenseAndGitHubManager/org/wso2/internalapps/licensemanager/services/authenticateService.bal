@@ -5,24 +5,33 @@ import ballerina.lang.strings;
 import ballerina.utils;
 import ballerina.lang.jsons;
 import ballerina.lang.time;
-import org.wso2.internalapps.licensemanager.database;
+
 import ballerina.lang.errors;
+import ballerina.lang.system;
+import ballerina.lang.messages;
+import org.wso2.internalapps.licensemanager.database;
 
-http:Session userSession;
-
-function validateUser(string webToken)(json responseJson){
+http:Session userSession = null;
+string sessionId;
+function validateUser(message request)(message){
 
     string email = "";
     string epocTimeString = "";
     string[] webTokenArray;
     string dencodedString;
+    string webToken;
     int epocTime;
     int currentTimeInt;
     json decodedJson;
-    message sessionMessage = {};
+    json requestJson;
+    json returnJson;
+    json responseJson;
     boolean isValid = false;
+    boolean isAdminFromDb = false;
 
     try{
+        requestJson = messages:getJsonPayload(request);
+        webToken = jsons:toString(requestJson.token);
         responseJson = {"isValid":false,"userEmail":""};
         webTokenArray= strings:split(webToken,"\\.");
         dencodedString = utils:base64decode(webTokenArray[1]);
@@ -32,76 +41,41 @@ function validateUser(string webToken)(json responseJson){
         epocTime,_ = <int>epocTimeString;
         time:Time currentTime = time:currentTime();
         currentTimeInt = currentTime.time / 1000;
+        system:println("call function");
+        if((strings:hasSuffix(email,"@wso2.com")) && (currentTimeInt < (epocTime + 86400)) ){
+            system:println("call");
+            system:println(request);
+            returnJson = database:userCheckAdminUsers(email);
+            isAdminFromDb,_ = <boolean>jsons:toString(returnJson.isAdmin);
 
-        if((strings:hasSuffix(email,"@wso2.com")) && (currentTimeInt < (epocTime + 86400))){
-
-            userSession = http:createSessionIfAbsent(sessionMessage);
+            userSession = http:createSessionIfAbsent(request);
             isValid = true;
             http:setAttribute(userSession,"isValid",isValid);
+            http:setAttribute(userSession,"isRepositoryAdmin",isAdminFromDb);
             http:setAttribute(userSession,"userEmail",email);
             http:setAttribute(userSession,"loginTime",epocTime);
-            responseJson = {"isValid":isValid,"userEmail":email};
+            sessionId = http:getId(userSession);
+            system:println("post "+sessionId);
+            responseJson = {"isValid":isValid,"isAdmin":isAdminFromDb,"userEmail":email};
 
         }else{
             userSession = null;
             isValid = false;
-            responseJson = {"isValid":isValid,"userEmail":""};
+            responseJson = {"isValid":isValid,"isAdmin":isAdminFromDb,"userEmail":""};
 
         }
     }catch(errors:Error err){
         isValid = false;
-        responseJson = {"isValid":isValid,"userEmail":""};
+        responseJson = {"isValid":isValid,"isAdmin":isAdminFromDb,"userEmail":""};
     }
 
-
-    return;
+    messages:setJsonPayload(request,responseJson);
+    return request;
 
 }
 
 
-function isAdminUser(string webToken)(json responseJson){
 
-    string email = "";
-    string[] webTokenArray;
-    string dencodedString;
-    json decodedJson;
-    json returnJson;
-    json isValidJson;
-    boolean isAdminFromDb = false;
-    boolean isValid = false;
-    try{
-        isValidJson = validateUser(webToken);
-        isValid,_ = <boolean>jsons:toString(isValidJson.isValid);
-        if(!isValid){
-            responseJson = {"isAdmin":false,"userEmail":""};
-            return;
-        }
-
-        webTokenArray= strings:split(webToken,"\\.");
-        dencodedString = utils:base64decode(webTokenArray[1]);
-        decodedJson = jsons:parse(dencodedString);
-        email = jsons:toString(decodedJson["http://wso2.org/claims/emailaddress"]);
-
-        returnJson = database:userCheckAdminUsers(email);
-        isAdminFromDb,_ = <boolean>jsons:toString(returnJson.isAdmin);
-        if(isAdminFromDb){
-            responseJson = {"isAdmin":true,"userEmail":email};
-            http:setAttribute(userSession,"isValid",true);
-
-        }else{
-            responseJson = {"isAdmin":false,"userEmail":""};
-
-
-        }
-
-    }catch(errors:Error err){
-        responseJson = {"isAdmin":false,"userEmail":""};
-
-
-    }
-
-    return;
-}
 
 function getIsValidUser ()(boolean returnIsValid)  {
 
@@ -133,6 +107,46 @@ function getIsValidUser ()(boolean returnIsValid)  {
         }
     }catch(errors:Error err){
         returnIsValid = false;
+
+
+    }
+    return;
+
+
+}
+
+function getIsRepositoryAdminUser ()(boolean returnIsAdmin)  {
+
+    boolean isValidUser;
+    boolean isRepositoryAdminUser;
+    time:Time currentTime = time:currentTime();
+    int currentTimeInt;
+    int epocTimeInt;
+    currentTimeInt = currentTime.time / 1000;
+    system:println("call admin");
+    try{
+        if(userSession != null){
+            isRepositoryAdminUser, _ = (boolean )http:getAttribute(userSession,"isRepositoryAdmin");
+            isValidUser,_ = (boolean )http:getAttribute(userSession,"isValid");
+            epocTimeInt,_ = (int)http:getAttribute(userSession,"loginTime");
+            system:println(userSession);
+            system:println(isRepositoryAdminUser);
+            if((isRepositoryAdminUser == true) && (isValidUser == true) && (currentTimeInt < (epocTimeInt + 86400))){
+
+                returnIsAdmin = true;
+                return;
+            }else {
+
+                returnIsAdmin = false;
+
+            }
+        }else{
+
+            returnIsAdmin = false;
+
+        }
+    }catch(errors:Error err){
+        returnIsAdmin = false;
 
 
     }

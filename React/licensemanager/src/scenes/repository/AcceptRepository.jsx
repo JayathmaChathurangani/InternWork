@@ -28,10 +28,10 @@ import StringValidations from '../../services/validations/StringValidations';
 import ValidateUser from '../../services/authentication/ValidateUser';
 
 /**
- * @class AcceptRepository
- * @extends {Component}
- * @description Sample React component
- */
+* @class AcceptRepository
+* @extends {Component}
+* @description Sample React component
+*/
 class AcceptRepository extends Component {
     /**
     * @class AcceptRepository
@@ -210,7 +210,7 @@ class AcceptRepository extends Component {
     }
     /**
     * showErrorBox
-    */  
+    */
     showErrorBox() {
         this.setState(() => {
             return {
@@ -259,20 +259,12 @@ class AcceptRepository extends Component {
             accept,
             acceptBy,
         ];
-        const variables = [
-            {
-                name: 'outputType',
-                value: 'Done',
-            },
-            {
-                name: 'repositoryId',
-                value: this.state.repositoryDetails.REPOSITORY_ID,
-            },
-        ];
 
         try {
             Repository.updateAll(data, this.state.repositoryDetails.REPOSITORY_ID);
-            GitHubRepositoryCreation.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID, variables);
+            GitHubRepositoryCreation.acceptUserTask(
+                this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,
+                this.state.repositoryDetails.REPOSITORY_ID);
             this.setState(() => {
                 return {
                     displaySuceessBox: 'block',
@@ -291,7 +283,7 @@ class AcceptRepository extends Component {
         }
         return false;
     }
-    /** 
+    /**
     * @class RequestRepository
     * @extends {Component}
     * @description Sample React component

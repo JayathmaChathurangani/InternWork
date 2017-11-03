@@ -353,7 +353,7 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/databaseService/repository/updateBpmnAndTaskIds"}
     resource updateBpmnAndTaskIdsResource(message m){
-        system:println(m);
+
         message response = {};
         json requestJson = messages:getJsonPayload(m);
         json responseJson;
@@ -725,31 +725,13 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/authentication/isValidUser"}
     resource authenticateIsValidUsersResource(message m){
-        message response = {};
-        json requestJson = messages:getJsonPayload(m);
-        string webToken = jsons:toString(requestJson.token);
-        json responseValue = services:validateUser(webToken);
-        json responseJson = {"isValid":responseValue.isValid,"userEmail":responseValue.userEmail};
-        messages:setJsonPayload(response,responseJson);
+        system:println("call validate");
+        message response = services:validateUser(m);
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
 
-    @http:POST{}
-    @http:Path {value:"/authentication/isAdminUser"}
-    resource authenticateIsAdminUsersResource(message m){
 
-        message response = {};
-        json requestJson = messages:getJsonPayload(m);
-        string webToken = jsons:toString(requestJson.token);
-        json responseValue = services:isAdminUser(webToken);
-        json responseJson = {"isAdmin":responseValue.isAdmin,"userEmail":responseValue.userEmail};
-        messages:setJsonPayload(response,responseJson);
-        messages:setHeader(response,"Access-Control-Allow-Origin","*");
-        messages:setHeader(response,"Content-Type","application/json");
-
-        reply response;
-    }
 
     @http:GET{}
     @http:Path {value:"/authentication/getUserDetails"}
@@ -777,4 +759,34 @@ service<http> MainService {
         reply response;
     }
 
+    @http:POST {}
+    @http:Path {value:"/bpmn/acceptRepository"}
+    resource acceptRepositoryResource(message m){
+
+        message response = {};
+        json requestJson = messages:getJsonPayload(m);
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        json adminUserDetails;
+        string taskId;
+        string repositoryId;
+        boolean isRepositoryAdmin = false;
+
+        system:println(m);
+        isRepositoryAdmin = services:getIsRepositoryAdminUser();
+
+        if(isRepositoryAdmin){
+            system:println(isRepositoryAdmin);
+            taskId = jsons:toString(requestJson.taskId);
+            repositoryId = jsons:toString(requestJson.repositoryId);
+            responseJson = services:acceptRepositoryProcess(taskId,repositoryId);
+            system:println(responseJson);
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
 }

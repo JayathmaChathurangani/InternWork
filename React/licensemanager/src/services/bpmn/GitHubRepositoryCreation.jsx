@@ -101,7 +101,7 @@ class GitHubRepositoryCreation extends Component {
     * @returns {Promise} promise
     */
     completeUserTask(bpmnTaskId, variablesArray) {
-        const url = MainData.bpmnTaskUrl + bpmnTaskId;
+        const url = MainData.ballerinaURL + '';
         const data = {
             action: 'complete',
             variables: variablesArray,
@@ -115,7 +115,27 @@ class GitHubRepositoryCreation extends Component {
             throw new Error(error);
         });
     }
+    /**
+    * acceptUserTask
+    * @param {String} bpmnTaskId bpmnTaskId
+    * @param {String} repoId repositoryId
+    * @returns {Promise} promise
+    */
+    acceptUserTask(bpmnTaskId, repoId) {
+        const url = MainData.ballerinaURL + 'bpmn/acceptRepository';
+        const data = {
+            taskId: bpmnTaskId,
+            repositoryId: repoId,
+        };
+        const headers = {
+            'Content-Type': 'application/json',
+        };
+        return axios.post(url, data, headers).then((response) => {
+            return (response);
+        }).catch((error) => {
+            throw new Error(error);
+        });
+    }
 }
-
 
 export default (new GitHubRepositoryCreation());

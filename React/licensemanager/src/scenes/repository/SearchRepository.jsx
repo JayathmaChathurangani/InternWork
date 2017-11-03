@@ -124,7 +124,7 @@ class SearchRepository extends Component {
     }
     /**
     * showErrorBox
-    */  
+    */
     showErrorBox() {
         this.setState(() => {
             return {
@@ -201,7 +201,7 @@ class SearchRepository extends Component {
             };
         });
     }
-    /** 
+    /**
     * @class SearchRepository
     * @extends {Component}
     * @description Sample React component
@@ -256,8 +256,24 @@ class SearchRepository extends Component {
                             </table>
                             <br />
                             <ul className="pagination">
-                                <li><button onClick={this.movePage} ref={(c) => { this.inputPrivate = c; }} value="b">b</button></li>
-                                <li><button onClick={this.movePage} ref={(c) => { this.inputPrivate = c; }} value="c">c</button></li>
+                                <li>
+                                    <button
+                                        onClick={this.movePage}
+                                        ref={(c) => { this.inputPrivate = c; }}
+                                        value="b"
+                                    >
+                                        b
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={this.movePage}
+                                        ref={(c) => { this.inputPrivate = c; }}
+                                        value="c"
+                                    >
+                                        c
+                                    </button>
+                                </li>
                                 <li><Link to={'/root/searchRepository?character=l'} >l</Link></li>
                                 <li><Link to={'/root/searchRepository?character=k'} >k</Link></li>
                                 <li><Link to={'/root/searchRepository?character=c'} >c</Link></li>

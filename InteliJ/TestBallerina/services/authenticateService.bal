@@ -14,7 +14,7 @@ import ballerina.lang.messages;
 http:Session userSession;
 string sessionId = "";
 
-function validateUser(string webToken)(json responseJson){
+function validateUser(string webToken,string id)(json responseJson){
 
     string email = "";
     string epocTimeString = "";
@@ -41,19 +41,16 @@ function validateUser(string webToken)(json responseJson){
         if((strings:hasSuffix(email,"@wso2.com")) && (currentTimeInt < (epocTime + 86400))){
             system:println("call if");
             message sessionMessage  = {};
-            messages:setHeader(sessionMessage,"Cookie",sessionId);
-            system:println("ss" + sessionId);
+            messages:setHeader(sessionMessage,"Cookie",id);
+            system:println("ss" + id);
             userSession = http:createSessionIfAbsent(sessionMessage);
-            system:println("1");
+            system:println(http:getMaxInactiveInterval(userSession));
             isValid = true;
 
-            //http:setAttribute(userSession,"isValid",isValid);
-            //http:setAttribute(userSession,"userEmail",email);
-            //http:setAttribute(userSession,"loginTime",epocTime);
-            system:println("2");
+            system:println(userSession);
             sessionId = "BSESSIONID=" + http:getId(userSession);
 
-            responseJson = {"isValid":isValid,"userEmail":email};
+            responseJson = {"isValid":isValid,"userEmail":email,"id":sessionId};
 
         }else{
             userSession = null;
@@ -71,5 +68,17 @@ function validateUser(string webToken)(json responseJson){
     system:println(responseJson);
     return;
 
+}
+
+function createSession(){
+    try{
+        message request = {};
+        messages:setHeader(request,"Cookie",sessionId);
+        userSession = http:createSessionIfAbsent(request);
+
+
+    }catch(errors:Error err){
+
+    }
 }
 

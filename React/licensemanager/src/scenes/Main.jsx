@@ -8,7 +8,7 @@ import Header from '../components/layouts/Header';
 * @description Get user details
 */
 class Main extends Component {
-    /** 
+    /**
     * @class Main
     * @extends {Component}
     * @description Sample React component

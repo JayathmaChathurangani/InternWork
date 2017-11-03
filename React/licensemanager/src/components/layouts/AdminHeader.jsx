@@ -47,7 +47,7 @@ class AdminHeader extends Component {
             });
         });
     }
-    /** 
+    /**
     * @class AppHeader
     * @extends {Component}
     * @description Sample React component

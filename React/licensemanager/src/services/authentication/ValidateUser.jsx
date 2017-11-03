@@ -25,23 +25,6 @@ class ValidateUser extends Component {
         });
     }
     /**
-    * check admin users
-    * @returns {Promise} promise
-    */
-    isAdminUser() {
-        const userToken = Token.getToken();
-        const url = MainData.ballerinaURL + 'authentication/isAdminUser';
-        const requestData = {
-            token: userToken,
-        };
-        const headersData = { 'Access-Control-Allow-Origin': '*' };
-        return axios.post(url, requestData, headersData).then((response) => {
-            return response.data;
-        }).catch((error) => {
-            throw new Error(error);
-        });
-    }
-    /**
     * check valid users
     * @returns {Promise} promise
     */
@@ -53,6 +36,7 @@ class ValidateUser extends Component {
         };
         const headersData = { 'Access-Control-Allow-Origin': '*' };
         return axios.post(url, requestData, headersData).then((response) => {
+            console.log(response);//eslint-disable-line
             return response.data;
         }).catch((error) => {
             throw new Error(error);

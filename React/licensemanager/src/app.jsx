@@ -17,7 +17,7 @@
  */
 
 import React, { Component } from 'react';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import Root from './scenes/Root';
 import Main from './scenes/Main';
 import RequestRepository from './scenes/repository/RequestRepository';
@@ -40,8 +40,7 @@ class App extends Component {
      */
     render() {
         return (
-            <Router history={browserHistory}>
-                <Route path={'/'} component={Main} />
+            <Router history={hashHistory}>
                 <Route path={'/root'} component={Root} >
                     <IndexRoute component={RequestRepository} />
                     <Route path={'pendingRequests'} component={PendingRequests} />
@@ -51,6 +50,7 @@ class App extends Component {
                     <Route path={'searchRepository'} component={SearchRepository} />
                     <Route path={'requestRepository'} component={RequestRepository} />
                 </Route>
+                <Route path={'/'} component={Main} />
             </Router>
         );
     }
