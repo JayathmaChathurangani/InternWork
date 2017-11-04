@@ -698,3 +698,115 @@ function componentInsertData(string key,string url)(int){
 
 
 }
+
+function librarySelectFromName(string libraryName,string libraryVersion)(json){
+    json response;
+
+    if(connection == null){
+
+        setConnection();
+    }
+
+    try{
+
+        string query = "SELECT * FROM LM_LIBRARY WHERE LIB_NAME = ? AND LIB_VERSION = ?";
+
+        sql:Parameter paraLibraryName = {sqlType:"varchar", value:libraryName};
+        sql:Parameter paraLibraryVersion = {sqlType:"varchar", value:libraryVersion};
+        sql:Parameter[] parameterArray = [paraLibraryName,paraLibraryVersion];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        response,_ = <json>responseDataFromDb;
+
+
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+
+
+    }
+    return response;
+
+}
+
+function librarySelectTypes()(json){
+    json response;
+
+    if(connection == null){
+
+        setConnection();
+    }
+
+    try{
+
+        string query = "SELECT DISTINCT(LIB_TYPE) AS LIB_TYPE FROM LM_LIBRARY ORDER BY LIB_TYPE ASC";
+        sql:Parameter[] parameterArray = [];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        response,_ = <json>responseDataFromDb;
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+
+
+    }
+    return response;
+
+}
+
+function libraryRequestInsertData(string name,string libType,string useVersion,string latestVersion,string company,boolean sponsored,string purpose,string description,string alternatives)(int){
+
+    message response = {};
+    int returnValue;
+
+    if(connection == null){
+        setConnection();
+    }
+
+
+    try{
+
+        string query = "INSERT INTO LM_LIBREQUEST(
+                                                    LIBREQUEST_NAME,
+                                                    LIBREQUEST_TYPE,
+                                                    LIBREQUEST_USE_VERSION,
+                                                    LIBREQUEST_LATEST_VERSION,
+                                                    LIBREQUEST_COMPANY,
+                                                    LIBREQUEST_SPONSORED,
+                                                    LIBREQUEST_PURPOSE,
+                                                    LIBREQUEST_DESCRIPTION,
+                                                    LIBREQUEST_ALTERNATIVES
+                                                  )
+                                                   VALUES (?,?,?,?,?,?,?,?,?)";
+
+        sql:Parameter paraName = {sqlType:"varchar", value:name};
+        sql:Parameter paraName = {sqlType:"varchar", value:libType};
+        sql:Parameter paraUseVersion = {sqlType:"varchar", value:useVersion};
+        sql:Parameter paraLatestVersion = {sqlType:"varchar", value:latestVersion};
+        sql:Parameter paraCompany = {sqlType:"varchar", value:company};
+        sql:Parameter paraSponsored = {sqlType:"boolean", value:sponsored};
+        sql:Parameter paraPurpose = {sqlType:"varchar", value:purpose};
+        sql:Parameter paraDescription = {sqlType:"varchar", value:description};
+        sql:Parameter paraAlternatives = {sqlType:"varchar", value:alternatives};
+
+
+        sql:Parameter[] parameterArray = [
+                                             paraName,
+                                             paraName,
+                                             paraUseVersion,
+                                             paraLatestVersion,
+                                             paraCompany,
+                                             paraSponsored,
+                                             paraPurpose,
+                                             paraDescription,
+                                             paraAlternatives
+                                         ];
+
+        returnValue = connection.update(query,parameterArray);
+    }catch(errors:Error err){
+        returnValue = -1;
+
+    }
+
+    return returnValue;
+
+
+}

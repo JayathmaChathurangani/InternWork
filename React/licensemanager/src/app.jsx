@@ -24,6 +24,7 @@ import RequestRepository from './scenes/repository/RequestRepository';
 import AcceptRepository from './scenes/repository/AcceptRepository';
 import RejectRepository from './scenes/repository/RejectRepository';
 import SearchRepository from './scenes/repository/SearchRepository';
+import RequestLicense from './scenes/license/RequestLicense';
 import PendingRequests from './scenes/common/PendingRequests';
 import WaitingRequests from './scenes/common/WaitingRequests';
 
@@ -49,6 +50,7 @@ class App extends Component {
                     <Route path={'rejectRepository'} component={RejectRepository} />
                     <Route path={'searchRepository'} component={SearchRepository} />
                     <Route path={'requestRepository'} component={RequestRepository} />
+                    <Route path={'requestLicense'} component={RequestLicense} />
                 </Route>
                 <Route path={'/'} component={Main} />
             </Router>

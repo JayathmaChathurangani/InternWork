@@ -101,7 +101,7 @@ class GitHubRepositoryCreation extends Component {
     * @returns {Promise} promise
     */
     completeUserTask(bpmnTaskId, variablesArray) {
-        const url = MainData.ballerinaURL + '';
+        const url = MainData.bpmnTaskUrl + bpmnTaskId;
         const data = {
             action: 'complete',
             variables: variablesArray,

@@ -2,29 +2,38 @@
 
 package src;
 
-import ballerina.lang.system;
 import ballerina.net.http;
-import ballerina.lang.messages;
-import ballerina.utils;
+
+
+
+
+
 
 
 
 function main (string[] args) {
-    http:ClientConnector clientConnector = create http:ClientConnector("https://localhost:9445/");
-    string token = "admin:admin";
-    string auth = utils:base64encode(token);
-    message request = {};
-    system:println("call");
-    messages:setHeader(request,"Basic ",auth);
-    message response = clientConnector.get("bpmn/runtime/process-instances/",request);
-    system:println(response);
-
-    //basicauth:ClientConnector basic = create basicauth:ClientConnector("https://localhost:9445/","admin","admin");
-    //system:println("call");
-    //message response = basic.get("bpmn/runtime/process-instances/",request);
-    //system:println("cll");
+    http:ClientConnector clientConnector = create
+                                           http:ClientConnector("https://admin:admin@localhost:9445", getConnectorConfigs());
 
 
 
 
+    http:Request req = {};
+    http:Response resp = clientConnector.get("/bpmn/runtime/process-instances/", req);
+    println("Response code: " + resp.getStatusCode());
+    println("Response: " + resp.getStringPayload());
 }
+function getConnectorConfigs() (http:Options) {
+    http:Options option = {
+                              ssl: {
+                                       keyStoreFile:"${ballerina.home}/bre/security/wso2carbon.jks",
+                                       keyStorePassword:"wso2carbon",
+                                       trustStoreFile:"${ballerina.home}/bre/security/client-truststore.jks",
+                                       trustStorePassword:"wso2carbon"
+                                   },
+                              followRedirects: {}
+                          };
+    return option;
+}
+
+

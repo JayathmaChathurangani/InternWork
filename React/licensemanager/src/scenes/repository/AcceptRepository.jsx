@@ -259,12 +259,22 @@ class AcceptRepository extends Component {
             accept,
             acceptBy,
         ];
+        const variables = [
+            {
+                name: 'outputType',
+                value: 'Done',
+            },
+            {
+                name: 'repositoryId',
+                value: this.state.repositoryDetails.REPOSITORY_ID,
+            },
+        ];
 
         try {
             Repository.updateAll(data, this.state.repositoryDetails.REPOSITORY_ID);
-            GitHubRepositoryCreation.acceptUserTask(
+            GitHubRepositoryCreation.completeUserTask(
                 this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID,
-                this.state.repositoryDetails.REPOSITORY_ID);
+                variables);
             this.setState(() => {
                 return {
                     displaySuceessBox: 'block',

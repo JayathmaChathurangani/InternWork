@@ -36,9 +36,9 @@ licenseAndGitHubManager/
 				DeleteLibrary.js
 				SearchLibrary.js
 			license/
-				AddLicense.js
-				ShowLicense.js
-				UpdateLicense.js
+				RequestLicense.js
+				AcceptLicense.js
+				RejectLicense.js
 				DeleteLicense.js
 				SearchLibrary.js
 			package/

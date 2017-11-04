@@ -15,9 +15,9 @@ class MainData extends Component {
     */
     constructor() {
         super();
-        this.ballerinaDatabaseURL = 'http://localhost:9090/databaseService/';
-        this.ballerinaGitHubURL = 'http://localhost:9090/';
-        this.ballerinaURL = 'http://localhost:9090/';
+        this.ballerinaDatabaseURL = 'https://localhost:9090/databaseService/';
+        this.ballerinaGitHubURL = 'https://localhost:9090/';
+        this.ballerinaURL = 'https://localhost:9090/';
         this.bpmnStartURL = 'https://admin:admin@localhost:9445/bpmn/runtime/process-instances/';
         this.bpmnImgURL = 'https://localhost:9445/bpmn/runtime/process-instances/';
         this.bpmnTaskUrl = 'https://admin:admin@localhost:9445/bpmn/runtime/tasks/';

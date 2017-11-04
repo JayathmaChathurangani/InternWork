@@ -725,13 +725,11 @@ service<http> MainService {
     @http:POST {}
     @http:Path {value:"/authentication/isValidUser"}
     resource authenticateIsValidUsersResource(message m){
-        system:println("call validate");
+
         message response = services:validateUser(m);
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
-
-
 
     @http:GET{}
     @http:Path {value:"/authentication/getUserDetails"}
@@ -767,7 +765,6 @@ service<http> MainService {
         json requestJson = messages:getJsonPayload(m);
         json responseJson;
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
-        json adminUserDetails;
         string taskId;
         string repositoryId;
         boolean isRepositoryAdmin = false;
@@ -781,6 +778,44 @@ service<http> MainService {
             repositoryId = jsons:toString(requestJson.repositoryId);
             responseJson = services:acceptRepositoryProcess(taskId,repositoryId);
             system:println(responseJson);
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/library/selectFromNameAndVersion"}
+    resource librarySelectFromNameResource(@http:QueryParam {value:"name"} string name,@http:QueryParam {value:"version"} string version){
+
+        message response = {};
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
+        if(services:getIsValidUser()){
+            responseJson = database:librarySelectFromName(name,version);
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/library/selectTypes"}
+    resource librarySelectTypesResource(message m){
+
+        message response = {};
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
+        if(services:getIsValidUser()){
+            responseJson = database:librarySelectTypes();
             messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);

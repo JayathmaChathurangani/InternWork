@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="myProcess" name="My process" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <serviceTask id="insertToDb" name="Insert Data Into Database" activiti:async="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask"></serviceTask>
+    <serviceTask id="sendMailForApproval" name="Send e-mail for approval" activiti:type="mail"></serviceTask>
+    <userTask id="approveOrRejectTask" name="Waiting for approval"></userTask>
+    <serviceTask id="updateDatabase" name="Update databse" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask"></serviceTask>
+    <serviceTask id="sendApprovedAck" name="Send acknowledgement" isForCompensation="true" activiti:type="mail"></serviceTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="sendRejectAck" name="Send acknowledgement"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="insertToDb"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="insertToDb" targetRef="sendMailForApproval"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="sendMailForApproval" targetRef="approveOrRejectTask"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="approveOrRejectTask" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="updateDatabase"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="sendRejectAck"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="updateDatabase" targetRef="sendApprovedAck"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="sendApprovedAck" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="sendRejectAck" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
+    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="insertToDb" id="BPMNShape_insertToDb">
+        <omgdc:Bounds height="71.0" width="141.0" x="100.0" y="192.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendMailForApproval" id="BPMNShape_sendMailForApproval">
+        <omgdc:Bounds height="69.0" width="155.0" x="280.0" y="193.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approveOrRejectTask" id="BPMNShape_approveOrRejectTask">
+        <omgdc:Bounds height="65.0" width="145.0" x="480.0" y="195.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="updateDatabase" id="BPMNShape_updateDatabase">
+        <omgdc:Bounds height="65.0" width="125.0" x="790.0" y="198.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendApprovedAck" id="BPMNShape_sendApprovedAck">
+        <omgdc:Bounds height="62.0" width="171.0" x="940.0" y="197.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1150.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="660.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendRejectAck" id="BPMNShape_sendRejectAck">
+        <omgdc:Bounds height="62.0" width="171.0" x="595.0" y="310.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="55.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="241.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="435.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="625.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="700.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="680.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="310.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="915.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="940.0" y="228.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="1111.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1150.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="766.0" y="341.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1167.0" y="341.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1167.0" y="245.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
