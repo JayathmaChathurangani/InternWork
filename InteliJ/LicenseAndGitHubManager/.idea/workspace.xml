@@ -22,8 +22,8 @@
       <file leaf-file-name="MainService.bal" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/MainService.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
-              <caret line="761" column="0" lean-forward="false" selection-start-line="761" selection-start-column="0" selection-end-line="761" selection-end-column="0" />
+            <state relative-caret-position="18">
+              <caret line="844" column="28" lean-forward="false" selection-start-line="844" selection-start-column="28" selection-end-line="844" selection-end-column="28" />
               <folding>
                 <element signature="e#529#2235#0" expanded="false" />
                 <element signature="e#2241#3074#0" expanded="false" />
@@ -87,8 +87,8 @@
       <file leaf-file-name="db.bal" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/database/db.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="972">
-              <caret line="754" column="192" lean-forward="false" selection-start-line="754" selection-start-column="192" selection-end-line="754" selection-end-column="192" />
+            <state relative-caret-position="1260">
+              <caret line="770" column="73" lean-forward="false" selection-start-line="770" selection-start-column="73" selection-end-line="770" selection-end-column="73" />
               <folding>
                 <element signature="e#266#695#1" expanded="false" />
                 <element signature="e#697#3429#1" expanded="false" />
@@ -112,7 +112,6 @@
                 <element signature="e#22017#23268#1" expanded="false" />
                 <element signature="e#23270#24040#1" expanded="false" />
                 <element signature="e#24042#24578#1" expanded="false" />
-                <element signature="e#24580#27200#1" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -251,10 +250,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="43" />
-    <option name="y" value="-4" />
-    <option name="width" value="1557" />
-    <option name="height" value="904" />
+    <option name="x" value="42" />
+    <option name="y" value="-11" />
+    <option name="width" value="1559" />
+    <option name="height" value="912" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -272,10 +271,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -304,6 +302,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -465,16 +464,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="43" y="-4" width="1559" height="912" extended-state="6" />
+    <frame x="42" y="-11" width="1559" height="912" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.48709464" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.45032257" sideWeight="0.11647915" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33935484" sideWeight="0.12111185" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45032257" sideWeight="0.88352084" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33935484" sideWeight="0.87888813" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32516128" sideWeight="0.49238914" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44" sideWeight="0.8974189" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -651,6 +650,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/out/production/LicenseAndGitHubManager/org/wso2/internalapps/licensemanager/conf/configData.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="1" lean-forward="false" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/gitHubService.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2070">
@@ -673,13 +679,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/out/production/LicenseAndGitHubManager/org/wso2/internalapps/licensemanager/conf/configData.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="1" lean-forward="false" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/bpmnService.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="522">
@@ -690,8 +689,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/database/db.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="972">
-          <caret line="754" column="192" lean-forward="false" selection-start-line="754" selection-start-column="192" selection-end-line="754" selection-end-column="192" />
+        <state relative-caret-position="1260">
+          <caret line="770" column="73" lean-forward="false" selection-start-line="770" selection-start-column="73" selection-end-line="770" selection-end-column="73" />
           <folding>
             <element signature="e#266#695#1" expanded="false" />
             <element signature="e#697#3429#1" expanded="false" />
@@ -715,15 +714,14 @@
             <element signature="e#22017#23268#1" expanded="false" />
             <element signature="e#23270#24040#1" expanded="false" />
             <element signature="e#24042#24578#1" expanded="false" />
-            <element signature="e#24580#27200#1" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/MainService.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="761" column="0" lean-forward="false" selection-start-line="761" selection-start-column="0" selection-end-line="761" selection-end-column="0" />
+        <state relative-caret-position="18">
+          <caret line="844" column="28" lean-forward="false" selection-start-line="844" selection-start-column="28" selection-end-line="844" selection-end-column="28" />
           <folding>
             <element signature="e#529#2235#0" expanded="false" />
             <element signature="e#2241#3074#0" expanded="false" />

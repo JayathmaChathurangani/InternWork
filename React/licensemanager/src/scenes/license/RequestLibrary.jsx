@@ -28,7 +28,7 @@ import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
  * @extends {Component}
  * @description Sample React component
  */
-class RequestLicense extends Component {
+class RequestLibrary extends Component {
     /**
     * @class RequestRepository
     * @extends {Component}
@@ -134,24 +134,28 @@ class RequestLicense extends Component {
         const libraryName = StringValidations.escapeCharacters(this.inputLibraryName.value);
         const libraryType = libraryTypeOptions[libraryTypeOptions.selectedIndex].text;
         const libraryVersion = StringValidations.escapeCharacters(this.inputVersionWeUse.value);
+        const libraryFileName = StringValidations.escapeCharacters(this.inputLibraryFileName.value);
         const libraryLatestVersion = StringValidations.escapeCharacters(this.inputLatestVersion.value);
         const libraryCompany = StringValidations.escapeCharacters(this.inputCompany.value);
         const librarySponsored = ((this.checkSponsored.children[0].checked) ? true : false);//eslint-disable-line
         const libraryPurpose = StringValidations.escapeCharacters(this.textPurpose.value);
         const libraryDescription = StringValidations.escapeCharacters(this.textDescription.value);
         const libraryAlternatives = StringValidations.escapeCharacters(this.testAlternatives.value);
-
-        const data = [
-            libraryName,
-            libraryType,
-            libraryVersion,
-            libraryLatestVersion,
-            libraryCompany,
-            librarySponsored,
-            libraryPurpose,
-            libraryDescription,
-            libraryAlternatives,
-        ];
+        const requestByEmail = StringValidations.escapeCharacters(this.state.userDetails.userEmail);
+        console.log(requestBy);//eslint-disable-line
+        const data = {
+            libName: libraryName,
+            libType: libraryType,
+            libUseVersion: libraryVersion,
+            libLatestVersion: libraryLatestVersion,
+            libFileName: libraryFileName,
+            libCompany: libraryCompany,
+            libSponsored: librarySponsored,
+            libPurpose: libraryPurpose,
+            libDescription: libraryDescription,
+            libAlternatives: libraryAlternatives,
+            requestBy: requestByEmail,
+        };
         console.log(data);//eslint-disable-line
         this.setState(() => {
             return {
@@ -220,6 +224,20 @@ class RequestLicense extends Component {
                             <span className="validate">
                                 {this.state.validateLibrary}
                             </span>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="inputLibraryFileName" className="col-lg-2 control-label">
+                            <span className="required">*</span>&nbsp;Library File Name
+                        </label>
+                        <div className="col-lg-10">
+                            <input
+                                type="text"
+                                className="form-control"
+                                ref={(c) => { this.inputLibraryFileName = c; }}
+                                placeholder="jsecurity-0.9.0.jar"
+                            />
                         </div>
                     </div>
 
@@ -399,4 +417,4 @@ class RequestLicense extends Component {
     }
 }
 
-export default RequestLicense;
+export default RequestLibrary;

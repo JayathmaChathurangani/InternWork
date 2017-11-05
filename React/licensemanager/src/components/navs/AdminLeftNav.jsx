@@ -37,7 +37,7 @@ class AdminLeftNav extends Component {
                         <br />
                     </Link>
                     <ul className="dropdown-menu">
-                        <li><Link to={'/root/requestLicense'} ><span><i className="fa fa-plus-square-o" aria-hidden="true" /></span>&nbsp;&nbsp;Request</Link></li>
+                        <li><Link to={'/root/requestLibrary'} ><span><i className="fa fa-plus-square-o" aria-hidden="true" /></span>&nbsp;&nbsp;Request</Link></li>
                     </ul>
                 </li>
             </ul>

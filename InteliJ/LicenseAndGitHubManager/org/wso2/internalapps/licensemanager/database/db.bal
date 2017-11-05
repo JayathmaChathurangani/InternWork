@@ -752,9 +752,8 @@ function librarySelectTypes()(json){
 
 }
 
-function libraryRequestInsertData(string name,string libType,string useVersion,string latestVersion,string company,boolean sponsored,string purpose,string description,string alternatives)(int){
+function libraryRequestInsertData(string name,string libType,string useVersion,string latestVersion,string fileName,string company,boolean sponsored,string purpose,string description,string alternatives)(int){
 
-    message response = {};
     int returnValue;
 
     if(connection == null){
@@ -769,18 +768,20 @@ function libraryRequestInsertData(string name,string libType,string useVersion,s
                                                     LIBREQUEST_TYPE,
                                                     LIBREQUEST_USE_VERSION,
                                                     LIBREQUEST_LATEST_VERSION,
+                                                    LIBREQUEST_FILE_NAME,
                                                     LIBREQUEST_COMPANY,
                                                     LIBREQUEST_SPONSORED,
                                                     LIBREQUEST_PURPOSE,
                                                     LIBREQUEST_DESCRIPTION,
                                                     LIBREQUEST_ALTERNATIVES
                                                   )
-                                                   VALUES (?,?,?,?,?,?,?,?,?)";
+                                                   VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         sql:Parameter paraName = {sqlType:"varchar", value:name};
-        sql:Parameter paraName = {sqlType:"varchar", value:libType};
+        sql:Parameter paraType = {sqlType:"varchar", value:libType};
         sql:Parameter paraUseVersion = {sqlType:"varchar", value:useVersion};
         sql:Parameter paraLatestVersion = {sqlType:"varchar", value:latestVersion};
+        sql:Parameter paraFileName = {sqlType:"varchar", value:fileName};
         sql:Parameter paraCompany = {sqlType:"varchar", value:company};
         sql:Parameter paraSponsored = {sqlType:"boolean", value:sponsored};
         sql:Parameter paraPurpose = {sqlType:"varchar", value:purpose};
@@ -790,14 +791,60 @@ function libraryRequestInsertData(string name,string libType,string useVersion,s
 
         sql:Parameter[] parameterArray = [
                                              paraName,
-                                             paraName,
+                                             paraType,
                                              paraUseVersion,
                                              paraLatestVersion,
+                                             paraFileName,
                                              paraCompany,
                                              paraSponsored,
                                              paraPurpose,
                                              paraDescription,
                                              paraAlternatives
+                                         ];
+
+        returnValue = connection.update(query,parameterArray);
+    }catch(errors:Error err){
+        returnValue = -1;
+        system:println(err);
+
+    }
+
+    return returnValue;
+
+
+}
+
+function libraryInsertData(string name,string libType,string useVersion,string fileName,string description)(int){
+
+    int returnValue;
+    if(connection == null){
+        setConnection();
+    }
+
+
+    try{
+
+        string query = "INSERT INTO LM_LIBRARY(
+                                                    LIB_NAME,
+                                                    LIB_TYPE,
+                                                    LIB_VERSION,
+                                                    LIB_FILE_NAME,
+                                                    LIB_DESCRIPTION
+                                              )
+                                               VALUES (?,?,?,?,?)";
+
+        sql:Parameter paraName = {sqlType:"varchar", value:name};
+        sql:Parameter paraType = {sqlType:"varchar", value:libType};
+        sql:Parameter paraUseVersion = {sqlType:"varchar", value:useVersion};
+        sql:Parameter paraFileName = {sqlType:"varchar", value:fileName};
+        sql:Parameter paraDescription = {sqlType:"varchar", value:description};
+
+        sql:Parameter[] parameterArray = [
+                                             paraName,
+                                             paraType,
+                                             paraUseVersion,
+                                             paraFileName,
+                                             paraDescription
                                          ];
 
         returnValue = connection.update(query,parameterArray);

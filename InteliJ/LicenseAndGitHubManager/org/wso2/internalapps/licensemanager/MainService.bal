@@ -824,4 +824,94 @@ service<http> MainService {
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
+
+    @http:POST {}
+    @http:Path {value:"/databaseService/libraryRequest/insertData"}
+    resource libraryRequestInsertDataResource(message m){
+
+        message response = {};
+        json requestJson = messages:getJsonPayload(m);
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        string name;
+        string libType;
+        string useVersion;
+        string latestVersion;
+        string fileName;
+        string company;
+        boolean sponsored;
+        string purpose;
+        string description;
+        string alternatives;
+        int responseValue;
+        system:println(m);
+
+        if(services:getIsValidUser()){
+
+            name = jsons:toString(requestJson.libName);
+            libType = jsons:toString(requestJson.libType);
+            useVersion = jsons:toString(requestJson.libUseVersion);
+            latestVersion = jsons:toString(requestJson.libLatestVersion);
+            fileName = jsons:toString(requestJson.libFileName);
+            company = jsons:toString(requestJson.libCompany);
+            sponsored,_ = <boolean>jsons:toString(requestJson.libSponsored);
+            purpose = jsons:toString(requestJson.libPurpose);
+            description = jsons:toString(requestJson.libDescription);
+            alternatives = jsons:toString(requestJson.libAlternatives);
+            responseValue = database:libraryRequestInsertData(name,libType,useVersion,latestVersion,fileName,company,sponsored,purpose,description,alternatives);
+
+            if(responseValue > 0){
+                responseJson = {"responseType":"Done","responseMessage":" "};
+            }else{
+                responseJson = {"responseType":"Error","responseMessage":" "};
+            }
+
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:POST {}
+    @http:Path {value:"/databaseService/library/insertData"}
+    resource libraryInsertDataResource(message m){
+
+        message response = {};
+        json requestJson = messages:getJsonPayload(m);
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        string name;
+        string libType;
+        string version;
+        string fileName;
+        string description;
+        int responseValue;
+
+
+        if(services:getIsValidUser()){
+
+            name = jsons:toString(requestJson.libName);
+            libType = jsons:toString(requestJson.libType);
+            version = jsons:toString(requestJson.libVersion);
+            fileName = jsons:toString(requestJson.libFileName);
+            description = jsons:toString(requestJson.libDescription);
+            responseValue = database:libraryInsertData(name,libType,version,fileName,description);
+
+            if(responseValue > 0){
+                responseJson = {"responseType":"Done","responseMessage":" "};
+            }else{
+                responseJson = {"responseType":"Error","responseMessage":" "};
+            }
+
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
 }

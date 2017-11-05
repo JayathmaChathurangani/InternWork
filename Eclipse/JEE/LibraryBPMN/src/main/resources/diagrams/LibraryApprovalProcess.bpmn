@@ -2,10 +2,57 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="myProcess" name="My process" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
-    <serviceTask id="insertToDb" name="Insert Data Into Database" activiti:async="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask"></serviceTask>
-    <serviceTask id="sendMailForApproval" name="Send e-mail for approval" activiti:type="mail"></serviceTask>
+    <serviceTask id="insertToDb" name="Insert Data Into Database" activiti:async="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+      <extensionElements>
+        <activiti:field name="serviceURL">
+          <activiti:string>https://localhost:9090/databaseService/libraryRequest/insertData</activiti:string>
+        </activiti:field>
+        <activiti:field name="method">
+          <activiti:string>POST</activiti:string>
+        </activiti:field>
+        <activiti:field name="input">
+          <activiti:expression>{
+	"libName":"${data.libName}",
+	"libType":"${data.libType}",
+	"libUseVersion":"${data.libUseVersion}",
+	"libLatestVersion":"${data.libLatestVersion}",
+	"libFileName":"${data.libFileName}",
+	"libCompany":"${data.libCompany}",
+	"libSponsored":"${data.libSponsored}",
+	"libPurpose":"${data.libPurpose}",
+	"libDescription":"${data.libDescription}",
+	"libAlternatives":"${data.libAlternatives}"
+}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="sendMailForApproval" name="Send e-mail for approval" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${data.libName}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <userTask id="approveOrRejectTask" name="Waiting for approval"></userTask>
-    <serviceTask id="updateDatabase" name="Update databse" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask"></serviceTask>
+    <serviceTask id="updateDatabase" name="Update databse" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+      <extensionElements>
+        <activiti:field name="serviceURL">
+          <activiti:string>https://localhost:9090/databaseService/library/insertData</activiti:string>
+        </activiti:field>
+        <activiti:field name="method">
+          <activiti:string>POST</activiti:string>
+        </activiti:field>
+        <activiti:field name="input">
+          <activiti:expression>{
+	"libName":"${updateData.libName}",
+	"libType":"${updateData.libType}",
+	"libVersion":"${updateData.libVersion}",
+	"libFileName":"${updateData.libFileName}",
+	"libDescription":"${updateData.libDescription}"
+}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <serviceTask id="sendApprovedAck" name="Send acknowledgement" isForCompensation="true" activiti:type="mail"></serviceTask>
     <endEvent id="endevent1" name="End"></endEvent>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
