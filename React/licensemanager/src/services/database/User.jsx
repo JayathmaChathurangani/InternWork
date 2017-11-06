@@ -12,8 +12,32 @@ class User extends Component {
     * get main users
     * @returns {Promise} promise
     */
-    getMainUsers() {
-        const url = MainData.ballerinaDatabaseURL + 'user/selectMainUsers';
+    getRepositoryMainUsers() {
+        const url = MainData.ballerinaDatabaseURL + 'role/selectRepositoryMainUsers';
+        return axios.get(url).then((response) => {
+            return (response.data);
+        }).catch((error) => {
+            throw new Error(error);
+        });
+    }
+    /**
+    * get main users
+    * @returns {Promise} promise
+    */
+    getLibraryMainUsers() {
+        const url = MainData.ballerinaDatabaseURL + 'role/selectLibraryMainUsers';
+        return axios.get(url).then((response) => {
+            return (response.data);
+        }).catch((error) => {
+            throw new Error(error);
+        });
+    }
+    /**
+    * get main users
+    * @returns {Promise} promise
+    */
+    getLibraryCategories() {
+        const url = MainData.ballerinaDatabaseURL + 'role/selectLibraryCategories';
         return axios.get(url).then((response) => {
             return (response.data);
         }).catch((error) => {
@@ -26,7 +50,7 @@ class User extends Component {
     * @returns {Promise} promise
     */
     isAdminUser(email) {
-        const url = MainData.ballerinaDatabaseURL + 'user/checkAdminUsers?email=' + email;
+        const url = MainData.ballerinaDatabaseURL + 'role/checkRepositoryAdminUser?email=' + email;
         return axios.get(url).then((response) => {
             return (response.data);
         }).catch((error) => {

@@ -274,8 +274,8 @@ function repositorySelectFromName(string name)(message){
 
 }
 
-function repositorySelectFromId(int id)(message){
-    message response = {};
+function repositorySelectFromId(int id)(json){
+    json response;
 
     if(connection == null){
 
@@ -299,13 +299,12 @@ function repositorySelectFromId(int id)(message){
         sql:Parameter paraName = {sqlType:"integer", value:id};
         sql:Parameter[] parameterArray = [paraName];
         datatable responseDataFromDb = connection.select(query ,parameterArray);
-        var resultJSON,_ = <json>responseDataFromDb;
-        messages:setJsonPayload(response,resultJSON);
+        response,_ = <json>responseDataFromDb;
 
 
     }catch(errors:Error err){
-        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
-        messages:setJsonPayload(response,errorMessage);
+        response = {"responseType":"Error","responseMessage":err.msg};
+
 
     }
     return response;
@@ -534,63 +533,7 @@ function componentSelectAll()(message){
 
 }
 
-function userSelectMainUsers()(message){
-    message response = {};
-
-    if(connection == null){
-
-        setConnection();
-    }
-    try{
-
-        string query = "SELECT * FROM LM_USER WHERE USER_PERMISSION = 'ALL' OR USER_PERMISSION = 'ACCEPT'";
-        sql:Parameter[] parameterArray = [];
-        datatable responseDataFromDb = connection.select(query ,parameterArray);
-
-        json resultJSON;
-        resultJSON,_ = <json>responseDataFromDb;
-        messages:setJsonPayload(response,resultJSON);
-
-
-    }catch(errors:Error err){
-        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
-        messages:setJsonPayload(response,errorMessage);
-        system:println(errorMessage);
-
-    }
-    return response;
-
-}
-
-function userSelectAdminUsers()(message){
-    message response = {};
-
-    if(connection == null){
-
-        setConnection();
-    }
-    try{
-
-        string query = "SELECT * FROM LM_USER WHERE USER_PERMISSION = 'ALL'";
-        sql:Parameter[] parameterArray = [];
-        datatable responseDataFromDb = connection.select(query ,parameterArray);
-        json resultJSON;
-        resultJSON,_ = <json>responseDataFromDb;
-        messages:setJsonPayload(response,resultJSON);
-
-
-    }catch(errors:Error err){
-        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
-        messages:setJsonPayload(response,errorMessage);
-        system:println(errorMessage);
-
-    }
-    return response;
-
-}
-
-function userCheckAdminUsers(string email)(json ){
-    json responseDbJson;
+function roleSelectRepositoryAdminUsers()(json){
     json response;
 
     if(connection == null){
@@ -599,18 +542,157 @@ function userCheckAdminUsers(string email)(json ){
     }
     try{
 
+        string query = "SELECT * FROM LM_ROLE WHERE ROLE_TYPE = 'REPOSITORY' AND ROLE_PERMISSION = 'ADMIN'";
+        sql:Parameter[] parameterArray = [];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        response,_ = <json>responseDataFromDb;
 
 
-        string query = "SELECT * FROM LM_USER WHERE USER_EMAIL = ?";
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
+
+    }
+    return response;
+
+}
+
+function roleSelectRepositoryMainUsers()(json){
+    json response;
+
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+
+        string query = "SELECT * FROM LM_ROLE WHERE ROLE_TYPE = 'REPOSITORY'";
+        sql:Parameter[] parameterArray = [];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        response,_ = <json>responseDataFromDb;
+
+
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
+
+    }
+    return response;
+
+}
+
+function roleRepositoryCheckAdminUsers(string email)(json ){
+    json responseDbJson;
+    json response;
+    system:println("call fun");
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+
+
+
+        string query = "SELECT * FROM LM_ROLE WHERE ROLE_EMAIL = ? AND ROLE_TYPE = 'REPOSITORY'";
         sql:Parameter paraEmail = {sqlType:"varchar", value:email};
         sql:Parameter[] parameterArray = [paraEmail];
         datatable responseDataFromDb = connection.select(query ,parameterArray);
         responseDbJson,_ = <json>responseDataFromDb;
+
         int length = lengthof responseDbJson;
         if(length > 0){
-            response = {"responseType":"Done","isAdmin":true,"userDetails":responseDbJson[0]};
+            response = responseDbJson;
         }else{
-            response = {"responseType":"Done","isAdmin":false,"userDetails":""};
+            response = [];
+        }
+
+
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+
+        system:println(response);
+
+    }
+    return response;
+
+}
+
+function roleSelectLibraryMainUsers()(json){
+    json response;
+
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+
+        string query = "SELECT * FROM LM_ROLE WHERE ROLE_TYPE = 'LIBRARY'";
+        sql:Parameter[] parameterArray = [];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        response,_ = <json>responseDataFromDb;
+
+
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
+
+    }
+    return response;
+
+}
+
+function roleSelectLibraryCategories()(json){
+    json response;
+
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+
+        string query = "SELECT DISTINCT(ROLE_LIB_TYPE) AS ROLE_LIB_TYPE FROM LM_ROLE WHERE ROLE_LIB_TYPE IS NOT NULL ORDER BY ROLE_LIB_TYPE ASC;";
+        sql:Parameter[] parameterArray = [];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        response,_ = <json>responseDataFromDb;
+
+
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+        system:println(err);
+
+    }
+    return response;
+
+}
+
+function roleGetUserDetails(string email)(json ){
+    json responseDbJson;
+    json response;
+    system:println("call fun" + email);
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+
+
+
+        string query = "SELECT * FROM LM_ROLE WHERE ROLE_EMAIL = ?";
+        sql:Parameter paraEmail = {sqlType:"varchar", value:email};
+        sql:Parameter[] parameterArray = [paraEmail];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        responseDbJson,_ = <json>responseDataFromDb;
+        system:println(responseDbJson);
+        int length = lengthof responseDbJson;
+        if(length > 0){
+            response = responseDbJson;
+        }else{
+            response = [];
         }
 
 
@@ -752,7 +834,7 @@ function librarySelectTypes()(json){
 
 }
 
-function libraryRequestInsertData(string name,string libType,string useVersion,string latestVersion,string fileName,string company,boolean sponsored,string purpose,string description,string alternatives)(int){
+function libraryRequestInsertData(string name,string libType,string category,string useVersion,string latestVersion,string fileName,string company,boolean sponsored,string purpose,string description,string alternatives,string requestBy)(int){
 
     int returnValue;
 
@@ -766,6 +848,7 @@ function libraryRequestInsertData(string name,string libType,string useVersion,s
         string query = "INSERT INTO LM_LIBREQUEST(
                                                     LIBREQUEST_NAME,
                                                     LIBREQUEST_TYPE,
+                                                    LIBREQUEST_CATEGORY,
                                                     LIBREQUEST_USE_VERSION,
                                                     LIBREQUEST_LATEST_VERSION,
                                                     LIBREQUEST_FILE_NAME,
@@ -773,12 +856,14 @@ function libraryRequestInsertData(string name,string libType,string useVersion,s
                                                     LIBREQUEST_SPONSORED,
                                                     LIBREQUEST_PURPOSE,
                                                     LIBREQUEST_DESCRIPTION,
-                                                    LIBREQUEST_ALTERNATIVES
+                                                    LIBREQUEST_ALTERNATIVES,
+                                                    LIBREQUEST_REQUESTED_BY
                                                   )
-                                                   VALUES (?,?,?,?,?,?,?,?,?,?)";
+                                                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
         sql:Parameter paraName = {sqlType:"varchar", value:name};
         sql:Parameter paraType = {sqlType:"varchar", value:libType};
+        sql:Parameter paraCategory = {sqlType:"varchar", value:category};
         sql:Parameter paraUseVersion = {sqlType:"varchar", value:useVersion};
         sql:Parameter paraLatestVersion = {sqlType:"varchar", value:latestVersion};
         sql:Parameter paraFileName = {sqlType:"varchar", value:fileName};
@@ -787,11 +872,13 @@ function libraryRequestInsertData(string name,string libType,string useVersion,s
         sql:Parameter paraPurpose = {sqlType:"varchar", value:purpose};
         sql:Parameter paraDescription = {sqlType:"varchar", value:description};
         sql:Parameter paraAlternatives = {sqlType:"varchar", value:alternatives};
+        sql:Parameter paraRequestBy = {sqlType:"varchar", value:requestBy};
 
 
         sql:Parameter[] parameterArray = [
                                              paraName,
                                              paraType,
+                                             paraCategory,
                                              paraUseVersion,
                                              paraLatestVersion,
                                              paraFileName,
@@ -799,7 +886,8 @@ function libraryRequestInsertData(string name,string libType,string useVersion,s
                                              paraSponsored,
                                              paraPurpose,
                                              paraDescription,
-                                             paraAlternatives
+                                             paraAlternatives,
+                                             paraRequestBy
                                          ];
 
         returnValue = connection.update(query,parameterArray);

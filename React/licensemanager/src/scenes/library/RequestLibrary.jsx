@@ -19,10 +19,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import ValidateUser from '../../services/authentication/ValidateUser';
+import User from '../../services/database/User';
 import Library from '../../services/database/Library';
 import StringValidations from '../../services/validations/StringValidations';
-import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreation';
-import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
+import LibraryProcess from '../../services/bpmn/LibraryProcess';
+
 /**
  * @class RequestRepository
  * @extends {Component}
@@ -38,8 +39,9 @@ class RequestLibrary extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            mainUsers: [],
+            libraryMainUsers: [],
             libraryTypes: [],
+            libraryCategories: [],
             buttonState: false,
             displayFieldset: 'block',
             displayLoader: 'none',
@@ -61,6 +63,20 @@ class RequestLibrary extends Component {
             this.setState(() => {
                 return {
                     userDetails: response,
+                };
+            });
+        });
+        User.getLibraryMainUsers().then((response) => {
+            this.setState(() => {
+                return {
+                    libraryMainUsers: response,
+                };
+            });
+        });
+        User.getLibraryCategories().then((response) => {
+            this.setState(() => {
+                return {
+                    libraryCategories: response,
                 };
             });
         });
@@ -131,8 +147,10 @@ class RequestLibrary extends Component {
             return false;
         }
         const libraryTypeOptions = this.selectLibraryType.options;
+        const libraryCategoryOptions = this.selectLibraryCategory.options;
         const libraryName = StringValidations.escapeCharacters(this.inputLibraryName.value);
         const libraryType = libraryTypeOptions[libraryTypeOptions.selectedIndex].text;
+        const libraryCategory = libraryCategoryOptions[libraryCategoryOptions.selectedIndex].text;
         const libraryVersion = StringValidations.escapeCharacters(this.inputVersionWeUse.value);
         const libraryFileName = StringValidations.escapeCharacters(this.inputLibraryFileName.value);
         const libraryLatestVersion = StringValidations.escapeCharacters(this.inputLatestVersion.value);
@@ -142,10 +160,10 @@ class RequestLibrary extends Component {
         const libraryDescription = StringValidations.escapeCharacters(this.textDescription.value);
         const libraryAlternatives = StringValidations.escapeCharacters(this.testAlternatives.value);
         const requestByEmail = StringValidations.escapeCharacters(this.state.userDetails.userEmail);
-        console.log(requestBy);//eslint-disable-line
         const data = {
             libName: libraryName,
             libType: libraryType,
+            libCategory: libraryCategory,
             libUseVersion: libraryVersion,
             libLatestVersion: libraryLatestVersion,
             libFileName: libraryFileName,
@@ -154,9 +172,53 @@ class RequestLibrary extends Component {
             libPurpose: libraryPurpose,
             libDescription: libraryDescription,
             libAlternatives: libraryAlternatives,
-            requestBy: requestByEmail,
+            libRequestBy: requestByEmail,
         };
         console.log(data);//eslint-disable-line
+        console.log(this.state.libraryMainUsers);//eslint-disable-line
+        LibraryProcess.startProcess(data, this.state.libraryMainUsers).then((response) => {
+            if (response.data.completed === false) {
+                try {
+                    LibraryProcess.getTasks().then((responseTasks) => {
+                        let i = 0;
+                        const taskArraylength = responseTasks.data.length;
+                        let task;
+                        for (i = 0; i < taskArraylength; i++) {
+                            task = responseTasks.data[i];
+                            if (task.processInstanceId === response.data.id) {
+                                console.log(task.processInstanceId);//eslint-disable-line
+                                this.setState(() => {
+                                    return {
+                                        displayLoader: 'none',
+                                        displaySuceessBox: 'block',
+                                    };
+                                });
+                                break;
+                            }
+                        }
+                    });
+                } catch (err) {
+                    this.setState(() => {
+                        return {
+                            displayLoader: 'none',
+                            displayErrorBox: 'block',
+                        };
+                    });
+                }
+            } else {
+                this.setState(() => {
+                    return {
+                        displayLoader: 'none',
+                        displayErrorBox: 'block',
+                    };
+                });
+            }
+            this.setState(() => {
+                return {
+                    displayLoader: 'none',
+                };
+            });
+        });
         this.setState(() => {
             return {
                 displayFieldset: 'none',
@@ -203,6 +265,22 @@ class RequestLibrary extends Component {
                                 {this.state.libraryTypes.map((libraryType, i)=>
                                     (<option key={i} value={libraryType.LIB_TYPE}>
                                         {libraryType.LIB_TYPE}
+                                    </option>))}
+                            </select>
+                            {/* eslint-enable */}
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="selectLibraryCategory" className="col-lg-2 control-label">
+                            <span className="required">*</span>&nbsp;Library Type
+                        </label>
+                        <div className="col-lg-10" >
+                            {/* eslint-disable */}
+                            <select className="form-control" ref={(c) => { this.selectLibraryCategory = c; }} >
+                                {this.state.libraryCategories.map((libraryCategory, i)=>
+                                    (<option key={i} value={libraryCategory.ROLE_LIB_TYPE}>
+                                        {libraryCategory.ROLE_LIB_TYPE}
                                     </option>))}
                             </select>
                             {/* eslint-enable */}

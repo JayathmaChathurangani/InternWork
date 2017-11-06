@@ -5,7 +5,6 @@ import ballerina.lang.strings;
 import ballerina.utils;
 import ballerina.lang.jsons;
 import ballerina.lang.time;
-
 import ballerina.lang.errors;
 import ballerina.lang.system;
 import ballerina.lang.messages;
@@ -13,6 +12,7 @@ import org.wso2.internalapps.licensemanager.database;
 
 http:Session userSession = null;
 string sessionId;
+
 function validateUser(message request)(message){
 
     string email = "";
@@ -20,14 +20,21 @@ function validateUser(message request)(message){
     string[] webTokenArray;
     string dencodedString;
     string webToken;
+    string roleLibType;
+    string rolePermission;
     int epocTime;
     int currentTimeInt;
     json decodedJson;
     json requestJson;
     json returnJson;
     json responseJson;
+    json userLibraryPermissionJson;
+    json userLibraryPermissionJsonArray = [];
     boolean isValid = false;
-    boolean isAdminFromDb = false;
+    boolean isRepositoryAdmin = false;
+    int i = 0;
+    int returnJsonLength = 0;
+    int userLibraryPermissionJsonArrayLength;
 
     try{
         requestJson = messages:getJsonPayload(request);
@@ -41,41 +48,56 @@ function validateUser(message request)(message){
         epocTime,_ = <int>epocTimeString;
         time:Time currentTime = time:currentTime();
         currentTimeInt = currentTime.time / 1000;
-        system:println("call function");
         if((strings:hasSuffix(email,"@wso2.com")) && (currentTimeInt < (epocTime + 86400)) ){
-            system:println("call");
-            system:println(request);
-            returnJson = database:userCheckAdminUsers(email);
-            isAdminFromDb,_ = <boolean>jsons:toString(returnJson.isAdmin);
-
             userSession = http:createSessionIfAbsent(request);
+            returnJson = database:roleGetUserDetails(email);
+            returnJsonLength = lengthof returnJson;
+            while(i<returnJsonLength){
+                if(jsons:toString(returnJson[i].ROLE_TYPE) == "REPOSITORY" && jsons:toString(returnJson[i].ROLE_PERMISSION) == "ADMIN"){
+                    isRepositoryAdmin = true;
+
+                }
+                if(jsons:toString(returnJson[i].ROLE_TYPE) == "LIBRARY"){
+                    roleLibType = jsons:toString(returnJson[i].ROLE_LIB_TYPE);
+                    rolePermission = jsons:toString(returnJson[i].ROLE_PERMISSION);
+                    userLibraryPermissionJson = {
+                                                    "roleType":"LIBRARY",
+                                                    "roleLibType":roleLibType,
+                                                    "rolePermission":rolePermission
+                                                };
+                    userLibraryPermissionJsonArrayLength = lengthof userLibraryPermissionJsonArray;
+                    userLibraryPermissionJsonArray[userLibraryPermissionJsonArrayLength] = userLibraryPermissionJson;
+
+
+
+                }
+                i = i + 1;
+            }
             isValid = true;
             http:setAttribute(userSession,"isValid",isValid);
-            http:setAttribute(userSession,"isRepositoryAdmin",isAdminFromDb);
             http:setAttribute(userSession,"userEmail",email);
             http:setAttribute(userSession,"loginTime",epocTime);
+            http:setAttribute(userSession,"isRepositoryAdmin",isRepositoryAdmin);
+            http:setAttribute(userSession,"libraryUserDetails",userLibraryPermissionJsonArray);
             sessionId = http:getId(userSession);
             system:println("post "+sessionId);
-            responseJson = {"isValid":isValid,"isAdmin":isAdminFromDb,"userEmail":email};
+            responseJson = {"isValid":isValid,"isRepositoryAdmin":isRepositoryAdmin,"libraryUserDetails":userLibraryPermissionJsonArray,"userEmail":email};
 
         }else{
             userSession = null;
             isValid = false;
-            responseJson = {"isValid":isValid,"isAdmin":isAdminFromDb,"userEmail":""};
+            responseJson = {"isValid":isValid,"isRepositoryAdmin":isRepositoryAdmin,"libraryUserDetails":userLibraryPermissionJsonArray,"userEmail":""};
 
         }
     }catch(errors:Error err){
         isValid = false;
-        responseJson = {"isValid":isValid,"isAdmin":isAdminFromDb,"userEmail":""};
+        responseJson = {"isValid":isValid,"isRepositoryAdmin":isRepositoryAdmin,"libraryUserDetails":userLibraryPermissionJsonArray,"userEmail":""};
     }
 
     messages:setJsonPayload(request,responseJson);
     return request;
 
 }
-
-
-
 
 function getIsValidUser ()(boolean returnIsValid)  {
 

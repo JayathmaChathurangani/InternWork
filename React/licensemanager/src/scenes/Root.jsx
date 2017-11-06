@@ -20,7 +20,8 @@ class Root extends Component {
         super(props);
         this.state = {
             isAdminUser: null,
-            isValidUser: null,
+            isRepositoryAdmin: null,
+            isValid: null,
             displayChildren: 'block',
             displayError: 'none',
             displayNav: 'block',
@@ -41,7 +42,7 @@ class Root extends Component {
                 this.setState(() => {
                     return {
                         isValidUser: response.isValid,
-                        isAdminUser: response.isAdmin,
+                        isRepositoryAdmin: response.isRepositoryAdmin,
                         userDetails: response,
                     };
                 });
@@ -49,7 +50,7 @@ class Root extends Component {
                 this.setState(() => {
                     return {
                         isValidUser: response.isValid,
-                        isAdminUser: response.isAdmin,
+                        isRepositoryAdmin: response.isRepositoryAdmin,
                         displayChildren: 'none',
                         displayError: 'block',
                         displayNav: 'none',
@@ -57,9 +58,16 @@ class Root extends Component {
                     };
                 });
             }
+            if (response.isRepositoryAdmin) {
+                this.setState(() => {
+                    return {
+                        isAdminUser: true,
+                    };
+                });
+            }
             console.log(props.location.pathname);//eslint-disable-line
-            console.log(this.state.isAdminUser);//eslint-disable-line
-            if (adminPages.indexOf(props.location.pathname) !== -1 && !this.state.isAdminUser) {
+            console.log(this.state.isRepositoryAdmin);//eslint-disable-line
+            if (adminPages.indexOf(props.location.pathname) !== -1 && !this.state.isRepositoryAdmin) {
                 this.setState(() => {
                     return {
                         displayChildren: 'none',
@@ -68,7 +76,7 @@ class Root extends Component {
                         displayHeader: 'none',
                     };
                 });
-            } else if (adminPages.indexOf(props.location.pathname) !== -1 && this.state.isAdminUser) {
+            } else if (adminPages.indexOf(props.location.pathname) !== -1 && this.state.isRepositoryAdmin) {
                 this.setState(() => {
                     return {
                         displayChildren: 'block',

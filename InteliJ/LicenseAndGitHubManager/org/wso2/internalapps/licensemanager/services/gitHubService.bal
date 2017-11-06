@@ -48,10 +48,7 @@ function createGitHubRepository(int repositoryId)(json ){
         }
         system:println("call git");
         accessToken = conf:getConfigData("gitHubToken");
-        responseDataFromDb = database:repositorySelectFromId(repositoryId);
-        responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
-
-
+        responseDataFromDbJson = database:repositorySelectFromId(repositoryId);
         repositoryName = jsons:toString(responseDataFromDbJson[0].REPOSITORY_NAME);
         repositoryLanguage = jsons:toString(responseDataFromDbJson[0].REPOSITORY_LANGUAGE);
         repositoryLicense = jsons:toString(responseDataFromDbJson[0].LICENSE_KEY);
@@ -83,17 +80,11 @@ function createGitHubRepository(int repositoryId)(json ){
         responseFromGitHubApi = httpConnector.post(postUrl,requestMessageForGitHub);
         headerValue = messages:getHeader(responseFromGitHubApi,"Status");
         if(headerValue == "201 Created"){
-
             response = {"responseType":"Done","responseMessage":"done"};
         }else{
 
             response = {"responseType":"Error","responseMessage":"error"};
         }
-
-
-
-
-
 
     }catch(errors:Error err){
         response = {"responseType":"Error","responseMessage":err.msg};
@@ -112,6 +103,7 @@ function getAllLanguages(message m)(message){
     }
 
     message response = {};
+    json responseJson;
     string accessToken = conf:getConfigData("gitHubToken");
     string requestUrl = "gitignore/templates?access_token=" + accessToken;
 
@@ -120,8 +112,9 @@ function getAllLanguages(message m)(message){
     return response;
 }
 
-function setIssueTemplate(string organization,string repositoryName)(message){
-    message response = {};
+function setIssueTemplate(string organization,string repositoryName,string userName,string userEmail)(json){
+    json response;
+    message responseMessage = {};
 
     try{
 
@@ -129,11 +122,8 @@ function setIssueTemplate(string organization,string repositoryName)(message){
             setGithubConnection();
         }
 
-        message getAdminUserMessage = database:userSelectAdminUsers();
-        json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
+
         string accessToken = conf:getConfigData("gitHubToken");
-        string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
-        string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
         string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/issue_template.md?access_token=" + accessToken + "&content=base64&branch=master";
         string headerValue;
 
@@ -148,19 +138,20 @@ function setIssueTemplate(string organization,string repositoryName)(message){
         messages:setJsonPayload(gitHubRequestMessage,gitHubRequestJson);
 
 
-        response = httpConnector.put(requestUrl,gitHubRequestMessage);
+        responseMessage = httpConnector.put(requestUrl,gitHubRequestMessage);
         system:println("github issue");
-        system:println(response);
-        system:println(messages:getHeader(response,"Status"));
-        headerValue = messages:getHeader(response,"Status");
+        system:println(responseMessage);
+        system:println(messages:getHeader(responseMessage,"Status"));
+        headerValue = messages:getHeader(responseMessage,"Status");
         if(headerValue == "201 Created"){
             system:println("done");
+            response = {"responseType":"Done","responseMessage":"done"};
         }else{
             system:println("fail");
+            response = {"responseType":"Error","responseMessage":"error"};
         }
 
-        json responseMessage = {"responseType":"Done","responseMessage":"done"};
-        messages:setJsonPayload(response,responseMessage);
+
     }catch(errors:Error err){
         response = {"responseType":"Error","responseMessage":err.msg};
         system:println(err);
@@ -172,20 +163,17 @@ function setIssueTemplate(string organization,string repositoryName)(message){
 
 }
 
-function setPullRequestTemplate(string organization,string repositoryName)(message){
+function setPullRequestTemplate(string organization,string repositoryName,string userName,string userEmail)(json){
     message response = {};
-
+    json responseMessage;
     try{
 
         if(httpConnector == null){
             setGithubConnection();
         }
 
-        message getAdminUserMessage = database:userSelectAdminUsers();
-        json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
+
         string accessToken = conf:getConfigData("gitHubToken");
-        string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
-        string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
         string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/pull_request_template.md?access_token=" + accessToken + "&content=base64&branch=master";
         string headerValue;
 
@@ -207,25 +195,27 @@ function setPullRequestTemplate(string organization,string repositoryName)(messa
         headerValue = messages:getHeader(response,"Status");
         if(headerValue == "201 Created"){
             system:println("done");
+            responseMessage = {"responseType":"Done","responseMessage":"done"};
         }else{
             system:println("fail");
+            responseMessage = {"responseType":"Done","responseMessage":"done"};
         }
 
-        json responseMessage = {"responseType":"Done","responseMessage":"done"};
+
         messages:setJsonPayload(response,responseMessage);
 
     }catch(errors:Error err){
-        response = {"responseType":"Error","responseMessage":err.msg};
+        responseMessage = {"responseType":"Error","responseMessage":err.msg};
         system:println(err);
 
     }
 
-    return response;
+    return responseMessage;
 
 
 }
 
-function setReadMe(string organization,string repositoryName,string repositoryDescription)(message){
+function setReadMe(string organization,string repositoryName,string repositoryDescription,string userName,string userEmail)(message){
     message response = {};
     try{
 
@@ -233,11 +223,9 @@ function setReadMe(string organization,string repositoryName,string repositoryDe
             setGithubConnection();
         }
 
-        message getAdminUserMessage = database:userSelectAdminUsers();
-        json getAdminUserJson = messages:getJsonPayload(getAdminUserMessage);
+
+
         string accessToken = conf:getConfigData("gitHubToken");
-        string userName = jsons:toString(getAdminUserJson[0].USER_NAME);
-        string userEmail = jsons:toString(getAdminUserJson[0].USER_EMAIL);
         string requestUrl =  "repos/" + organization + "/" + repositoryName + "/contents/README.md?access_token=" + accessToken + "&content=base64&branch=master";
         string encodeString = utils:base64encode(correctString(repositoryDescription));
         string headerValue;
@@ -285,8 +273,6 @@ function getTeamsFromOrganization(string organization)(message ){
         json responseDataFromDbJson;
         message responseDataFromDb = {};
         string accessToken = "";
-        responseDataFromDb = database:userSelectAdminUsers();
-        responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
         accessToken = conf:getConfigData("gitHubToken");
 
         message requestMessageFromGitHub = {};

@@ -17,53 +17,12 @@ class GitHubRepositoryCreation extends Component {
     */
     startProcess(requestData, mailData, mainUsers) {
         const url = MainData.bpmnStartURL;
-        const columns = [
-            'REPOSITORY_NAME',
-            'REPOSITORY_LANGUAGE',
-            'REPOSITORY_BUILDABLE',
-            'REPOSITORY_NEXUS',
-            'REPOSITORY_PRIVATE',
-            'REPOSITORY_DESCRIPTION',
-            'REPOSITORY_GROUPID',
-            'REPOSITORY_LICENSE',
-            'REPOSITORY_TEAM',
-            'REPOSITORY_ORGANIZATION',
-            'REPOSITORY_TYPE',
-            'REPOSITORY_REQUEST_BY',
-        ];
-        const mailColumns = [
-            'Repository Name',
-            'Language',
-            'Buildable',
-            'Nexus repository',
-            'Is private',
-            'Description',
-            'Group ID',
-            'License',
-            'Team',
-            'Organization',
-            'Type',
-            'Requested By',
-        ];
-        const tableName = 'LM_REPOSITORY';
         let i = 0;
         let sendToList = ' ';
         for (i = 0; i < mainUsers.length; i++) {
-            sendToList = sendToList + mainUsers[i].USER_EMAIL + ',';
+            sendToList = sendToList + mainUsers[i].ROLE_EMAIL + ',';
         }
         const variablesArray = [
-            {
-                name: 'tableName',
-                value: tableName,
-            },
-            {
-                name: 'columns',
-                value: columns,
-            },
-            {
-                name: 'mailColumns',
-                value: mailColumns,
-            },
             {
                 name: 'data',
                 value: requestData,
@@ -88,6 +47,7 @@ class GitHubRepositoryCreation extends Component {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
         };
+        console.log(data);//eslint-disable-line
         return axios.post(url, data, headers).then((response) => {
             return response;
         }).catch((error) => {

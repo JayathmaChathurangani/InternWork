@@ -14,6 +14,7 @@
           <activiti:expression>{
 	"libName":"${data.libName}",
 	"libType":"${data.libType}",
+	"libCategory":"${data.libCategory}",
 	"libUseVersion":"${data.libUseVersion}",
 	"libLatestVersion":"${data.libLatestVersion}",
 	"libFileName":"${data.libFileName}",
@@ -21,7 +22,8 @@
 	"libSponsored":"${data.libSponsored}",
 	"libPurpose":"${data.libPurpose}",
 	"libDescription":"${data.libDescription}",
-	"libAlternatives":"${data.libAlternatives}"
+	"libAlternatives":"${data.libAlternatives}",
+	"libRequestBy":"${data.libRequestBy}"
 }</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -29,11 +31,43 @@
     <serviceTask id="sendMailForApproval" name="Send e-mail for approval" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${data.libName}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sendToList}${data.requestBy}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[project@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[3rd Party Library Request]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="html">
+          <activiti:expression><![CDATA[<p>
+  Hi all!<br /><br />
+
+  There is a 3rd party library request with following details. <br /><br />
+
+  <li><b>Library Name</b>:&nbsp;${data.libName}</li>
+  <li><b>Library Type</b>:&nbsp;${data.libType}</li>
+  <li><b>Library Category</b>:&nbsp;${data.libCategory}</li>
+  <li><b>Expected version to use</b>:&nbsp;${data.libUseVersion}</li>
+  <li><b>Latest version</b>:&nbsp;${data.libLatestVersion}</li>
+  <li><b>Library file name</b>:&nbsp;${data.libFileName}</li>
+  <li><b>Company</b>:&nbsp;${data.libCompany}</li>
+  <li><b>Sponsored by</b>:&nbsp;${(data.libSponsored)?"Yes":"No"}</li>
+  <li><b>Requested by</b>:&nbsp;${data.libRequestBy}</li>
+  <li><b>Purpose</b>:&nbsp;<br/><br/>&emsp;${data.libPurpose.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}</li><br/>
+  <li><b>Description</b>:&nbsp;<br/><br/>&emsp;${data.libDescription.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}</li><br/>
+  <li><b>Alternatives</b>&nbsp;<br/><br/>:&emsp;${data.libAlternatives.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}</li><br/>
+  
+
+  <strong>In order to accept or reject the request please click <a href=http://localhost:8081/#/root/acceptLibrary?libraryId=${repositoryId}>here.</a></strong>
+
+  <br/><br/>
+  Thank You.
+  </p>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="approveOrRejectTask" name="Waiting for approval"></userTask>
+    <userTask id="approveOrRejectTask" name="Waiting for approval" activiti:assignee="admin"></userTask>
     <serviceTask id="updateDatabase" name="Update databse" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
@@ -56,16 +90,13 @@
     <serviceTask id="sendApprovedAck" name="Send acknowledgement" isForCompensation="true" activiti:type="mail"></serviceTask>
     <endEvent id="endevent1" name="End"></endEvent>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="sendRejectAck" name="Send acknowledgement"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="insertToDb"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="insertToDb" targetRef="sendMailForApproval"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="sendMailForApproval" targetRef="approveOrRejectTask"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="approveOrRejectTask" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="updateDatabase"></sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="sendRejectAck"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="updateDatabase" targetRef="sendApprovedAck"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="sendApprovedAck" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow9" sourceRef="sendRejectAck" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
     <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
@@ -93,9 +124,6 @@
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="660.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sendRejectAck" id="BPMNShape_sendRejectAck">
-        <omgdc:Bounds height="62.0" width="171.0" x="595.0" y="310.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="55.0" y="227.0"></omgdi:waypoint>
         <omgdi:waypoint x="100.0" y="227.0"></omgdi:waypoint>
@@ -116,10 +144,6 @@
         <omgdi:waypoint x="700.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="790.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="680.0" y="250.0"></omgdi:waypoint>
-        <omgdi:waypoint x="680.0" y="310.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="915.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="940.0" y="228.0"></omgdi:waypoint>
@@ -127,11 +151,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="1111.0" y="228.0"></omgdi:waypoint>
         <omgdi:waypoint x="1150.0" y="227.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="766.0" y="341.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1167.0" y="341.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1167.0" y="245.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

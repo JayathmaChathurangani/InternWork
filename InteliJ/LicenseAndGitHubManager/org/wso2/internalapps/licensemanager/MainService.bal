@@ -28,7 +28,10 @@ service<http> MainService {
         json finalResponseJson = {"responseType":"Done","responseMessage":" ","toSend":" "};
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
         json requestDataJson;
+        json teamJson;
         string responseType;
+        string teamName;
+        string teamId;
         int repositoryId;
 
         if(services:getIsValidUser()){
@@ -37,13 +40,17 @@ service<http> MainService {
             requestDataJson = messages:getJsonPayload(m);
             repositoryId,_ = <int> jsons:toString(requestDataJson.repositoryId);
             responseGitHubJson = services:createGitHubRepository(repositoryId);
-            responseDataFromDb = database:repositorySelectFromId(repositoryId);
-            responseDataFromDbJson = messages:getJsonPayload(responseDataFromDb);
+            responseDataFromDbJson = database:repositorySelectFromId(repositoryId);
+
+            teamId = jsons:toString(responseDataFromDbJson[0].REPOSITORY_TEAM);
+            teamJson = services:getTeamsFromId(teamId);
+            teamName = jsons:toString(teamJson.name);
+
             responseType = jsons:toString(responseGitHubJson.responseType);
             if(responseType == "Done"){
-                finalResponseJson = {"responseType":"Done","responseMessage":" ","responseDefault":"Done","repoUpdatedDetails":responseDataFromDbJson[0]};
+                finalResponseJson = {"responseType":"Done","responseMessage":" ","responseDefault":"Done","repoUpdatedDetails":responseDataFromDbJson[0],"teamName":teamName};
             }else{
-                finalResponseJson = {"responseType":"Error","responseMessage":" ","responseDefault":"Done","repoUpdatedDetails":responseDataFromDbJson[0]};
+                finalResponseJson = {"responseType":"Error","responseMessage":" ","responseDefault":"Done","repoUpdatedDetails":responseDataFromDbJson[0],"teamName":teamName};
             }
             system:println(finalResponseJson);
             messages:setJsonPayload(response,finalResponseJson);
@@ -64,14 +71,22 @@ service<http> MainService {
         message response = {};
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
         json requestJson;
+        json userJson;
+        json responseJson;
         string organization;
         string repositoryName;
+        string acceptedByEmail;
+        string acceptedByName;
 
         if(services:getIsValidUser()){
             requestJson = messages:getJsonPayload(m);
             organization = jsons:toString(requestJson.organization);
             repositoryName = jsons:toString(requestJson.repositoryName);
-            response = services:setIssueTemplate(organization,repositoryName);
+            acceptedByEmail = jsons:toString(requestJson.acceptedByEmail);
+            userJson = database:roleRepositoryCheckAdminUsers(acceptedByEmail);
+            acceptedByName = jsons:toString(userJson[0].ROLE_NAME);
+            responseJson = services:setIssueTemplate(organization,repositoryName,acceptedByEmail,acceptedByName);
+            messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);
         }
@@ -87,14 +102,22 @@ service<http> MainService {
         message response = {};
         json requestJson;
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        json userJson;
+        json responseJson;
         string organization;
         string repositoryName;
+        string acceptedByEmail;
+        string acceptedByName;
 
         if(services:getIsValidUser()){
             requestJson = messages:getJsonPayload(m);
             organization = jsons:toString(requestJson.organization);
             repositoryName = jsons:toString(requestJson.repositoryName);
-            response = services:setPullRequestTemplate(organization,repositoryName);
+            acceptedByEmail = jsons:toString(requestJson.acceptedByEmail);
+            userJson = database:roleRepositoryCheckAdminUsers(acceptedByEmail);
+            acceptedByName = jsons:toString(userJson[0].ROLE_NAME);
+            responseJson = services:setPullRequestTemplate(organization,repositoryName,acceptedByEmail,acceptedByName);
+            messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);
         }
@@ -110,16 +133,23 @@ service<http> MainService {
         message response = {};
         json requestJson;
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        json userJson;
         string organization;
         string repositoryName;
         string repositoryDescription;
+        string acceptedByEmail;
+        string acceptedByName;
 
         if(services:getIsValidUser()){
             requestJson = messages:getJsonPayload(m);
             organization = jsons:toString(requestJson.organization);
             repositoryName = jsons:toString(requestJson.repositoryName);
             repositoryDescription = jsons:toString(requestJson.repositoryDescription);
-            response = services:setReadMe(organization,repositoryName,repositoryDescription);
+            acceptedByEmail = jsons:toString(requestJson.acceptedByEmail);
+            userJson = database:roleRepositoryCheckAdminUsers(acceptedByEmail);
+            system:println(userJson);
+            acceptedByName = jsons:toString(userJson[0].ROLE_NAME);
+            response = services:setReadMe(organization,repositoryName,repositoryDescription,acceptedByEmail,acceptedByName);
         }else{
             messages:setJsonPayload(response,inValidUserJson);
         }
@@ -555,14 +585,15 @@ service<http> MainService {
     resource repositorySelectFromIdResource(@http:QueryParam {value:"id"} int id){
 
         message response = {};
-        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        json responseJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
 
         if(services:getIsValidUser()){
-            response = database:repositorySelectFromId(id);
+            responseJson = database:repositorySelectFromId(id);
         }else{
-            messages:setJsonPayload(response,inValidUserJson);
+            responseJson = {"responseType":"Error","responseMessage":"Invalid user"};
         }
-
+        messages:setJsonPayload(response,responseJson);
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
@@ -687,14 +718,16 @@ service<http> MainService {
     }
 
     @http:GET {}
-    @http:Path {value:"/databaseService/user/selectMainUsers"}
-    resource userSelectMainUsersResource(message m){
+    @http:Path {value:"/databaseService/role/selectRepositoryAdminUsers"}
+    resource roleSelectRepositoryAdminUsersResource(message m){
 
         message response = {};
+        json responseJson;
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
 
         if(services:getIsValidUser()){
-            response = database:userSelectMainUsers();
+            responseJson = database:roleSelectRepositoryAdminUsers();
+            messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);
         }
@@ -704,7 +737,26 @@ service<http> MainService {
     }
 
     @http:GET {}
-    @http:Path {value:"/databaseService/user/checkAdminUsers"}
+    @http:Path {value:"/databaseService/role/selectRepositoryMainUsers"}
+    resource roleSelectRepositoryMainUsersResource(message m){
+
+        message response = {};
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
+        if(services:getIsValidUser()){
+            responseJson = database:roleSelectRepositoryMainUsers();
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/role/checkRepositoryAdminUser"}
     resource userCheckAdminUsersResource(@http:QueryParam {value:"email"} string email){
 
         message response = {};
@@ -712,7 +764,45 @@ service<http> MainService {
         json responseJson;
 
         if(services:getIsValidUser()){
-            responseJson = database:userCheckAdminUsers(email);
+            responseJson = database:roleRepositoryCheckAdminUsers(email);
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/role/selectLibraryMainUsers"}
+    resource roleSelectLibraryMainUsersResource(message m){
+
+        message response = {};
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
+        if(services:getIsValidUser()){
+            responseJson = database:roleSelectLibraryMainUsers();
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/role/selectLibraryCategories"}
+    resource roleSelectLibraryCategoriesResource(message m){
+
+        message response = {};
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
+        if(services:getIsValidUser()){
+            responseJson = database:roleSelectLibraryCategories();
             messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);
@@ -835,6 +925,7 @@ service<http> MainService {
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
         string name;
         string libType;
+        string libCategory;
         string useVersion;
         string latestVersion;
         string fileName;
@@ -843,6 +934,7 @@ service<http> MainService {
         string purpose;
         string description;
         string alternatives;
+        string requestBy;
         int responseValue;
         system:println(m);
 
@@ -850,6 +942,7 @@ service<http> MainService {
 
             name = jsons:toString(requestJson.libName);
             libType = jsons:toString(requestJson.libType);
+            libCategory = jsons:toString(requestJson.libCategory);
             useVersion = jsons:toString(requestJson.libUseVersion);
             latestVersion = jsons:toString(requestJson.libLatestVersion);
             fileName = jsons:toString(requestJson.libFileName);
@@ -858,7 +951,8 @@ service<http> MainService {
             purpose = jsons:toString(requestJson.libPurpose);
             description = jsons:toString(requestJson.libDescription);
             alternatives = jsons:toString(requestJson.libAlternatives);
-            responseValue = database:libraryRequestInsertData(name,libType,useVersion,latestVersion,fileName,company,sponsored,purpose,description,alternatives);
+            requestBy = jsons:toString(requestJson.libRequestBy);
+            responseValue = database:libraryRequestInsertData(name,libType,libCategory,useVersion,latestVersion,fileName,company,sponsored,purpose,description,alternatives,requestBy);
 
             if(responseValue > 0){
                 responseJson = {"responseType":"Done","responseMessage":" "};
@@ -914,4 +1008,5 @@ service<http> MainService {
         messages:setHeader(response,"Access-Control-Allow-Origin","*");
         reply response;
     }
+
 }

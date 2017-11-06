@@ -79,7 +79,7 @@ class RequestRepository extends Component {
             });
             this.setTeams();
         });
-        User.getMainUsers().then((response) => {
+        User.getRepositoryMainUsers().then((response) => {
             this.setState(() => {
                 return {
                     mainUsers: response,

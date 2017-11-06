@@ -24,7 +24,7 @@ import RequestRepository from './scenes/repository/RequestRepository';
 import AcceptRepository from './scenes/repository/AcceptRepository';
 import RejectRepository from './scenes/repository/RejectRepository';
 import SearchRepository from './scenes/repository/SearchRepository';
-import RequestLibrary from './scenes/license/RequestLibrary';
+import RequestLibrary from './scenes/library/RequestLibrary';
 import PendingRequests from './scenes/common/PendingRequests';
 import WaitingRequests from './scenes/common/WaitingRequests';
 

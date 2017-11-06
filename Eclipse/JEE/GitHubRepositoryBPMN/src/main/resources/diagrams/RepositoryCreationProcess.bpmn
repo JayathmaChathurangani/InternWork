@@ -31,7 +31,7 @@
           <activiti:expression>{"repositoryId":${repositoryId}}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
-          <activiti:string>outputTypeGitHub:responseType,repoUpdatedDetails:repoUpdatedDetails,outputTypeGitHubIssue:responseDefault,outputTypeGitHubPullRequest:responseDefault,outputTypeGitHubReadMe:responseDefault,outputTypeJenkins:responseDefault,outputTypeNexusStaging:responseDefault,outputTypeNexusRepoTarget:responseDefault</activiti:string>
+          <activiti:string>outputTypeGitHub:responseType,repoUpdatedDetails:repoUpdatedDetails,outputTypeGitHubIssue:responseDefault,outputTypeGitHubPullRequest:responseDefault,outputTypeGitHubReadMe:responseDefault,outputTypeJenkins:responseDefault,outputTypeNexusStaging:responseDefault,outputTypeNexusRepoTarget:responseDefault,outputTeamName:teamName</activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -64,20 +64,20 @@ Hi all!<br /><br />
 
 There is a repository request with following details. <br /><br />
 
-<li><b>${mailColumns[0]}</b>:&nbsp;${mailData[0]}</li>
-<li><b>${mailColumns[1]}</b>:&nbsp;${mailData[1]}</li>
-<li><b>${mailColumns[2]}</b>:&nbsp;${mailData[2]}</li>
-<li><b>${mailColumns[3]}</b>:&nbsp;${mailData[3]}</li>
-<li><b>${mailColumns[4]}</b>:&nbsp;${mailData[4]}</li>
-<li><b>${mailColumns[6]}</b>:&nbsp;${mailData[6]}</li>
-<li><b>${mailColumns[7]}</b>:&nbsp;${mailData[7]}</li>
-<li><b>${mailColumns[8]}</b>:&nbsp;${mailData[8]}</li>
-<li><b>${mailColumns[9]}</b>:&nbsp;${mailData[9]}</li>
-<li><b>${mailColumns[10]}</b>:&nbsp;${mailData[10]}</li>
-<li><b>${mailColumns[11]}</b>:&nbsp;${mailData[11]}</li>
-<li><b>${mailColumns[5]}</b>:&nbsp;<br/><br/>&emsp;${mailData[5].replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}</li><br/>
+<li><b>Repository Name</b>:&nbsp;${mailData[0]}</li>
+<li><b>Language</b>:&nbsp;${mailData[1]}</li>
+<li><b>Buildable</b>:&nbsp;${mailData[2]}</li>
+<li><b>Nexus</b>:&nbsp;${mailData[3]}</li>
+<li><b>Is private</b>:&nbsp;${mailData[4]}</li>
+<li><b>Group ID</b>:&nbsp;${mailData[6]}</li>
+<li><b>License</b>:&nbsp;${mailData[7]}</li>
+<li><b>Team</b>:&nbsp;${mailData[8]}</li>
+<li><b>Organization</b>:&nbsp;${mailData[9]}</li>
+<li><b>Repository Type</b>:&nbsp;${mailData[10]}</li>
+<li><b>Requested By</b>:&nbsp;${mailData[11]}</li>
+<li><b>Description</b>:&nbsp;<br/><br/>&emsp;${mailData[5].replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}</li><br/>
 
-<strong>In order to accept or reject the request please click <a href=http://localhost:8081/acceptRepository?repositoryId=${repositoryId}>here.</a></strong>
+<strong>In order to accept or reject the request please click <a href=http://localhost:8081/root/acceptRepository?repositoryId=${repositoryId}>here.</a></strong>
 
 <br/><br/>
 Thank You.
@@ -109,19 +109,18 @@ The repository request with following details is rejected. <br/><br/>
 <li><b>Reason for rejection</b>:&nbsp;${reasonForReject}</li>
 <br /><br />
 
-<li><b>${mailColumns[0]}</b>:&nbsp;${mailData[0]}</li>
-<li><b>${mailColumns[1]}</b>:&nbsp;${mailData[1]}</li>
-<li><b>${mailColumns[2]}</b>:&nbsp;${mailData[2]}</li>
-<li><b>${mailColumns[3]}</b>:&nbsp;${mailData[3]}</li>
-<li><b>${mailColumns[4]}</b>:&nbsp;${mailData[4]}</li>
-<li><b>${mailColumns[6]}</b>:&nbsp;${mailData[6]}</li>
-<li><b>${mailColumns[7]}</b>:&nbsp;${mailData[7]}</li>
-<li><b>${mailColumns[8]}</b>:&nbsp;${mailData[8]}</li>
-<li><b>${mailColumns[9]}</b>:&nbsp;${mailData[9]}</li>
-<li><b>${mailColumns[10]}</b>:&nbsp;${mailData[10]}</li>
-<li><b>${mailColumns[11]}</b>:&nbsp;${mailData[11]}</li>
-<li><b>${mailColumns[5]}</b>:&nbsp;<br/><br/>&emsp;${mailData[5].replaceAll("\\\\\\\\n","<br/>&emsp;")}</li><br/>
-
+<li><b>Repository Name</b>:&nbsp;${mailData[0]}</li>
+<li><b>Language</b>:&nbsp;${mailData[1]}</li>
+<li><b>Buildable</b>:&nbsp;${mailData[2]}</li>
+<li><b>Nexus</b>:&nbsp;${mailData[3]}</li>
+<li><b>Is private</b>:&nbsp;${mailData[4]}</li>
+<li><b>Group ID</b>:&nbsp;${mailData[6]}</li>
+<li><b>License</b>:&nbsp;${mailData[7]}</li>
+<li><b>Team</b>:&nbsp;${mailData[8]}</li>
+<li><b>Organization</b>:&nbsp;${mailData[9]}</li>
+<li><b>Repository Type</b>:&nbsp;${mailData[10]}</li>
+<li><b>Requested By</b>:&nbsp;${mailData[11]}</li>
+<li><b>Description</b>:&nbsp;<br/><br/>&emsp;${mailData[5].replaceAll("\\\\\\\\n","<br/>&emsp;")}</li><br/>
 
 <br/><br/>
 Thank You.
@@ -145,18 +144,18 @@ Hi all!<br /><br />
 
 The repository request with following details is accepted and successfully created. <br /><br />
 
-<b>${mailColumns[0]}</b>:${repoUpdatedDetails.REPOSITORY_NAME}<br />
-<b>${mailColumns[1]}</b>:${repoUpdatedDetails.REPOSITORY_LANGUAGE}<br />
-<b>${mailColumns[2]}</b>:${repoUpdatedDetails.REPOSITORY_BUILDABLE}<br />
-<b>${mailColumns[3]}</b>:${repoUpdatedDetails.REPOSITORY_NEXUS}<br />
-<b>${mailColumns[4]}</b>:${repoUpdatedDetails.REPOSITORY_PRIVATE}<br />
-<b>${mailColumns[6]}</b>:${repoUpdatedDetails.REPOSITORY_GROUPID}<br />
-<b>${mailColumns[7]}</b>:${repoUpdatedDetails.LICENSE_NAME}<br />
-<b>${mailColumns[8]}</b>:${repoUpdatedDetails.TEAM_NAME}<br />
-<b>${mailColumns[9]}</b>:${repoUpdatedDetails.ORGANIZATION_NAME}<br />
-<b>${mailColumns[10]}</b>:${repoUpdatedDetails.REPOSITORYTYPE_NAME}<br />
-<b>${mailColumns[11]}</b>:${repoUpdatedDetails.REPOSITORY_REQUEST_BY}<br />
-<b>${mailColumns[5]}</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}<br />
+<b>Repository Name</b>:${repoUpdatedDetails.REPOSITORY_NAME}<br />
+<b>Language</b>:${repoUpdatedDetails.REPOSITORY_LANGUAGE}<br />
+<b>Buildable</b>:${repoUpdatedDetails.REPOSITORY_BUILDABLE}<br />
+<b>Nexus</b>:${repoUpdatedDetails.REPOSITORY_NEXUS}<br />
+<b>Is private</b>:${repoUpdatedDetails.REPOSITORY_PRIVATE}<br />
+<b>Group ID</b>:${repoUpdatedDetails.REPOSITORY_GROUPID}<br />
+<b>License</b>:${repoUpdatedDetails.LICENSE_NAME}<br />
+<b>Team</b>:${outputTeamName}<br />
+<b>Organization</b>:${repoUpdatedDetails.ORGANIZATION_NAME}<br />
+<b>Type</b>:${repoUpdatedDetails.REPOSITORYTYPE_NAME}<br />
+<b>Requested By</b>:${repoUpdatedDetails.REPOSITORY_REQUEST_BY}<br />
+<b>Description</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}<br />
 
 <br/><br/>
 <strong>Process Status :&nbsp;</strong><br/>
@@ -190,7 +189,7 @@ Thank You.
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"organization":"${repoUpdatedDetails.ORGANIZATION_NAME}","repositoryName":"${repoUpdatedDetails.REPOSITORY_NAME}"}</activiti:expression>
+          <activiti:expression>{"organization":"${repoUpdatedDetails.ORGANIZATION_NAME}","repositoryName":"${repoUpdatedDetails.REPOSITORY_NAME}","acceptedByEmail":"${repoUpdatedDetails.REPOSITORY_ACCEPTED_BY}"}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
           <activiti:string>outputTypeGitHubIssue:responseType</activiti:string>
@@ -245,7 +244,7 @@ Thank You.
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"organization":"${repoUpdatedDetails.ORGANIZATION_NAME}","repositoryName":"${repoUpdatedDetails.REPOSITORY_NAME}"}</activiti:expression>
+          <activiti:expression>{"organization":"${repoUpdatedDetails.ORGANIZATION_NAME}","repositoryName":"${repoUpdatedDetails.REPOSITORY_NAME}","acceptedByEmail":"${repoUpdatedDetails.REPOSITORY_ACCEPTED_BY}"}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
           <activiti:string>outputTypeGitHubPullRequest:responseType</activiti:string>
@@ -261,7 +260,7 @@ Thank You.
           <activiti:string>POST</activiti:string>
         </activiti:field>
         <activiti:field name="input">
-          <activiti:expression>{"organization":"${repoUpdatedDetails.ORGANIZATION_NAME}","repositoryName":"${repoUpdatedDetails.REPOSITORY_NAME}","repositoryDescription":"${repoUpdatedDetails.REPOSITORY_DESCRIPTION}"}</activiti:expression>
+          <activiti:expression>{"organization":"${repoUpdatedDetails.ORGANIZATION_NAME}","repositoryName":"${repoUpdatedDetails.REPOSITORY_NAME}","acceptedByEmail":"${repoUpdatedDetails.REPOSITORY_ACCEPTED_BY}","repositoryDescription":"${repoUpdatedDetails.REPOSITORY_DESCRIPTION}"}</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">
           <activiti:string>outputTypeGitHubReadMe:responseType</activiti:string>
@@ -286,18 +285,18 @@ Hi all!<br /><br />
 
 The repository request with following details is accepted but error occurs during repository creation process. <br /><br />
 
-<b>${mailColumns[0]}</b>:${repoUpdatedDetails.REPOSITORY_NAME}<br />
-<b>${mailColumns[1]}</b>:${repoUpdatedDetails.REPOSITORY_LANGUAGE}<br />
-<b>${mailColumns[2]}</b>:${repoUpdatedDetails.REPOSITORY_BUILDABLE}<br />
-<b>${mailColumns[3]}</b>:${repoUpdatedDetails.REPOSITORY_NEXUS}<br />
-<b>${mailColumns[4]}</b>:${repoUpdatedDetails.REPOSITORY_PRIVATE}<br />
-<b>${mailColumns[6]}</b>:${repoUpdatedDetails.REPOSITORY_GROUPID}<br />
-<b>${mailColumns[7]}</b>:${repoUpdatedDetails.LICENSE_NAME}<br />
-<b>${mailColumns[8]}</b>:${repoUpdatedDetails.TEAM_NAME}<br />
-<b>${mailColumns[9]}</b>:${repoUpdatedDetails.ORGANIZATION_NAME}<br />
-<b>${mailColumns[10]}</b>:${repoUpdatedDetails.REPOSITORYTYPE_NAME}<br />
-<b>${mailColumns[11]}</b>:${repoUpdatedDetails.REPOSITORY_REQUEST_BY}<br />
-<b>${mailColumns[5]}</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}<br />
+<b>Repository Name</b>:${repoUpdatedDetails.REPOSITORY_NAME}<br />
+<b>Language</b>:${repoUpdatedDetails.REPOSITORY_LANGUAGE}<br />
+<b>Buildable</b>:${repoUpdatedDetails.REPOSITORY_BUILDABLE}<br />
+<b>Nexus</b>:${repoUpdatedDetails.REPOSITORY_NEXUS}<br />
+<b>Is private</b>:${repoUpdatedDetails.REPOSITORY_PRIVATE}<br />
+<b>Group ID</b>:${repoUpdatedDetails.REPOSITORY_GROUPID}<br />
+<b>License</b>:${repoUpdatedDetails.LICENSE_NAME}<br />
+<b>Team</b>:${outputTeamName}<br />
+<b>Organization</b>:${repoUpdatedDetails.ORGANIZATION_NAME}<br />
+<b>Type</b>:${repoUpdatedDetails.REPOSITORYTYPE_NAME}<br />
+<b>Requested By</b>:${repoUpdatedDetails.REPOSITORY_REQUEST_BY}<br />
+<b>Description</b>:${repoUpdatedDetails.REPOSITORY_DESCRIPTION.replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}<br />
 
 <br/><br/>
 <strong>Process Status :&nbsp;</strong><br/>
