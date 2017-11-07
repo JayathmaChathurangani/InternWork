@@ -269,9 +269,13 @@ class RequestRepository extends Component {
             };
         });
         GitHubRepositoryCreation.startProcess(data, mailData, this.state.mainUsers).then((response) => {
+            console.log('response');//eslint-disable-line
+            console.log(response);//eslint-disable-line
             if (response.data.completed === false) {
                 try {
                     GitHubRepositoryTask.getTasks().then((responseTasks) => {
+                        console.log('tasks');//eslint-disable-line
+                        console.log(response);//eslint-disable-line
                         let i = 0;
                         const taskArraylength = responseTasks.data.length;
                         let task;

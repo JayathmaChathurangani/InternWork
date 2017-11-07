@@ -4,36 +4,17 @@ package src;
 
 import ballerina.net.http;
 
-
-
-
-
-
-
-
 function main (string[] args) {
-    http:ClientConnector clientConnector = create
-                                           http:ClientConnector("https://admin:admin@localhost:9445", getConnectorConfigs());
+    endpoint<http:HttpClient> httpConnector {
 
-
-
-
+        create http:HttpClient("https://admin:admin@10.100.4.38:9445",{});
+    }
     http:Request req = {};
-    http:Response resp = clientConnector.get("/bpmn/runtime/process-instances/", req);
-    println("Response code: " + resp.getStatusCode());
-    println("Response: " + resp.getStringPayload());
+    http:Response resp = {};
+    resp,_ = httpConnector.get("/bpmn/runtime/tasks/", req);
+    println("GET request:");
+    println(resp);
 }
-function getConnectorConfigs() (http:Options) {
-    http:Options option = {
-                              ssl: {
-                                       keyStoreFile:"${ballerina.home}/bre/security/wso2carbon.jks",
-                                       keyStorePassword:"wso2carbon",
-                                       trustStoreFile:"${ballerina.home}/bre/security/client-truststore.jks",
-                                       trustStorePassword:"wso2carbon"
-                                   },
-                              followRedirects: {}
-                          };
-    return option;
-}
+
 
 

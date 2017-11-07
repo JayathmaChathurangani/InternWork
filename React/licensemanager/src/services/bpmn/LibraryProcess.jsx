@@ -9,6 +9,24 @@ import MainData from '../MainData';
 */
 class LibraryProcess extends Component {
     /**
+    * get task
+    * @returns {Promise} promise
+    */
+    getTasks() {
+        const url = MainData.bpmnTaskUrl;
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+        };
+        return axios.get(url, headers).then((response) => {
+            console.log(response);// eslint-disable-line
+            return response.data;
+        }).catch((error) => {
+            throw new Error(error);
+        });
+    }
+    /**
     * escape charachters
     * @param {String} requestData requestData
     * @param {String} mainUsers mainUsers
@@ -32,7 +50,7 @@ class LibraryProcess extends Component {
             },
         ];
         const data = {
-            processDefinitionKey: '',
+            processDefinitionKey: 'libraryApprovalProcess',
             businessKey: 'myBusinessKey',
             tenantId: '-1234',
             variables: variablesArray,

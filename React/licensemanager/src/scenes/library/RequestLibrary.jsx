@@ -94,7 +94,7 @@ class RequestLibrary extends Component {
     validateInputLibrary() {
         const inputLibraryName = this.inputLibraryName.value.toString();
         const inputLibraryVersion = this.inputVersionWeUse.value.toString();
-        Library.selectLibraryFromNameAndVersion(inputLibraryName, inputLibraryVersion).then((response) => {
+        Library.selectLibraryAndRequestFromNameAndVersion(inputLibraryName, inputLibraryVersion).then((response) => {
             if (response.length > 0) {
                 this.setState(() => {
                     return {
@@ -177,9 +177,12 @@ class RequestLibrary extends Component {
         console.log(data);//eslint-disable-line
         console.log(this.state.libraryMainUsers);//eslint-disable-line
         LibraryProcess.startProcess(data, this.state.libraryMainUsers).then((response) => {
+            console.log(response);//eslint-disable-line
             if (response.data.completed === false) {
                 try {
                     LibraryProcess.getTasks().then((responseTasks) => {
+                        console.log("tasks ");//eslint-disable-line
+                        console.log(responseTasks);//eslint-disable-line
                         let i = 0;
                         const taskArraylength = responseTasks.data.length;
                         let task;

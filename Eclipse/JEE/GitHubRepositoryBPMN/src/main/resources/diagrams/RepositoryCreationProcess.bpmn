@@ -77,7 +77,7 @@ There is a repository request with following details. <br /><br />
 <li><b>Requested By</b>:&nbsp;${mailData[11]}</li>
 <li><b>Description</b>:&nbsp;<br/><br/>&emsp;${mailData[5].replaceAll("\\\\\\\\n","<br/>&emsp;").replaceAll("\\\\\\\\;",";")}</li><br/>
 
-<strong>In order to accept or reject the request please click <a href=http://localhost:8081/root/acceptRepository?repositoryId=${repositoryId}>here.</a></strong>
+<strong>In order to accept or reject the request please click <a href=http://localhost:8081/#/root/acceptRepository?repositoryId=${repositoryd}>here.</a></strong>
 
 <br/><br/>
 Thank You.

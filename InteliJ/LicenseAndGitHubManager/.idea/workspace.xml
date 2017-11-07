@@ -22,8 +22,8 @@
       <file leaf-file-name="MainService.bal" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/MainService.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
-              <caret line="954" column="181" lean-forward="false" selection-start-line="954" selection-start-column="181" selection-end-line="954" selection-end-column="181" />
+            <state relative-caret-position="162">
+              <caret line="880" column="82" lean-forward="false" selection-start-line="880" selection-start-column="40" selection-end-line="880" selection-end-column="82" />
               <folding>
                 <element signature="e#529#2460#0" expanded="false" />
                 <element signature="e#2466#3730#0" expanded="false" />
@@ -60,9 +60,9 @@
                 <element signature="e#29357#29802#0" expanded="false" />
                 <element signature="e#29808#30234#0" expanded="false" />
                 <element signature="e#30240#31323#0" expanded="false" />
-                <element signature="e#31329#32068#0" expanded="false" />
-                <element signature="e#32074#32698#0" expanded="false" />
-                <element signature="e#34920#36328#0" expanded="false" />
+                <element signature="e#32104#32884#0" expanded="false" />
+                <element signature="e#32890#33514#0" expanded="false" />
+                <element signature="e#35991#37399#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -71,8 +71,8 @@
       <file leaf-file-name="db.bal" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/database/db.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
-              <caret line="889" column="58" lean-forward="false" selection-start-line="889" selection-start-column="58" selection-end-line="889" selection-end-column="58" />
+            <state relative-caret-position="31">
+              <caret line="783" column="50" lean-forward="false" selection-start-line="783" selection-start-column="9" selection-end-line="783" selection-end-column="50" />
               <folding>
                 <element signature="e#266#695#1" expanded="false" />
                 <element signature="e#697#3429#1" expanded="false" />
@@ -97,9 +97,9 @@
                 <element signature="e#21979#22880#1" expanded="false" />
                 <element signature="e#22882#23605#1" expanded="false" />
                 <element signature="e#23607#24858#1" expanded="false" />
-                <element signature="e#24860#25630#1" expanded="false" />
-                <element signature="e#25632#26168#1" expanded="false" />
-                <element signature="e#29475#31072#1" expanded="false" />
+                <element signature="e#25860#26396#1" expanded="false" />
+                <element signature="e#26398#29701#1" expanded="false" />
+                <element signature="e#29703#31300#1" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -128,8 +128,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>setR</find>
-      <find>reply response;</find>
       <find>selectMainUsers</find>
       <find>jenkins</find>
       <find>string</find>
@@ -158,6 +156,8 @@
       <find>librar</find>
       <find>libraryRequestInsertData</find>
       <find>roleRepositoryCheckAdminUsers</find>
+      <find>librarySe</find>
+      <find>library/</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -215,8 +215,8 @@
         <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/gitHubService.bal" />
         <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/bpmnService.bal" />
         <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/services/authenticateService.bal" />
-        <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/MainService.bal" />
         <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/database/db.bal" />
+        <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/MainService.bal" />
         <option value="$PROJECT_DIR$/org/wso2/internalapps/licensemanager/conf/configData.json" />
       </list>
     </option>
@@ -277,10 +277,10 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="Scope" />
-      <pane id="Scratches" />
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -450,9 +450,9 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16" sideWeight="0.12574454" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3135484" sideWeight="0.13037723" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16" sideWeight="0.8742555" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3135484" sideWeight="0.86962277" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32516128" sideWeight="0.49238914" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44" sideWeight="0.8974189" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -671,45 +671,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/database/db.bal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="889" column="58" lean-forward="false" selection-start-line="889" selection-start-column="58" selection-end-line="889" selection-end-column="58" />
-          <folding>
-            <element signature="e#266#695#1" expanded="false" />
-            <element signature="e#697#3429#1" expanded="false" />
-            <element signature="e#3431#4488#1" expanded="false" />
-            <element signature="e#4490#5429#1" expanded="false" />
-            <element signature="e#5431#8425#1" expanded="false" />
-            <element signature="e#8427#9813#1" expanded="false" />
-            <element signature="e#9815#11158#1" expanded="false" />
-            <element signature="e#11160#12477#1" expanded="false" />
-            <element signature="e#12479#14009#1" expanded="false" />
-            <element signature="e#14011#15406#1" expanded="false" />
-            <element signature="e#15408#16037#1" expanded="false" />
-            <element signature="e#16039#16715#1" expanded="false" />
-            <element signature="e#16717#17410#1" expanded="false" />
-            <element signature="e#17412#18087#1" expanded="false" />
-            <element signature="e#18089#18770#1" expanded="false" />
-            <element signature="e#18772#19356#1" expanded="false" />
-            <element signature="e#19358#19911#1" expanded="false" />
-            <element signature="e#19913#20807#1" expanded="false" />
-            <element signature="e#20809#21356#1" expanded="false" />
-            <element signature="e#21358#21977#1" expanded="false" />
-            <element signature="e#21979#22880#1" expanded="false" />
-            <element signature="e#22882#23605#1" expanded="false" />
-            <element signature="e#23607#24858#1" expanded="false" />
-            <element signature="e#24860#25630#1" expanded="false" />
-            <element signature="e#25632#26168#1" expanded="false" />
-            <element signature="e#29475#31072#1" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/MainService.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="954" column="181" lean-forward="false" selection-start-line="954" selection-start-column="181" selection-end-line="954" selection-end-column="181" />
+        <state relative-caret-position="162">
+          <caret line="880" column="82" lean-forward="false" selection-start-line="880" selection-start-column="40" selection-end-line="880" selection-end-column="82" />
           <folding>
             <element signature="e#529#2460#0" expanded="false" />
             <element signature="e#2466#3730#0" expanded="false" />
@@ -746,9 +711,44 @@
             <element signature="e#29357#29802#0" expanded="false" />
             <element signature="e#29808#30234#0" expanded="false" />
             <element signature="e#30240#31323#0" expanded="false" />
-            <element signature="e#31329#32068#0" expanded="false" />
-            <element signature="e#32074#32698#0" expanded="false" />
-            <element signature="e#34920#36328#0" expanded="false" />
+            <element signature="e#32104#32884#0" expanded="false" />
+            <element signature="e#32890#33514#0" expanded="false" />
+            <element signature="e#35991#37399#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/org/wso2/internalapps/licensemanager/database/db.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="31">
+          <caret line="783" column="50" lean-forward="false" selection-start-line="783" selection-start-column="9" selection-end-line="783" selection-end-column="50" />
+          <folding>
+            <element signature="e#266#695#1" expanded="false" />
+            <element signature="e#697#3429#1" expanded="false" />
+            <element signature="e#3431#4488#1" expanded="false" />
+            <element signature="e#4490#5429#1" expanded="false" />
+            <element signature="e#5431#8425#1" expanded="false" />
+            <element signature="e#8427#9813#1" expanded="false" />
+            <element signature="e#9815#11158#1" expanded="false" />
+            <element signature="e#11160#12477#1" expanded="false" />
+            <element signature="e#12479#14009#1" expanded="false" />
+            <element signature="e#14011#15406#1" expanded="false" />
+            <element signature="e#15408#16037#1" expanded="false" />
+            <element signature="e#16039#16715#1" expanded="false" />
+            <element signature="e#16717#17410#1" expanded="false" />
+            <element signature="e#17412#18087#1" expanded="false" />
+            <element signature="e#18089#18770#1" expanded="false" />
+            <element signature="e#18772#19356#1" expanded="false" />
+            <element signature="e#19358#19911#1" expanded="false" />
+            <element signature="e#19913#20807#1" expanded="false" />
+            <element signature="e#20809#21356#1" expanded="false" />
+            <element signature="e#21358#21977#1" expanded="false" />
+            <element signature="e#21979#22880#1" expanded="false" />
+            <element signature="e#22882#23605#1" expanded="false" />
+            <element signature="e#23607#24858#1" expanded="false" />
+            <element signature="e#25860#26396#1" expanded="false" />
+            <element signature="e#26398#29701#1" expanded="false" />
+            <element signature="e#29703#31300#1" expanded="false" />
           </folding>
         </state>
       </provider>

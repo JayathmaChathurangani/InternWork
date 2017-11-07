@@ -878,7 +878,7 @@ service<http> MainService {
     }
 
     @http:GET {}
-    @http:Path {value:"/databaseService/library/selectFromNameAndVersion"}
+    @http:Path {value:"/databaseService/libraryAndRequest/selectFromNameAndVersion"}
     resource librarySelectFromNameResource(@http:QueryParam {value:"name"} string name,@http:QueryParam {value:"version"} string version){
 
         message response = {};
@@ -886,7 +886,26 @@ service<http> MainService {
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
 
         if(services:getIsValidUser()){
-            responseJson = database:librarySelectFromName(name,version);
+            responseJson = database:libraryAndRequestSelectFromNameAndVersion(name,version);
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/libraryRequest/selectFromNameAndVersion"}
+    resource libraryRequestSelectFromNameAndVersionResource(@http:QueryParam {value:"name"} string name,@http:QueryParam {value:"version"} string version){
+
+        message response = {};
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
+        if(services:getIsValidUser()){
+            responseJson = database:libraryRequestSelectFromNameAndVersion(name,version);
             messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);
@@ -923,6 +942,7 @@ service<http> MainService {
         json requestJson = messages:getJsonPayload(m);
         json responseJson;
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        json requestDetails;
         string name;
         string libType;
         string libCategory;
@@ -935,6 +955,7 @@ service<http> MainService {
         string description;
         string alternatives;
         string requestBy;
+        string id;
         int responseValue;
         system:println(m);
 
@@ -954,10 +975,13 @@ service<http> MainService {
             requestBy = jsons:toString(requestJson.libRequestBy);
             responseValue = database:libraryRequestInsertData(name,libType,libCategory,useVersion,latestVersion,fileName,company,sponsored,purpose,description,alternatives,requestBy);
 
+
             if(responseValue > 0){
-                responseJson = {"responseType":"Done","responseMessage":" "};
+                requestDetails = database:libraryRequestSelectFromNameAndVersion(name,useVersion);
+                id = jsons:toString(requestDetails[0].LIBREQUEST_ID);
+                responseJson = {"responseType":"Done","responseMessage":" ","libRequestId":id};
             }else{
-                responseJson = {"responseType":"Error","responseMessage":" "};
+                responseJson = {"responseType":"Error","responseMessage":" ","libRequestId":" "};
             }
 
             messages:setJsonPayload(response,responseJson);

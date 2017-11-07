@@ -781,7 +781,7 @@ function componentInsertData(string key,string url)(int){
 
 }
 
-function librarySelectFromName(string libraryName,string libraryVersion)(json){
+function libraryAndRequestSelectFromNameAndVersion(string libraryName,string libraryVersion)(json){
     json response;
 
     if(connection == null){
@@ -791,11 +791,12 @@ function librarySelectFromName(string libraryName,string libraryVersion)(json){
 
     try{
 
-        string query = "SELECT * FROM LM_LIBRARY WHERE LIB_NAME = ? AND LIB_VERSION = ?";
+        string query = "(SELECT LIB_ID,LIB_NAME,LIB_VERSION FROM LM_LIBRARY WHERE LIB_NAME=? AND LIB_VERSION=?) UNION
+        (SELECT LIBREQUEST_ID,LIBREQUEST_NAME,LIBREQUEST_USE_VERSION FROM LM_LIBREQUEST WHERE LIBREQUEST_NAME=? AND LIBREQUEST_USE_VERSION=?);";
 
         sql:Parameter paraLibraryName = {sqlType:"varchar", value:libraryName};
         sql:Parameter paraLibraryVersion = {sqlType:"varchar", value:libraryVersion};
-        sql:Parameter[] parameterArray = [paraLibraryName,paraLibraryVersion];
+        sql:Parameter[] parameterArray = [paraLibraryName,paraLibraryVersion,paraLibraryName,paraLibraryVersion];
         datatable responseDataFromDb = connection.select(query ,parameterArray);
         response,_ = <json>responseDataFromDb;
 
@@ -943,5 +944,34 @@ function libraryInsertData(string name,string libType,string useVersion,string f
 
     return returnValue;
 
+
+}
+
+function libraryRequestSelectFromNameAndVersion(string libraryName,string libraryVersion)(json){
+    json response;
+
+    if(connection == null){
+
+        setConnection();
+    }
+
+    try{
+
+        string query = "SELECT * FROM LM_LIBREQUEST WHERE LIBREQUEST_NAME = ? AND LIBREQUEST_USE_VERSION = ?";
+
+        sql:Parameter paraLibraryName = {sqlType:"varchar", value:libraryName};
+        sql:Parameter paraLibraryVersion = {sqlType:"varchar", value:libraryVersion};
+        sql:Parameter[] parameterArray = [paraLibraryName,paraLibraryVersion];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        response,_ = <json>responseDataFromDb;
+
+
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+
+
+    }
+    return response;
 
 }

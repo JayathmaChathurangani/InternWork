@@ -26,9 +26,9 @@ class Library extends Component {
     * @param {String} version library version
     * @returns {Promise} promise
     */
-    selectLibraryFromNameAndVersion(name, version) {
+    selectLibraryAndRequestFromNameAndVersion(name, version) {
         const url = MainData.ballerinaDatabaseURL +
-        'library/selectFromNameAndVersion?name=' + name + '&version=' + version;
+        'libraryAndRequest/selectFromNameAndVersion?name=' + name + '&version=' + version;
         return axios.get(url).then((response) => {
             return (response.data);
         }).catch((error) => {
