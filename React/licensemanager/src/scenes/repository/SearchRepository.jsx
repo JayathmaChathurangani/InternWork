@@ -67,7 +67,7 @@ class SearchRepository extends Component {
                             <td>{(repository.REPOSITORY_NEXUS) ? ' Yes ' : ' No '}</td>
                             <td>{(repository.REPOSITORY_BUILDABLE) ? ' Yes ' : ' No '}</td>
                             <td>{repository.REPOSITORY_REQUEST_BY}</td>
-                            <td><Link to={'/root/showRepository?repositoryId=' + repository.REPOSITORY_ID}>More</Link></td>
+                            <td><Link to={'/app/showRepository?repositoryId=' + repository.REPOSITORY_ID}>More</Link></td>
                         </tr>
                     );
                     
@@ -89,7 +89,7 @@ class SearchRepository extends Component {
                             <td>{(repository.REPOSITORY_NEXUS) ? ' Yes ' : ' No '}</td>
                             <td>{(repository.REPOSITORY_BUILDABLE) ? ' Yes ' : ' No '}</td>
                             <td>{repository.REPOSITORY_REQUEST_BY}</td>
-                            <td><Link to={'/root/showRepository?repositoryId=' + repository.REPOSITORY_ID}>More</Link></td>
+                            <td><Link to={'/app/showRepository?repositoryId=' + repository.REPOSITORY_ID}>More</Link></td>
                         </tr>
                     );
                 }
@@ -189,7 +189,7 @@ class SearchRepository extends Component {
                         <td>{(repository.REPOSITORY_NEXUS) ? ' Yes ' : ' No '}</td>
                         <td>{(repository.REPOSITORY_BUILDABLE) ? ' Yes ' : ' No '}</td>
                         <td>{repository.REPOSITORY_REQUEST_BY}</td>
-                        <td><Link to={'/root/showRepository?repositoryId=' + repository.REPOSITORY_ID}>More</Link></td>
+                        <td><Link to={'/app/showRepository?repositoryId=' + repository.REPOSITORY_ID}>More</Link></td>
                     </tr>
                 );
                 /* eslint-enable */
@@ -274,9 +274,9 @@ class SearchRepository extends Component {
                                         c
                                     </button>
                                 </li>
-                                <li><Link to={'/root/searchRepository?character=l'} >l</Link></li>
-                                <li><Link to={'/root/searchRepository?character=k'} >k</Link></li>
-                                <li><Link to={'/root/searchRepository?character=c'} >c</Link></li>
+                                <li><Link to={'/app/searchRepository?character=l'} >l</Link></li>
+                                <li><Link to={'/app/searchRepository?character=k'} >k</Link></li>
+                                <li><Link to={'/app/searchRepository?character=c'} >c</Link></li>
                             </ul>
                         </div>
                     </div>

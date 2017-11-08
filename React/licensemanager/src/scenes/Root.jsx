@@ -35,7 +35,7 @@ class Root extends Component {
     * @description Sample React component
     */
     componentWillMount() {
-        const adminPages = ['/root/acceptRepository', '/root/waitingRequests'];
+        const adminPages = ['/app/acceptRepository', '/app/waitingRequests'];
         const props = this.props;
         ValidateUser.isValidUser().then((response) => {
             if (response.isValid) {

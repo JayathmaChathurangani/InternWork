@@ -975,3 +975,58 @@ function libraryRequestSelectFromNameAndVersion(string libraryName,string librar
     return response;
 
 }
+
+function libraryRequestUpdateTaskAndProcessIds(int taskId,int processId,string libraryName, string useVersion)(int){
+    message response = {};
+    int returnValue;
+
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+
+        string query = "UPDATE LM_LIBREQUEST SET LIBREQUEST_BPMN_TASK_ID = ? , LIBREQUEST_BPMN_PROCESS_ID = ? WHERE LIBREQUEST_NAME = ? AND LIBREQUEST_USE_VERSION = ?";
+        sql:Parameter paraTaskId = {sqlType:"integer", value:taskId};
+        sql:Parameter paraProcessId = {sqlType:"integer", value:processId};
+        sql:Parameter paraLibraryName = {sqlType:"varchar", value:libraryName};
+        sql:Parameter paraUseVersion = {sqlType:"varchar", value:useVersion};
+        sql:Parameter[] parameterArray = [paraTaskId,paraProcessId,paraLibraryName,paraUseVersion];
+        returnValue = connection.update(query,parameterArray);
+
+    }catch(errors:Error err){
+        json errorMessage = {"responseType":"Error","responseMessage":err.msg};
+        messages:setJsonPayload(response,errorMessage);
+
+    }
+
+    return returnValue;
+}
+
+function libraryRequestSelectFromId(string id)(json){
+    json response;
+
+    if(connection == null){
+
+        setConnection();
+    }
+
+    try{
+
+        string query = "SELECT * FROM LM_LIBREQUEST WHERE LIBREQUEST_ID = ?";
+
+        sql:Parameter paraLibraryId = {sqlType:"integer", value:id};
+        sql:Parameter[] parameterArray = [paraLibraryId];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        response,_ = <json>responseDataFromDb;
+        system:println(response);
+
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+
+
+    }
+    return response;
+
+}

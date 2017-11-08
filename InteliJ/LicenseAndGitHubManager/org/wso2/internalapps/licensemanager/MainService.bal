@@ -848,26 +848,17 @@ service<http> MainService {
     }
 
     @http:POST {}
-    @http:Path {value:"/bpmn/acceptRepository"}
+    @http:Path {value:"/bpmn/library/request"}
     resource acceptRepositoryResource(message m){
 
         message response = {};
         json requestJson = messages:getJsonPayload(m);
         json responseJson;
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
-        string taskId;
-        string repositoryId;
-        boolean isRepositoryAdmin = false;
-
         system:println(m);
-        isRepositoryAdmin = services:getIsRepositoryAdminUser();
 
-        if(isRepositoryAdmin){
-            system:println(isRepositoryAdmin);
-            taskId = jsons:toString(requestJson.taskId);
-            repositoryId = jsons:toString(requestJson.repositoryId);
-            responseJson = services:acceptRepositoryProcess(taskId,repositoryId);
-            system:println(responseJson);
+        if(services:getIsValidUser()){
+            responseJson = services:bpmnRequestLibrary(requestJson);
             messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);
@@ -1024,6 +1015,26 @@ service<http> MainService {
                 responseJson = {"responseType":"Error","responseMessage":" "};
             }
 
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/libraryRequest/selectFromId"}
+    resource libraryRequestSelectFromId(@http:QueryParam {value:"id"} string id){
+
+        message response = {};
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
+        if(services:getIsValidUser()){
+            responseJson = database:libraryRequestSelectFromId(id);
+            system:println(id);
             messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);

@@ -73,7 +73,7 @@ class Main extends Component {
                     <div className="row">
                         <div className="col-md-4" />
                         <div className="col-md-4">
-                            <Link to="/root/requestRepository" className="btn btn-info btn-lg btn-block">
+                            <Link to="/app/requestRepository" className="btn btn-info btn-lg btn-block">
                                 <span>
                                     <i className="fa fa-id-card-o" />
                                 </span>

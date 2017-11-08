@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://wso2.org/bpmn/libraryApprovalProcess">
   <process id="libraryApprovalProcess" name="Library Approval Process" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
-    <serviceTask id="insertToDb" name="Insert Data Into Database" activiti:async="true" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
+    <serviceTask id="insertToDb" name="Insert Data Into Database" activiti:class="org.wso2.carbon.bpmn.extensions.rest.RESTTask" activiti:extensionId="org.wso2.developerstudio.bpmn.extensions.restTask.RESTTask">
       <extensionElements>
         <activiti:field name="serviceURL">
           <activiti:string>https://localhost:9090/databaseService/libraryRequest/insertData</activiti:string>
@@ -34,7 +34,7 @@
     <serviceTask id="sendMailForApproval" name="Send e-mail for approval" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sendToList}${data.requestBy}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sendToList}${data.libRequestBy}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[project@gmail.com]]></activiti:string>
@@ -93,7 +93,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="sendApprovedAck" name="Send acknowledgement" isForCompensation="true" activiti:type="mail">
+    <serviceTask id="sendApprovedAck" name="Send acknowledgement" activiti:type="mail">
       <extensionElements>
         <activiti:field name="html">
           <activiti:expression><![CDATA[<p>

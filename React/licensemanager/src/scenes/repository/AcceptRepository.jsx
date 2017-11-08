@@ -455,7 +455,7 @@ class AcceptRepository extends Component {
 
                     <div className="form-group">
                         <div className="col-lg-10 col-lg-offset-2">
-                            <Link to={'/root/rejectRepository?repositoryId=' + this.state.repositoryId}><button className="btn btn-danger">Reject</button></Link>
+                            <Link to={'/app/rejectRepository?repositoryId=' + this.state.repositoryId}><button className="btn btn-danger">Reject</button></Link>
                             &nbsp;&nbsp;&nbsp;
                             <button type="submit" className="btn btn-info" id="form-horizontal" disabled={this.state.buttonState} >Accept</button>
                         </div>

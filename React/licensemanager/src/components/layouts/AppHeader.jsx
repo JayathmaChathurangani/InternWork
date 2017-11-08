@@ -65,7 +65,7 @@ class AppHeader extends Component {
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav" />
                         <ul className="nav navbar-nav navbar-right">
-                            <li className="active"><Link to={'/root/pendingRequests'} id="pendingRequests">{(this.state.pendingRequests === 0) ? null : 'Pending Requests'} &nbsp;<span className="badge">{(this.state.pendingRequests === 0) ? null : this.state.pendingRequests }</span></Link></li>
+                            <li className="active"><Link to={'/app/pendingRequests'} id="pendingRequests">{(this.state.pendingRequests === 0) ? null : 'Pending Requests'} &nbsp;<span className="badge">{(this.state.pendingRequests === 0) ? null : this.state.pendingRequests }</span></Link></li>
                         </ul>
                     </div>
                 </div>

@@ -8,5 +8,6 @@
   "databasePassword" : "Incorrect",
   "gitHubApiUrl" : "https://api.github.com/",
   "gitHubToken":"",
-  "bpmnStartUrl":"https://admin:admin@localhost:9445/"
+  "bpmnStartUrl":"https://10.100.4.38:9445/",
+  "bpmnBasicAuthToken":"Basic YWRtaW46YWRtaW4="
 }

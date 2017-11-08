@@ -25,6 +25,7 @@ import AcceptRepository from './scenes/repository/AcceptRepository';
 import RejectRepository from './scenes/repository/RejectRepository';
 import SearchRepository from './scenes/repository/SearchRepository';
 import RequestLibrary from './scenes/library/RequestLibrary';
+import AcceptLibrary from './scenes/library/AcceptLibrary';
 import PendingRequests from './scenes/common/PendingRequests';
 import WaitingRequests from './scenes/common/WaitingRequests';
 
@@ -42,7 +43,7 @@ class App extends Component {
     render() {
         return (
             <Router history={hashHistory}>
-                <Route path={'/root'} component={Root} >
+                <Route path={'/app'} component={Root} >
                     <IndexRoute component={RequestRepository} />
                     <Route path={'pendingRequests'} component={PendingRequests} />
                     <Route path={'waitingRequests'} component={WaitingRequests} />
@@ -51,6 +52,7 @@ class App extends Component {
                     <Route path={'searchRepository'} component={SearchRepository} />
                     <Route path={'requestRepository'} component={RequestRepository} />
                     <Route path={'requestLibrary'} component={RequestLibrary} />
+                    <Route path={'acceptLibrary'} component={AcceptLibrary} />
                 </Route>
                 <Route path={'/'} component={Main} />
             </Router>

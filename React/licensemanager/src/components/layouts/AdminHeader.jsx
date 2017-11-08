@@ -64,7 +64,7 @@ class AdminHeader extends Component {
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav" />
                         <ul className="nav navbar-nav navbar-right">
-                            <li className="active"><Link to={'/root/waitingRequests'} id="pendingRequests">{(this.state.waitingRequests === 0) ? null : 'Waiting Requests'} &nbsp;<span className="badge">{(this.state.waitingRequests === 0) ? null : this.state.waitingRequests }</span></Link></li>
+                            <li className="active"><Link to={'/app/waitingRequests'} id="pendingRequests">{(this.state.waitingRequests === 0) ? null : 'Waiting Requests'} &nbsp;<span className="badge">{(this.state.waitingRequests === 0) ? null : this.state.waitingRequests }</span></Link></li>
                         </ul>
                     </div>
                 </div>

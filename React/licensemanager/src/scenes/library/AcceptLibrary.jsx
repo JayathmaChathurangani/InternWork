@@ -21,15 +21,14 @@ import { Link } from 'react-router';
 import ValidateUser from '../../services/authentication/ValidateUser';
 import User from '../../services/database/User';
 import Library from '../../services/database/Library';
-import StringValidations from '../../services/validations/StringValidations';
-import LibraryProcess from '../../services/bpmn/LibraryProcess';
+import LibraryRequest from '../../services/database/LibraryRequest';
 
 /**
  * @class RequestRepository
  * @extends {Component}
  * @description Sample React component
  */
-class RequestLibrary extends Component {
+class AcceptLibrary extends Component {
     /**
     * @class RequestRepository
     * @extends {Component}
@@ -42,6 +41,8 @@ class RequestLibrary extends Component {
             libraryMainUsers: [],
             libraryTypes: [],
             libraryCategories: [],
+            libraryId: props.location.query.libRequestId,// eslint-disable-line
+            libraryRequestDetails: [],
             buttonState: false,
             displayFieldset: 'block',
             displayLoader: 'none',
@@ -50,7 +51,6 @@ class RequestLibrary extends Component {
             validateLibrary: '',
             userDetails: [],
         };
-        this.validateInputLibrary = this.validateInputLibrary.bind(this);
         this.submitRequest = this.submitRequest.bind(this);
     }
     /**
@@ -87,29 +87,17 @@ class RequestLibrary extends Component {
                 };
             });
         });
-    }
-    /**
-    * validation function for input repository name
-    */
-    validateInputLibrary() {
-        const inputLibraryName = this.inputLibraryName.value.toString();
-        const inputLibraryVersion = this.inputVersionWeUse.value.toString();
-        Library.selectLibraryAndRequestFromNameAndVersion(inputLibraryName, inputLibraryVersion).then((response) => {
-            if (response.length > 0) {
-                this.setState(() => {
-                    return {
-                        validateLibrary: 'Sorry! This Library already exists!',
-                        buttonState: true,
-                    };
-                });
-            } else {
-                this.setState(() => {
-                    return {
-                        validateLibrary: ' ',
-                        buttonState: false,
-                    };
-                });
-            }
+        LibraryRequest.selectLibraryRequestFromId(this.state.libraryId).then((response) => {
+            console.log(response);//eslint-disable-line
+            console.log(this.state.libraryId);//eslint-disable-line
+            this.setState(() => {
+                return {
+                    libraryRequestDetails: response,
+                };
+            });
+            this.inputLibraryName.value = response.LIBREQUEST_NAME;
+            this.selectLibraryType.value = response.LIBREQUEST_TYPE;
+
         });
     }
     /**
@@ -152,60 +140,6 @@ class RequestLibrary extends Component {
                 displayLoader: 'block',
             };
         });
-        const libraryTypeOptions = this.selectLibraryType.options;
-        const libraryCategoryOptions = this.selectLibraryCategory.options;
-        const libraryName = StringValidations.escapeCharacters(this.inputLibraryName.value);
-        const libraryType = libraryTypeOptions[libraryTypeOptions.selectedIndex].text;
-        const libraryCategory = libraryCategoryOptions[libraryCategoryOptions.selectedIndex].text;
-        const libraryVersion = StringValidations.escapeCharacters(this.inputVersionWeUse.value);
-        const libraryFileName = StringValidations.escapeCharacters(this.inputLibraryFileName.value);
-        const libraryLatestVersion = StringValidations.escapeCharacters(this.inputLatestVersion.value);
-        const libraryCompany = StringValidations.escapeCharacters(this.inputCompany.value);
-        const librarySponsored = ((this.checkSponsored.children[0].checked) ? true : false);//eslint-disable-line
-        const libraryPurpose = StringValidations.escapeCharacters(this.textPurpose.value);
-        const libraryDescription = StringValidations.escapeCharacters(this.textDescription.value);
-        const libraryAlternatives = StringValidations.escapeCharacters(this.testAlternatives.value);
-        const requestByEmail = StringValidations.escapeCharacters(this.state.userDetails.userEmail);
-        const data = {
-            libName: libraryName,
-            libType: libraryType,
-            libCategory: libraryCategory,
-            libUseVersion: libraryVersion,
-            libLatestVersion: libraryLatestVersion,
-            libFileName: libraryFileName,
-            libCompany: libraryCompany,
-            libSponsored: librarySponsored,
-            libPurpose: libraryPurpose,
-            libDescription: libraryDescription,
-            libAlternatives: libraryAlternatives,
-            libRequestBy: requestByEmail,
-        };
-        console.log(data);//eslint-disable-line
-        console.log(this.state.libraryMainUsers);//eslint-disable-line
-        console.log(requestByEmail);//eslint-disable-line
-        LibraryProcess.startProcess(data).then((response) => {
-            console.log("response");//eslint-disable-line
-            console.log(response);//eslint-disable-line
-            if (response.data.responseType === 'Done') {
-                this.setState(() => {
-                    return {
-                        displayFieldset: 'none',
-                        displayLoader: 'none',
-                        displaySuceessBox: 'block',
-                        displayErrorBox: 'none',
-                    };
-                });
-            } else {
-                this.setState(() => {
-                    return {
-                        displayFieldset: 'none',
-                        displayLoader: 'none',
-                        displaySuceessBox: 'none',
-                        displayErrorBox: 'block',
-                    };
-                });
-            }
-        });
         return false;
     }
     /**
@@ -230,8 +164,7 @@ class RequestLibrary extends Component {
                                 type="text"
                                 className="form-control"
                                 ref={(c) => { this.inputLibraryName = c; }}
-                                placeholder="org.eclipse.osgi"
-                                onChange={this.validateInputLibrary}
+                                readOnly="true"
                             />
                         </div>
                     </div>
@@ -241,30 +174,26 @@ class RequestLibrary extends Component {
                             <span className="required">*</span>&nbsp;Library Type
                         </label>
                         <div className="col-lg-10" >
-                            {/* eslint-disable */}
-                            <select className="form-control" ref={(c) => { this.selectLibraryType = c; }} >
-                                {this.state.libraryTypes.map((libraryType, i)=>
-                                    (<option key={i} value={libraryType.LIB_TYPE}>
-                                        {libraryType.LIB_TYPE}
-                                    </option>))}
-                            </select>
-                            {/* eslint-enable */}
+                            <input
+                                type="text"
+                                className="form-control"
+                                ref={(c) => { this.selectLibraryType = c; }}
+                                readOnly="true"
+                            />
                         </div>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="selectLibraryCategory" className="col-lg-2 control-label">
-                            <span className="required">*</span>&nbsp;Library Type
+                            <span className="required">*</span>&nbsp;Library Category
                         </label>
                         <div className="col-lg-10" >
-                            {/* eslint-disable */}
-                            <select className="form-control" ref={(c) => { this.selectLibraryCategory = c; }} >
-                                {this.state.libraryCategories.map((libraryCategory, i)=>
-                                    (<option key={i} value={libraryCategory.ROLE_LIB_TYPE}>
-                                        {libraryCategory.ROLE_LIB_TYPE}
-                                    </option>))}
-                            </select>
-                            {/* eslint-enable */}
+                            <input
+                                type="text"
+                                className="form-control"
+                                ref={(c) => { this.selectLibraryCategory = c; }}
+                                readOnly="true"
+                            />
                         </div>
                     </div>
 
@@ -277,8 +206,7 @@ class RequestLibrary extends Component {
                                 type="text"
                                 className="form-control"
                                 ref={(c) => { this.inputVersionWeUse = c; }}
-                                placeholder="2.6.1"
-                                onChange={this.validateInputLibrary}
+                                readOnly="true"
                             />
                             <span className="validate">
                                 {this.state.validateLibrary}
@@ -295,7 +223,7 @@ class RequestLibrary extends Component {
                                 type="text"
                                 className="form-control"
                                 ref={(c) => { this.inputLibraryFileName = c; }}
-                                placeholder="jsecurity-0.9.0.jar"
+                                readOnly="true"
                             />
                         </div>
                     </div>
@@ -309,7 +237,7 @@ class RequestLibrary extends Component {
                                 type="text"
                                 className="form-control"
                                 ref={(c) => { this.inputLatestVersion = c; }}
-                                placeholder="2.6.3"
+                                readOnly="true"
                             />
                         </div>
                     </div>
@@ -323,7 +251,7 @@ class RequestLibrary extends Component {
                                 type="text"
                                 className="form-control"
                                 ref={(c) => { this.inputCompany = c; }}
-                                placeholder="Eclipse"
+                                readOnly="true"
                             />
                         </div>
                     </div>
@@ -346,7 +274,7 @@ class RequestLibrary extends Component {
                                 className="form-control"
                                 rows="3"
                                 ref={(c) => { this.textPurpose = c; }}
-                                placeholder="Purpose for using"
+                                readOnly="true"
                             />
                         </div>
                     </div>
@@ -360,7 +288,7 @@ class RequestLibrary extends Component {
                                 className="form-control"
                                 rows="3"
                                 ref={(c) => { this.textDescription = c; }}
-                                placeholder="About License"
+                                readOnly="true"
                             />
                         </div>
                     </div>
@@ -374,7 +302,7 @@ class RequestLibrary extends Component {
                                 className="form-control"
                                 rows="3"
                                 ref={(c) => { this.testAlternatives = c; }}
-                                placeholder="Alternative Libraries"
+                                readOnly="true"
                             />
                         </div>
                     </div>
@@ -476,4 +404,4 @@ class RequestLibrary extends Component {
     }
 }
 
-export default RequestLibrary;
+export default AcceptLibrary;
