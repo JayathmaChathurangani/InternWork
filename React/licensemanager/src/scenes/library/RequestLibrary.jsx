@@ -21,6 +21,8 @@ import { Link } from 'react-router';
 import ValidateUser from '../../services/authentication/ValidateUser';
 import User from '../../services/database/User';
 import Library from '../../services/database/Library';
+import LibraryType from '../../services/database/LibraryType';
+import LibraryCategory from '../../services/database/LibraryCategory';
 import StringValidations from '../../services/validations/StringValidations';
 import LibraryProcess from '../../services/bpmn/LibraryProcess';
 
@@ -73,17 +75,17 @@ class RequestLibrary extends Component {
                 };
             });
         });
-        User.getLibraryCategories().then((response) => {
-            this.setState(() => {
-                return {
-                    libraryCategories: response,
-                };
-            });
-        });
-        Library.selectTypes().then((response) => {
+        LibraryType.selectDeafult().then((response) => {
             this.setState(() => {
                 return {
                     libraryTypes: response,
+                };
+            });
+        });
+        LibraryCategory.selectAll().then((response) => {
+            this.setState(() => {
+                return {
+                    libraryCategories: response,
                 };
             });
         });
@@ -237,15 +239,15 @@ class RequestLibrary extends Component {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="selectLibraryType" className="col-lg-2 control-label">
-                            <span className="required">*</span>&nbsp;Library Type
+                        <label htmlFor="selectLibraryCategory" className="col-lg-2 control-label">
+                            <span className="required">*</span>&nbsp;Library Category
                         </label>
                         <div className="col-lg-10" >
                             {/* eslint-disable */}
-                            <select className="form-control" ref={(c) => { this.selectLibraryType = c; }} >
-                                {this.state.libraryTypes.map((libraryType, i)=>
-                                    (<option key={i} value={libraryType.LIB_TYPE}>
-                                        {libraryType.LIB_TYPE}
+                            <select className="form-control" ref={(c) => { this.selectLibraryCategory = c; }} >
+                                {this.state.libraryCategories.map((libraryCategory, i)=>
+                                    (<option key={i} value={libraryCategory.LIBCATEGORY_ID}>
+                                        {libraryCategory.LIBCATEGORY_NAME}
                                     </option>))}
                             </select>
                             {/* eslint-enable */}
@@ -253,15 +255,15 @@ class RequestLibrary extends Component {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="selectLibraryCategory" className="col-lg-2 control-label">
+                        <label htmlFor="selectLibraryType" className="col-lg-2 control-label">
                             <span className="required">*</span>&nbsp;Library Type
                         </label>
                         <div className="col-lg-10" >
                             {/* eslint-disable */}
-                            <select className="form-control" ref={(c) => { this.selectLibraryCategory = c; }} >
-                                {this.state.libraryCategories.map((libraryCategory, i)=>
-                                    (<option key={i} value={libraryCategory.ROLE_LIB_TYPE}>
-                                        {libraryCategory.ROLE_LIB_TYPE}
+                            <select className="form-control" ref={(c) => { this.selectLibraryType = c; }} >
+                                {this.state.libraryTypes.map((libraryType, i)=>
+                                    (<option key={i} value={libraryType.LIBTYPE_ID}>
+                                        {libraryType.LIBTYPE_NAME}
                                     </option>))}
                             </select>
                             {/* eslint-enable */}

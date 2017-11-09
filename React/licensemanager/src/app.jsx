@@ -28,6 +28,7 @@ import RequestLibrary from './scenes/library/RequestLibrary';
 import AcceptLibrary from './scenes/library/AcceptLibrary';
 import PendingRequests from './scenes/common/PendingRequests';
 import WaitingRequests from './scenes/common/WaitingRequests';
+import ErrorPage from './scenes/common/ErrorPage';
 
 /**
  * @class App
@@ -55,6 +56,7 @@ class App extends Component {
                     <Route path={'acceptLibrary'} component={AcceptLibrary} />
                 </Route>
                 <Route path={'/'} component={Main} />
+                <Route path={'/errorPage'} component={ErrorPage} />
             </Router>
         );
     }

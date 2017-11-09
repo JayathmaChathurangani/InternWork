@@ -186,3 +186,7 @@ function getTaskIdFromProcessId(int processId)(int taskId){
     return;
 }
 
+function acceptLibraryRequest(string taskId){
+
+}
+

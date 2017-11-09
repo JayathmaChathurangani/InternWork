@@ -794,7 +794,7 @@ service<http> MainService {
     }
 
     @http:GET {}
-    @http:Path {value:"/databaseService/role/selectLibraryCategories"}
+    @http:Path {value:"/databaseService/libCategory/selectAll"}
     resource roleSelectLibraryCategoriesResource(message m){
 
         message response = {};
@@ -802,7 +802,7 @@ service<http> MainService {
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
 
         if(services:getIsValidUser()){
-            responseJson = database:roleSelectLibraryCategories();
+            responseJson = database:libCategorySelectAll();
             messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);
@@ -907,15 +907,35 @@ service<http> MainService {
     }
 
     @http:GET {}
-    @http:Path {value:"/databaseService/library/selectTypes"}
-    resource librarySelectTypesResource(message m){
+    @http:Path {value:"/databaseService/libType/selectDefault"}
+    resource libraryTypeSelectDefaultResource(message m){
 
         message response = {};
         json responseJson;
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
 
         if(services:getIsValidUser()){
-            responseJson = database:librarySelectTypes();
+            responseJson = database:libTypeSelectDefault();
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:GET {}
+    @http:Path {value:"/databaseService/libType/selectFromCategory"}
+    resource libraryTypeSelectFromCategory(@http:QueryParam {value:"id"} int id){
+
+        message response = {};
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+
+        if(services:getIsValidUser()){
+            responseJson = database:libTypeSelectFromCategory(id);
+            system:println(id);
             messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);
@@ -935,8 +955,10 @@ service<http> MainService {
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
         json requestDetails;
         string name;
-        string libType;
-        string libCategory;
+        int libType;
+        int libCategory;
+        string groupId;
+        string artifactId;
         string useVersion;
         string latestVersion;
         string fileName;
@@ -953,8 +975,10 @@ service<http> MainService {
         if(services:getIsValidUser()){
 
             name = jsons:toString(requestJson.libName);
-            libType = jsons:toString(requestJson.libType);
-            libCategory = jsons:toString(requestJson.libCategory);
+            libType,_ = <int>jsons:toString(requestJson.libTypeId);
+            libCategory,_ = <int>jsons:toString(requestJson.libCategoryId);
+            groupId = jsons:toString(requestJson.libGroupId);
+            artifactId = jsons:toString(requestJson.libArtifactId);
             useVersion = jsons:toString(requestJson.libUseVersion);
             latestVersion = jsons:toString(requestJson.libLatestVersion);
             fileName = jsons:toString(requestJson.libFileName);
@@ -964,7 +988,7 @@ service<http> MainService {
             description = jsons:toString(requestJson.libDescription);
             alternatives = jsons:toString(requestJson.libAlternatives);
             requestBy = jsons:toString(requestJson.libRequestBy);
-            responseValue = database:libraryRequestInsertData(name,libType,libCategory,useVersion,latestVersion,fileName,company,sponsored,purpose,description,alternatives,requestBy);
+            responseValue = database:libraryRequestInsertData(name,libType,libCategory,groupId,artifactId,useVersion,latestVersion,fileName,company,sponsored,purpose,description,alternatives,requestBy);
 
 
             if(responseValue > 0){

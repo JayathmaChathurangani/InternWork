@@ -20,7 +20,7 @@ function validateUser(message request)(message){
     string[] webTokenArray;
     string dencodedString;
     string webToken;
-    string roleLibType;
+    string roleLibCategory;
     string rolePermission;
     int epocTime;
     int currentTimeInt;
@@ -58,11 +58,11 @@ function validateUser(message request)(message){
 
                 }
                 if(jsons:toString(returnJson[i].ROLE_TYPE) == "LIBRARY"){
-                    roleLibType = jsons:toString(returnJson[i].ROLE_LIB_TYPE);
+                    roleLibCategory = jsons:toString(returnJson[i].ROLE_LIB_CATEGORY_NAME);
                     rolePermission = jsons:toString(returnJson[i].ROLE_PERMISSION);
                     userLibraryPermissionJson = {
                                                     "roleType":"LIBRARY",
-                                                    "roleLibType":roleLibType,
+                                                    "roleLibType":roleLibCategory,
                                                     "rolePermission":rolePermission
                                                 };
                     userLibraryPermissionJsonArrayLength = lengthof userLibraryPermissionJsonArray;
@@ -178,16 +178,22 @@ function getIsRepositoryAdminUser ()(boolean returnIsAdmin)  {
 }
 
 function getSessionDetails()(json sessionDetails){
+    json userLibraryPermissionJsonArray = [];
     string email;
+    boolean isValid = false;
+    boolean isRepositoryAdmin = false;
     try{
         if(userSession != null){
             email,_ = (string) http:getAttribute(userSession,"userEmail");
-            sessionDetails = {"userEmail":email};
+            isValid,_ = (boolean)http:getAttribute(userSession,"isValid");
+            isRepositoryAdmin,_ = (boolean)http:getAttribute(userSession,"isRepositoryAdmin");
+            userLibraryPermissionJsonArray,_ = (json)http:getAttribute(userSession,"libraryUserDetails");
+            sessionDetails = {"isValid":isValid,"isRepositoryAdmin":isRepositoryAdmin,"libraryUserDetails":userLibraryPermissionJsonArray,"userEmail":email};
         }else{
-            sessionDetails = {"userEmail":null};
+            sessionDetails = {"isValid":false,"isRepositoryAdmin":false,"libraryUserDetails":[],"userEmail":null};
         }
     }catch(errors:Error err){
-        sessionDetails = {"userEmail":null};
+        sessionDetails = {"isValid":false,"isRepositoryAdmin":false,"libraryUserDetails":[],"userEmail":null};
 
 
     }

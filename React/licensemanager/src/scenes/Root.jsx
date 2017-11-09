@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { hashHistory } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppHeader from '../components/layouts/AppHeader';
 import AdminHeader from '../components/layouts/AdminHeader';
@@ -21,9 +22,9 @@ class Root extends Component {
         this.state = {
             isAdminUser: null,
             isRepositoryAdmin: null,
+            isLibraryAdmin: null,
             isValid: null,
             displayChildren: 'block',
-            displayError: 'none',
             displayNav: 'block',
             displayHeader: 'block',
             userDetails: [{ isValid: false, userDetails: null }],
@@ -36,7 +37,10 @@ class Root extends Component {
     */
     componentWillMount() {
         const adminPages = ['/app/acceptRepository', '/app/waitingRequests'];
+        const adminPagesLibrary = ['/app/acceptLibrary'];
         const props = this.props;
+        let i = 0;
+        console.log("page ",props.location);//eslint-disable-line
         ValidateUser.isValidUser().then((response) => {
             if (response.isValid) {
                 this.setState(() => {
@@ -47,16 +51,7 @@ class Root extends Component {
                     };
                 });
             } else {
-                this.setState(() => {
-                    return {
-                        isValidUser: response.isValid,
-                        isRepositoryAdmin: response.isRepositoryAdmin,
-                        displayChildren: 'none',
-                        displayError: 'block',
-                        displayNav: 'none',
-                        displayHeader: 'none',
-                    };
-                });
+                hashHistory.push('/errorPage');
             }
             if (response.isRepositoryAdmin) {
                 this.setState(() => {
@@ -65,22 +60,36 @@ class Root extends Component {
                     };
                 });
             }
+            console.log('user details', this.state.userDetails.libraryUserDetails);//eslint-disable-line
+            for (i = 0; i < this.state.userDetails.libraryUserDetails.length; i++) {
+                if (this.state.userDetails.libraryUserDetails[i].rolePermission === 'ADMIN') {
+                    this.setState(() => {
+                        return {
+                            isAdminUser: true,
+                            isLibraryAdmin: true,
+                        };
+                    });
+                    break;
+                }
+            }
             console.log(props.location.pathname);//eslint-disable-line
-            console.log(this.state.isRepositoryAdmin);//eslint-disable-line
             if (adminPages.indexOf(props.location.pathname) !== -1 && !this.state.isRepositoryAdmin) {
-                this.setState(() => {
-                    return {
-                        displayChildren: 'none',
-                        displayError: 'block',
-                        displayNav: 'none',
-                        displayHeader: 'none',
-                    };
-                });
+                hashHistory.push('/errorPage');
             } else if (adminPages.indexOf(props.location.pathname) !== -1 && this.state.isRepositoryAdmin) {
                 this.setState(() => {
                     return {
                         displayChildren: 'block',
-                        displayError: 'none',
+                        displayNav: 'block',
+                        displayHeader: 'block',
+                    };
+                });
+            }
+            if (adminPagesLibrary.indexOf(props.location.pathname) !== -1 && !this.state.isLibraryAdmin) {
+                hashHistory.push('/errorPage');
+            } else if (adminPagesLibrary.indexOf(props.location.pathname) !== -1 && this.state.isLibraryAdmin) {
+                this.setState(() => {
+                    return {
+                        displayChildren: 'block',
                         displayNav: 'block',
                         displayHeader: 'block',
                     };
@@ -110,22 +119,6 @@ class Root extends Component {
                         </div>
                         <div className="col-md-10" style={{ display: this.state.displayChildren, height: '90vh', overflowY: 'auto', overflowX: 'hidden' }} >
                             {props.children}
-                        </div>
-                    </div>
-
-                    <div className="row" style={{ display: this.state.displayError }}>
-                        <div className="col-md-10" >
-                            <br />
-                            <div className="alert alert-dismissible alert-danger">
-                                <div className="panel panel-danger">
-                                    <div className="panel-heading">
-                                        <h3 className="panel-title">Login Error</h3>
-                                    </div>
-                                    <div className="panel-body" style={{ color: 'black' }}>
-                                        Invalid Login
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

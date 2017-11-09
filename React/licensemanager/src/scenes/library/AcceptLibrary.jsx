@@ -17,7 +17,7 @@
  */
 
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link, hashHistory } from 'react-router';
 import ValidateUser from '../../services/authentication/ValidateUser';
 import User from '../../services/database/User';
 import Library from '../../services/database/Library';
@@ -43,6 +43,7 @@ class AcceptLibrary extends Component {
             libraryCategories: [],
             libraryId: props.location.query.libRequestId,// eslint-disable-line
             libraryRequestDetails: [],
+            libraryRequestSponsored: false,
             buttonState: false,
             displayFieldset: 'block',
             displayLoader: 'none',
@@ -59,6 +60,7 @@ class AcceptLibrary extends Component {
     * @description Sample React component
     */
     componentWillMount() {
+        /* eslint-disable max-len */
         ValidateUser.getUserDetails().then((response) => {
             this.setState(() => {
                 return {
@@ -93,11 +95,36 @@ class AcceptLibrary extends Component {
             this.setState(() => {
                 return {
                     libraryRequestDetails: response,
+                    libraryRequestSponsored: response.LIBREQUEST_SPONSORED,
                 };
             });
             this.inputLibraryName.value = response.LIBREQUEST_NAME;
             this.selectLibraryType.value = response.LIBREQUEST_TYPE;
-
+            this.selectLibraryCategory.value = response.LIBREQUEST_CATEGORY;
+            this.inputVersionWeUse.value = response.LIBREQUEST_USE_VERSION;
+            this.inputLibraryFileName.value = response.LIBREQUEST_FILE_NAME;
+            this.inputLatestVersion.value = response.LIBREQUEST_LATEST_VERSION;
+            this.inputCompany.value = response.LIBREQUEST_COMPANY;
+            this.textPurpose.value = response.LIBREQUEST_PURPOSE;
+            this.textDescription.value = response.LIBREQUEST_DESCRIPTION;
+            this.textAlternatives.value = response.LIBREQUEST_ALTERNATIVES;
+        });
+        Promise.all([ValidateUser.getUserDetails(), LibraryRequest.selectLibraryRequestFromId(this.state.libraryId)]).then((response) => {
+            let i = 0;
+            for (i = 0; i < response[0].libraryUserDetails.length; i++) {
+                if (response[0].libraryUserDetails[i].roleLibType === response[1].LIBREQUEST_CATEGORY && response[0].libraryUserDetails[i].rolePermission === 'ADMIN') {
+                    this.setState(() => {
+                        return {
+                            displayFieldset: 'block',
+                            displayLoader: 'none',
+                            displaySuceessBox: 'none',
+                            displayErrorBox: 'none',
+                        };
+                    });
+                    return;
+                }
+            }
+            hashHistory.push('/errorPage');
         });
     }
     /**
@@ -157,7 +184,7 @@ class AcceptLibrary extends Component {
                     <br />
                     <div className="form-group">
                         <label htmlFor="inputLibraryName" className="col-lg-2 control-label">
-                            <span className="required">*</span>&nbsp;Library Name
+                            Library Name
                         </label>
                         <div className="col-lg-10">
                             <input
@@ -171,7 +198,7 @@ class AcceptLibrary extends Component {
 
                     <div className="form-group">
                         <label htmlFor="selectLibraryType" className="col-lg-2 control-label">
-                            <span className="required">*</span>&nbsp;Library Type
+                            Library Type
                         </label>
                         <div className="col-lg-10" >
                             <input
@@ -185,7 +212,7 @@ class AcceptLibrary extends Component {
 
                     <div className="form-group">
                         <label htmlFor="selectLibraryCategory" className="col-lg-2 control-label">
-                            <span className="required">*</span>&nbsp;Library Category
+                            Library Category
                         </label>
                         <div className="col-lg-10" >
                             <input
@@ -199,7 +226,7 @@ class AcceptLibrary extends Component {
 
                     <div className="form-group">
                         <label htmlFor="inputVersionWeUse" className="col-lg-2 control-label">
-                            <span className="required">*</span>&nbsp;Version we use
+                            Version we use
                         </label>
                         <div className="col-lg-10">
                             <input
@@ -216,7 +243,7 @@ class AcceptLibrary extends Component {
 
                     <div className="form-group">
                         <label htmlFor="inputLibraryFileName" className="col-lg-2 control-label">
-                            <span className="required">*</span>&nbsp;Library File Name
+                            Library File Name
                         </label>
                         <div className="col-lg-10">
                             <input
@@ -260,14 +287,16 @@ class AcceptLibrary extends Component {
                         {/* eslint-disable max-len */}
                         <label htmlFor="checkSponsored" className="col-lg-2 control-label"> Sponsor by the Company </label>
                         <div className="col-lg-10" ref={(c) => { this.checkSponsored = c; }}>
-                            <input type="radio" name="sponsored" value="Yes" /> Yes <br />
-                            <input type="radio" name="sponsored" value="No" checked="true" /> No <br />
+                            {/* eslint-disable */}
+                            <input type="radio" name="sponsored" value="Yes" checked={(this.state.libraryRequestSponsored) ? true : false}/> Yes <br />
+                            <input type="radio" name="sponsored" value="No" checked={(this.state.libraryRequestSponsored) ? false : true}/> No <br />
+                            {/* eslint-enable */}
                         </div>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="textPurpose" className="col-lg-2 control-label">
-                            <span className="required">*</span>&nbsp;Purpose
+                            Purpose
                         </label>
                         <div className="col-lg-10">
                             <textarea
@@ -281,7 +310,7 @@ class AcceptLibrary extends Component {
 
                     <div className="form-group">
                         <label htmlFor="textDescription" className="col-lg-2 control-label">
-                            <span className="required">*</span>&nbsp;Description
+                            Description
                         </label>
                         <div className="col-lg-10">
                             <textarea
@@ -313,7 +342,7 @@ class AcceptLibrary extends Component {
                             <button type="reset" className="btn btn-default">Cancel</button>
                             &nbsp;
                             <button type="submit" id="submitButton" className="btn btn-info" data-loading-text="Loading ..." disabled={this.state.buttonState} >
-                                Request
+                                Accept
                             </button>
                         </div>
                     </div>
@@ -390,7 +419,7 @@ class AcceptLibrary extends Component {
                                     name="Back"
                                 />
                                 &nbsp;&nbsp;
-                                <Link to={'/app/requestRepository'} >
+                                <Link to={'/app/requestLibrary'} >
                                     <button type="button" className="btn btn-success">
                                         New Request
                                     </button>

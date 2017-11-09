@@ -7,16 +7,13 @@ import MainData from '../MainData';
 * @extends {Component}
 * @description Get license details
 */
-class Library extends Component {
+class LibraryCategory extends Component {
     /**
     * selectTypes
-    * @param {String} name library name
-    * @param {String} version library version
     * @returns {Promise} promise
     */
-    selectLibraryAndRequestFromNameAndVersion(name, version) {
-        const url = MainData.ballerinaDatabaseURL +
-        'libraryAndRequest/selectFromNameAndVersion?name=' + name + '&version=' + version;
+    selectAll() {
+        const url = MainData.ballerinaDatabaseURL + 'libCategory/selectAll';
         return axios.get(url).then((response) => {
             return (response.data);
         }).catch((error) => {
@@ -25,4 +22,4 @@ class Library extends Component {
     }
 }
 
-export default (new Library());
+export default (new LibraryCategory());

@@ -81,11 +81,11 @@
         </activiti:field>
         <activiti:field name="input">
           <activiti:expression>{
-	"libName":"${updateData.libName}",
-	"libType":"${updateData.libType}",
-	"libVersion":"${updateData.libVersion}",
-	"libFileName":"${updateData.libFileName}",
-	"libDescription":"${updateData.libDescription}"
+	"libName":"${data.libName}",
+	"libType":"${data.libType}",
+	"libVersion":"${data.libVersion}",
+	"libFileName":"${data.libFileName}",
+	"libDescription":"${data.libDescription}"
 }</activiti:expression>
         </activiti:field>
         <activiti:field name="outputMappings">

@@ -645,7 +645,7 @@ function roleSelectLibraryMainUsers()(json){
 
 }
 
-function roleSelectLibraryCategories()(json){
+function libCategorySelectAll()(json){
     json response;
 
     if(connection == null){
@@ -654,7 +654,7 @@ function roleSelectLibraryCategories()(json){
     }
     try{
 
-        string query = "SELECT DISTINCT(ROLE_LIB_TYPE) AS ROLE_LIB_TYPE FROM LM_ROLE WHERE ROLE_LIB_TYPE IS NOT NULL ORDER BY ROLE_LIB_TYPE ASC;";
+        string query = "SELECT * FROM LM_LIBCATEGORY";
         sql:Parameter[] parameterArray = [];
         datatable responseDataFromDb = connection.select(query ,parameterArray);
         response,_ = <json>responseDataFromDb;
@@ -682,7 +682,12 @@ function roleGetUserDetails(string email)(json ){
 
 
 
-        string query = "SELECT * FROM LM_ROLE WHERE ROLE_EMAIL = ?";
+        string query = "SELECT
+                            LM_ROLE.*,
+                            LM_LIBCATEGORY.LIBCATEGORY_NAME AS ROLE_LIB_CATEGORY_NAME
+                        FROM LM_ROLE
+                        INNER JOIN LM_LIBCATEGORY ON LM_ROLE.ROLE_LIB_CATEGORY = LM_LIBCATEGORY.LIBCATEGORY_ID
+                        WHERE ROLE_EMAIL=?";
         sql:Parameter paraEmail = {sqlType:"varchar", value:email};
         sql:Parameter[] parameterArray = [paraEmail];
         datatable responseDataFromDb = connection.select(query ,parameterArray);
@@ -811,7 +816,7 @@ function libraryAndRequestSelectFromNameAndVersion(string libraryName,string lib
 
 }
 
-function librarySelectTypes()(json){
+function libTypeSelectDefault()(json){
     json response;
 
     if(connection == null){
@@ -821,7 +826,12 @@ function librarySelectTypes()(json){
 
     try{
 
-        string query = "SELECT DISTINCT(LIB_TYPE) AS LIB_TYPE FROM LM_LIBRARY ORDER BY LIB_TYPE ASC";
+        string query = "SELECT
+                            LM_LIBTYPE.*,
+                            LM_LIBCATEGORY.LIBCATEGORY_NAME
+                        FROM LM_LIBTYPE
+                        INNER JOIN LM_LIBCATEGORY ON LM_LIBTYPE.LIBTYPE_CATEGORY = LM_LIBCATEGORY.LIBCATEGORY_ID
+                        WHERE LIBTYPE_CATEGORY = (SELECT LIBCATEGORY_ID FROM LM_LIBCATEGORY LIMIT 1)";
         sql:Parameter[] parameterArray = [];
         datatable responseDataFromDb = connection.select(query ,parameterArray);
         response,_ = <json>responseDataFromDb;
@@ -835,7 +845,37 @@ function librarySelectTypes()(json){
 
 }
 
-function libraryRequestInsertData(string name,string libType,string category,string useVersion,string latestVersion,string fileName,string company,boolean sponsored,string purpose,string description,string alternatives,string requestBy)(int){
+function libTypeSelectFromCategory(int categoryId)(json){
+    json response;
+
+    if(connection == null){
+
+        setConnection();
+    }
+
+    try{
+
+        string query = "SELECT
+                            LM_LIBTYPE.*,
+                            LM_LIBCATEGORY.LIBCATEGORY_NAME
+                        FROM LM_LIBTYPE
+                        INNER JOIN LM_LIBCATEGORY ON LM_LIBTYPE.LIBTYPE_CATEGORY = LM_LIBCATEGORY.LIBCATEGORY_ID
+                        WHERE LIBTYPE_CATEGORY = ?";
+        sql:Parameter paraCategoryId = {sqlType:"integer", value:categoryId};
+        sql:Parameter[] parameterArray = [paraCategoryId];
+        datatable responseDataFromDb = connection.select(query ,parameterArray);
+        response,_ = <json>responseDataFromDb;
+
+    }catch(errors:Error err){
+        response = {"responseType":"Error","responseMessage":err.msg};
+
+
+    }
+    return response;
+
+}
+
+function libraryRequestInsertData(string name,int libType,int category,string groupId,string artifactId,string useVersion,string latestVersion,string fileName,string company,boolean sponsored,string purpose,string description,string alternatives,string requestBy)(int){
 
     int returnValue;
 
@@ -850,6 +890,8 @@ function libraryRequestInsertData(string name,string libType,string category,str
                                                     LIBREQUEST_NAME,
                                                     LIBREQUEST_TYPE,
                                                     LIBREQUEST_CATEGORY,
+                                                    LIBREQUEST_GROUP_ID,
+                                                    LIBREQUEST_ARTIFACT_ID,
                                                     LIBREQUEST_USE_VERSION,
                                                     LIBREQUEST_LATEST_VERSION,
                                                     LIBREQUEST_FILE_NAME,
@@ -860,11 +902,13 @@ function libraryRequestInsertData(string name,string libType,string category,str
                                                     LIBREQUEST_ALTERNATIVES,
                                                     LIBREQUEST_REQUESTED_BY
                                                   )
-                                                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                                                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         sql:Parameter paraName = {sqlType:"varchar", value:name};
-        sql:Parameter paraType = {sqlType:"varchar", value:libType};
-        sql:Parameter paraCategory = {sqlType:"varchar", value:category};
+        sql:Parameter paraType = {sqlType:"int", value:libType};
+        sql:Parameter paraCategory = {sqlType:"int", value:category};
+        sql:Parameter paraGroupId = {sqlType:"varchar", value:groupId};
+        sql:Parameter paraArtifactId = {sqlType:"varchar", value:artifactId};
         sql:Parameter paraUseVersion = {sqlType:"varchar", value:useVersion};
         sql:Parameter paraLatestVersion = {sqlType:"varchar", value:latestVersion};
         sql:Parameter paraFileName = {sqlType:"varchar", value:fileName};
@@ -880,6 +924,8 @@ function libraryRequestInsertData(string name,string libType,string category,str
                                              paraName,
                                              paraType,
                                              paraCategory,
+                                             paraGroupId,
+                                             paraArtifactId,
                                              paraUseVersion,
                                              paraLatestVersion,
                                              paraFileName,

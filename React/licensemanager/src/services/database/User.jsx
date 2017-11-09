@@ -33,18 +33,6 @@ class User extends Component {
         });
     }
     /**
-    * get main users
-    * @returns {Promise} promise
-    */
-    getLibraryCategories() {
-        const url = MainData.ballerinaDatabaseURL + 'role/selectLibraryCategories';
-        return axios.get(url).then((response) => {
-            return (response.data);
-        }).catch((error) => {
-            throw new Error(error);
-        });
-    }
-    /**
     * get admin users
     * @param {String} email email of a user
     * @returns {Promise} promise
