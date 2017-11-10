@@ -98,7 +98,7 @@ function bpmnRequestLibrary(json requestData)(json){
     boolean completed = true;
 
     try{
-        if(httpConnector == null){
+        if(httpConnectorBpmn == null){
             setBpmnConnection();
         }
         libraryMainUsers = database:roleSelectLibraryMainUsers();

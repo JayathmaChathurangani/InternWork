@@ -320,7 +320,6 @@ service<http> MainService {
         reply response;
     }
 
-
     @http:POST {}
     @http:Path {value:"/databaseService/repository/insertData"}
     resource repositoryInsertDataResource(message m){
@@ -849,7 +848,7 @@ service<http> MainService {
 
     @http:POST {}
     @http:Path {value:"/bpmn/library/request"}
-    resource acceptRepositoryResource(message m){
+    resource requestLibraryResource(message m){
 
         message response = {};
         json requestJson = messages:getJsonPayload(m);
@@ -860,6 +859,48 @@ service<http> MainService {
         if(services:getIsValidUser()){
             responseJson = services:bpmnRequestLibrary(requestJson);
             messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:POST {}
+    @http:Path {value:"/bpmn/library/accept"}
+    resource acceptLibraryRequestResource(message m){
+
+        message response = {};
+        int id;
+        int i = 0;
+        int userDetailsLength;
+        boolean valid = false;
+        json requestJson = messages:getJsonPayload(m);
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        json userDetails;
+        json libraryRequestDetails;
+
+        id,_ = <int>jsons:toString(requestJson.libraryRequestId);
+        userDetails = services:getSessionDetails();
+        userDetails = userDetails.libraryUserDetails;
+        userDetailsLength = lengthof userDetails;
+        libraryRequestDetails = database:libraryRequestSelectFromId(id);
+        while(i < userDetailsLength){
+            if((jsons:toString(userDetails[i].roleLibType) == jsons:toString(libraryRequestDetails[0].LIBCATEGORY_NAME)) && jsons:toString(userDetails[i].rolePermission) == "ADMIN" ){
+                valid = true;
+                break;
+            }else{
+                valid = false;
+            }
+            i = i + 1;
+        }
+
+
+        if(valid){
+            system:println("ok");
+
         }else{
             messages:setJsonPayload(response,inValidUserJson);
         }
@@ -970,7 +1011,7 @@ service<http> MainService {
         string requestBy;
         string id;
         int responseValue;
-        system:println(m);
+
 
         if(services:getIsValidUser()){
 
@@ -1050,7 +1091,7 @@ service<http> MainService {
 
     @http:GET {}
     @http:Path {value:"/databaseService/libraryRequest/selectFromId"}
-    resource libraryRequestSelectFromId(@http:QueryParam {value:"id"} string id){
+    resource libraryRequestSelectFromId(@http:QueryParam {value:"id"} int id){
 
         message response = {};
         json responseJson;

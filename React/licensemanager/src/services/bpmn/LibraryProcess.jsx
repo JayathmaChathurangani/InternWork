@@ -39,6 +39,22 @@ class LibraryProcess extends Component {
             throw new Error(error);
         });
     }
+    /**
+    * escape charachters
+    * @param {int} libRequestId libraryrequest id
+    * @returns {String} str
+    */
+    acceptRequest(libRequestId) {
+        const url = MainData.ballerinaURL + 'bpmn/library/accept';
+        const data = {
+            libraryRequestId: libRequestId,
+        };
+        return axios.post(url, data).then((response) => {
+            return response;
+        }).catch((error) => {
+            throw new Error(error);
+        });
+    }
 }
 
 export default (new LibraryProcess());

@@ -47,7 +47,7 @@ CREATE TABLE LM_ROLE(
 	ROLE_NAME VARCHAR(100) NOT NULL,
 	ROLE_TYPE ENUM('REPOSITORY','LIBRARY','COMPONENT','LICENSE') NOT NULL,
 	ROLE_PERMISSION ENUM('ADMIN','USER') DEFAULT 'USER',
-	ROLE_LIB_CATEGORY INT NOT NULL DEFAULT 0,
+	ROLE_LIB_CATEGORY INT DEFAULT NULL,
 
 	FOREIGN KEY (ROLE_LIB_CATEGORY) REFERENCES LM_LIBCATEGORY(LIBCATEGORY_ID)
 )ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
@@ -109,8 +109,8 @@ CREATE TABLE LM_LIBTYPE(
 
 #########################################################################################################################################
 INSERT INTO LM_ROLE VALUES
-(1,'buddhik@wso2.com','Buddhi','REPOSITORY','ADMIN',0),
-(2,'b.wathsala.bw@gmail.com','Wathsala','REPOSITORY','USER',0),
+(1,'buddhik@wso2.com','Buddhi','REPOSITORY','ADMIN',NULL),
+(2,'b.wathsala.bw@gmail.com','Wathsala','REPOSITORY','USER',NULL),
 (3,'buddhik@wso2.com','Buddhi','LIBRARY','ADMIN',2),
 (4,'ishika@wso2.com','Buddhi','LIBRARY','ADMIN',1);
 

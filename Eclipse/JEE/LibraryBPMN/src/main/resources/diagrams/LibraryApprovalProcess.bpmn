@@ -13,8 +13,10 @@
         <activiti:field name="input">
           <activiti:expression>{
 	"libName":"${data.libName}",
-	"libType":"${data.libType}",
-	"libCategory":"${data.libCategory}",
+	"libTypeId":"${data.libTypeId}",
+	"libCategoryId":"${data.libCategoryId}",
+ 	 "libGroupId":"${data.libGroupId}",
+  	"libArtifactId":"${data.libArtifactId}",
 	"libUseVersion":"${data.libUseVersion}",
 	"libLatestVersion":"${data.libLatestVersion}",
 	"libFileName":"${data.libFileName}",
@@ -51,6 +53,8 @@
   <li><b>Library Name</b>:&nbsp;${data.libName}</li>
   <li><b>Library Type</b>:&nbsp;${data.libType}</li>
   <li><b>Library Category</b>:&nbsp;${data.libCategory}</li>
+  <li><b>Group ID</b>:&nbsp;${data.libGroupId}</li>
+  <li><b>Artifact ID</b>:&nbsp;${data.libArtifactId}</li>
   <li><b>Expected version to use</b>:&nbsp;${data.libUseVersion}</li>
   <li><b>Latest version</b>:&nbsp;${data.libLatestVersion}</li>
   <li><b>Library file name</b>:&nbsp;${data.libFileName}</li>
@@ -104,6 +108,8 @@
   <li><b>Library Name</b>:&nbsp;${data.libName}</li>
   <li><b>Library Type</b>:&nbsp;${data.libType}</li>
   <li><b>Library Category</b>:&nbsp;${data.libCategory}</li>
+  <li><b>Group ID</b>:&nbsp;${data.libGroupId}</li>
+  <li><b>Artifact ID</b>:&nbsp;${data.libArtifactId}</li>
   <li><b>Expected version to use</b>:&nbsp;${data.libUseVersion}</li>
   <li><b>Latest version</b>:&nbsp;${data.libLatestVersion}</li>
   <li><b>Library file name</b>:&nbsp;${data.libFileName}</li>
@@ -143,7 +149,7 @@
     <serviceTask id="sendRejectAck" name="Send Acknowledgement" activiti:type="mail">
       <extensionElements>
         <activiti:field name="html">
-          <activiti:expression><![CDATA[<p>
+          <activiti:expression><![CDATA[  <p>
   Hi all!<br /><br />
 
   The 3rd party library request with following details is rejected<br /><br />
@@ -151,6 +157,8 @@
   <li><b>Library Name</b>:&nbsp;${data.libName}</li>
   <li><b>Library Type</b>:&nbsp;${data.libType}</li>
   <li><b>Library Category</b>:&nbsp;${data.libCategory}</li>
+  <li><b>Group ID</b>:&nbsp;${data.libGroupId}</li>
+  <li><b>Artifact ID</b>:&nbsp;${data.libArtifactId}</li>
   <li><b>Expected version to use</b>:&nbsp;${data.libUseVersion}</li>
   <li><b>Latest version</b>:&nbsp;${data.libLatestVersion}</li>
   <li><b>Library file name</b>:&nbsp;${data.libFileName}</li>

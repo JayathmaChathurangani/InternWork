@@ -20,8 +20,8 @@ import React, { Component } from 'react';
 import { Link, hashHistory } from 'react-router';
 import ValidateUser from '../../services/authentication/ValidateUser';
 import User from '../../services/database/User';
-import Library from '../../services/database/Library';
 import LibraryRequest from '../../services/database/LibraryRequest';
+import StringValidations from '../../services/validations/StringValidations';
 
 /**
  * @class RequestRepository
@@ -49,10 +49,11 @@ class AcceptLibrary extends Component {
             displayLoader: 'none',
             displaySuceessBox: 'none',
             displayErrorBox: 'none',
+            displayIds: 'none',
             validateLibrary: '',
             userDetails: [],
         };
-        this.submitRequest = this.submitRequest.bind(this);
+        this.acceptRequest = this.acceptRequest.bind(this);
     }
     /**
     * @class RequestRepository
@@ -75,44 +76,47 @@ class AcceptLibrary extends Component {
                 };
             });
         });
-        User.getLibraryCategories().then((response) => {
-            this.setState(() => {
-                return {
-                    libraryCategories: response,
-                };
-            });
-        });
-        Library.selectTypes().then((response) => {
-            this.setState(() => {
-                return {
-                    libraryTypes: response,
-                };
-            });
-        });
         LibraryRequest.selectLibraryRequestFromId(this.state.libraryId).then((response) => {
-            console.log(response);//eslint-disable-line
-            console.log(this.state.libraryId);//eslint-disable-line
+            console.log("res ",response);//eslint-disable-line
             this.setState(() => {
                 return {
                     libraryRequestDetails: response,
                     libraryRequestSponsored: response.LIBREQUEST_SPONSORED,
                 };
             });
+            if (response.LIBCATEGORY_NAME === 'Java') {
+                console.log('if');//eslint-disable-line
+                this.setState(() => {
+                    return {
+                        displayIds: 'block',
+                    };
+                });
+                this.inputGroupId.value = response.LIBREQUEST_GROUP_ID;
+                this.inputArtifactId.value = response.LIBREQUEST_ARTIFACT_ID;
+            } else {
+                this.setState(() => {
+                    return {
+                        displayIds: 'none',
+                    };
+                });
+                this.inputGroupId.value = response.LIBREQUEST_GROUP_ID;
+                this.inputArtifactId.value = response.LIBREQUEST_ARTIFACT_ID;
+            }
             this.inputLibraryName.value = response.LIBREQUEST_NAME;
-            this.selectLibraryType.value = response.LIBREQUEST_TYPE;
-            this.selectLibraryCategory.value = response.LIBREQUEST_CATEGORY;
+            this.selectLibraryType.value = response.LIBTYPE_NAME;
+            this.selectLibraryCategory.value = response.LIBCATEGORY_NAME;
             this.inputVersionWeUse.value = response.LIBREQUEST_USE_VERSION;
             this.inputLibraryFileName.value = response.LIBREQUEST_FILE_NAME;
             this.inputLatestVersion.value = response.LIBREQUEST_LATEST_VERSION;
             this.inputCompany.value = response.LIBREQUEST_COMPANY;
-            this.textPurpose.value = response.LIBREQUEST_PURPOSE;
-            this.textDescription.value = response.LIBREQUEST_DESCRIPTION;
-            this.textAlternatives.value = response.LIBREQUEST_ALTERNATIVES;
+            this.textPurpose.value = StringValidations.setStringToShow(response.LIBREQUEST_PURPOSE);
+            this.textDescription.value = StringValidations.setStringToShow(response.LIBREQUEST_DESCRIPTION);
+            this.textAlternatives.value = StringValidations.setStringToShow(response.LIBREQUEST_ALTERNATIVES);
         });
         Promise.all([ValidateUser.getUserDetails(), LibraryRequest.selectLibraryRequestFromId(this.state.libraryId)]).then((response) => {
             let i = 0;
             for (i = 0; i < response[0].libraryUserDetails.length; i++) {
-                if (response[0].libraryUserDetails[i].roleLibType === response[1].LIBREQUEST_CATEGORY && response[0].libraryUserDetails[i].rolePermission === 'ADMIN') {
+                if (response[0].libraryUserDetails[i].roleLibType === response[1].LIBCATEGORY_NAME && response[0].libraryUserDetails[i].rolePermission === 'ADMIN') {
                     this.setState(() => {
                         return {
                             displayFieldset: 'block',
@@ -154,7 +158,7 @@ class AcceptLibrary extends Component {
     * go back to request
     * @returns {Promise} promise
     */
-    submitRequest(e) {
+    acceptRequest(e) {
         e.preventDefault();
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
@@ -167,6 +171,7 @@ class AcceptLibrary extends Component {
                 displayLoader: 'block',
             };
         });
+
         return false;
     }
     /**
@@ -176,7 +181,7 @@ class AcceptLibrary extends Component {
     */
     render() {
         return (
-            <form className="form-horizontal" onSubmit={this.submitRequest}>
+            <form className="form-horizontal" onSubmit={this.acceptRequest}>
                 {/* eslint-disable max-len */}
                 <h2 className="text-center">3rd Party Library Request</h2>
                 <fieldset style={{ display: this.state.displayFieldset }}>
@@ -219,6 +224,40 @@ class AcceptLibrary extends Component {
                                 type="text"
                                 className="form-control"
                                 ref={(c) => { this.selectLibraryCategory = c; }}
+                                readOnly="true"
+                            />
+                        </div>
+                    </div>
+
+                    <div
+                        className="form-group"
+                        style={{ display: this.state.displayIds }}
+                    >
+                        <label htmlFor="inputGroupId" className="col-lg-2 control-label">
+                            Group ID
+                        </label>
+                        <div className="col-lg-10" >
+                            <input
+                                type="text"
+                                className="form-control"
+                                ref={(c) => { this.inputGroupId = c; }}
+                                readOnly="true"
+                            />
+                        </div>
+                    </div>
+
+                    <div
+                        className="form-group"
+                        style={{ display: this.state.displayIds }}
+                    >
+                        <label htmlFor="inputArtifactId" className="col-lg-2 control-label">
+                            Artifact ID
+                        </label>
+                        <div className="col-lg-10" >
+                            <input
+                                type="text"
+                                className="form-control"
+                                ref={(c) => { this.inputArtifactId = c; }}
                                 readOnly="true"
                             />
                         </div>
@@ -339,9 +378,18 @@ class AcceptLibrary extends Component {
                     <div className="form-group">
                         {/* eslint-disable max-len */}
                         <div className="col-lg-10 col-lg-offset-2">
-                            <button type="reset" className="btn btn-default">Cancel</button>
+                            <Link
+                                to={'/app/rejectLibrary?libRequestId=' + this.state.libraryId}
+                            >
+                                <button className="btn btn-danger">Reject</button>
+                            </Link>
                             &nbsp;
-                            <button type="submit" id="submitButton" className="btn btn-info" data-loading-text="Loading ..." disabled={this.state.buttonState} >
+                            <button
+                                type="submit"
+                                id="submitButton"
+                                className="btn btn-info"
+                                data-loading-text="Loading ..."
+                            >
                                 Accept
                             </button>
                         </div>

@@ -44,6 +44,7 @@ class RequestLibrary extends Component {
             libraryMainUsers: [],
             libraryTypes: [],
             libraryCategories: [],
+            libraryCategorySelected: null,
             buttonState: false,
             displayFieldset: 'block',
             displayLoader: 'none',
@@ -54,6 +55,7 @@ class RequestLibrary extends Component {
         };
         this.validateInputLibrary = this.validateInputLibrary.bind(this);
         this.submitRequest = this.submitRequest.bind(this);
+        this.setTypes = this.setTypes.bind(this);
     }
     /**
     * @class RequestRepository
@@ -83,9 +85,28 @@ class RequestLibrary extends Component {
             });
         });
         LibraryCategory.selectAll().then((response) => {
+            console.log('data',response);//eslint-disable-line
             this.setState(() => {
                 return {
                     libraryCategories: response,
+                    libraryCategorySelected: response[0].LIBCATEGORY_NAME,
+                };
+            });
+        });
+    }
+    /**
+    * set teams after selecting organization
+    */
+    setTypes() {
+        const options = this.selectLibraryCategory.options;
+        console.log(options[options.selectedIndex].value);//eslint-disable-line
+        const selectLibraryCategoryId = options[options.selectedIndex].value;
+        LibraryType.selectFromCategory(selectLibraryCategoryId).then((response) => {
+            console.log(response);//eslint-disable-line
+            this.setState(() => {
+                return {
+                    libraryTypes: response,
+                    libraryCategorySelected: options[options.selectedIndex].text,
                 };
             });
         });
@@ -158,7 +179,9 @@ class RequestLibrary extends Component {
         const libraryCategoryOptions = this.selectLibraryCategory.options;
         const libraryName = StringValidations.escapeCharacters(this.inputLibraryName.value);
         const libraryType = libraryTypeOptions[libraryTypeOptions.selectedIndex].text;
+        const libraryTypeId = libraryTypeOptions[libraryTypeOptions.selectedIndex].value;
         const libraryCategory = libraryCategoryOptions[libraryCategoryOptions.selectedIndex].text;
+        const libraryCategoryId = libraryCategoryOptions[libraryCategoryOptions.selectedIndex].value;
         const libraryVersion = StringValidations.escapeCharacters(this.inputVersionWeUse.value);
         const libraryFileName = StringValidations.escapeCharacters(this.inputLibraryFileName.value);
         const libraryLatestVersion = StringValidations.escapeCharacters(this.inputLatestVersion.value);
@@ -168,10 +191,23 @@ class RequestLibrary extends Component {
         const libraryDescription = StringValidations.escapeCharacters(this.textDescription.value);
         const libraryAlternatives = StringValidations.escapeCharacters(this.testAlternatives.value);
         const requestByEmail = StringValidations.escapeCharacters(this.state.userDetails.userEmail);
+        let libraryGroupId = '';
+        let libraryArtifactId = '';
+        if (this.state.libraryCategorySelected !== 'Java') {
+            libraryGroupId = null;
+            libraryArtifactId = null;
+        } else {
+            libraryGroupId = StringValidations.escapeCharacters(this.inputGroupId.value);
+            libraryArtifactId = StringValidations.escapeCharacters(this.inputArtifactId.value);
+        }
         const data = {
             libName: libraryName,
             libType: libraryType,
+            libTypeId: libraryTypeId,
             libCategory: libraryCategory,
+            libCategoryId: libraryCategoryId,
+            libGroupId: libraryGroupId,
+            libArtifactId: libraryArtifactId,
             libUseVersion: libraryVersion,
             libLatestVersion: libraryLatestVersion,
             libFileName: libraryFileName,
@@ -182,9 +218,6 @@ class RequestLibrary extends Component {
             libAlternatives: libraryAlternatives,
             libRequestBy: requestByEmail,
         };
-        console.log(data);//eslint-disable-line
-        console.log(this.state.libraryMainUsers);//eslint-disable-line
-        console.log(requestByEmail);//eslint-disable-line
         LibraryProcess.startProcess(data).then((response) => {
             console.log("response");//eslint-disable-line
             console.log(response);//eslint-disable-line
@@ -242,7 +275,7 @@ class RequestLibrary extends Component {
                         <label htmlFor="selectLibraryCategory" className="col-lg-2 control-label">
                             <span className="required">*</span>&nbsp;Library Category
                         </label>
-                        <div className="col-lg-10" >
+                        <div className="col-lg-10" onChange={this.setTypes}>
                             {/* eslint-disable */}
                             <select className="form-control" ref={(c) => { this.selectLibraryCategory = c; }} >
                                 {this.state.libraryCategories.map((libraryCategory, i)=>
@@ -267,6 +300,40 @@ class RequestLibrary extends Component {
                                     </option>))}
                             </select>
                             {/* eslint-enable */}
+                        </div>
+                    </div>
+
+                    <div
+                        className="form-group"
+                        style={{ display: ((this.state.libraryCategorySelected) === 'Java') ? 'block' : 'none' }}
+                    >
+                        <label htmlFor="inputGroupId" className="col-lg-2 control-label">
+                            <span className="required">*</span>&nbsp;Group ID
+                        </label>
+                        <div className="col-lg-10" >
+                            <input
+                                type="text"
+                                className="form-control"
+                                ref={(c) => { this.inputGroupId = c; }}
+                                placeholder="org.wso2.example"
+                            />
+                        </div>
+                    </div>
+
+                    <div
+                        className="form-group"
+                        style={{ display: ((this.state.libraryCategorySelected) === 'Java') ? 'block' : 'none' }}
+                    >
+                        <label htmlFor="inputArtifactId" className="col-lg-2 control-label">
+                            <span className="required">*</span>&nbsp;Artifact ID
+                        </label>
+                        <div className="col-lg-10" >
+                            <input
+                                type="text"
+                                className="form-control"
+                                ref={(c) => { this.inputArtifactId = c; }}
+                                placeholder="org.wso2.example"
+                            />
                         </div>
                     </div>
 
@@ -462,7 +529,8 @@ class RequestLibrary extends Component {
                                     className="btn btn-default"
                                     data-dismiss="modal"
                                     name="Back"
-                                />
+                                >Back
+                                </button>
                                 &nbsp;&nbsp;
                                 <Link to={'/app/requestRepository'} >
                                     <button type="button" className="btn btn-success">

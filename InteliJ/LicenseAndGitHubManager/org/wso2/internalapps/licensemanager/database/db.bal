@@ -903,10 +903,9 @@ function libraryRequestInsertData(string name,int libType,int category,string gr
                                                     LIBREQUEST_REQUESTED_BY
                                                   )
                                                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
         sql:Parameter paraName = {sqlType:"varchar", value:name};
-        sql:Parameter paraType = {sqlType:"int", value:libType};
-        sql:Parameter paraCategory = {sqlType:"int", value:category};
+        sql:Parameter paraType = {sqlType:"integer", value:libType};
+        sql:Parameter paraCategory = {sqlType:"integer", value:category};
         sql:Parameter paraGroupId = {sqlType:"varchar", value:groupId};
         sql:Parameter paraArtifactId = {sqlType:"varchar", value:artifactId};
         sql:Parameter paraUseVersion = {sqlType:"varchar", value:useVersion};
@@ -1049,7 +1048,7 @@ function libraryRequestUpdateTaskAndProcessIds(int taskId,int processId,string l
     return returnValue;
 }
 
-function libraryRequestSelectFromId(string id)(json){
+function libraryRequestSelectFromId(int id)(json){
     json response;
 
     if(connection == null){
@@ -1059,7 +1058,14 @@ function libraryRequestSelectFromId(string id)(json){
 
     try{
 
-        string query = "SELECT * FROM LM_LIBREQUEST WHERE LIBREQUEST_ID = ?";
+        string query = "SELECT
+                            LM_LIBREQUEST.*,
+                            LM_LIBCATEGORY.LIBCATEGORY_NAME,
+                            LM_LIBTYPE.LIBTYPE_NAME
+                        FROM LM_LIBREQUEST
+                        INNER JOIN LM_LIBCATEGORY ON LM_LIBREQUEST.LIBREQUEST_CATEGORY = LM_LIBCATEGORY.LIBCATEGORY_ID
+                        INNER JOIN LM_LIBTYPE ON LM_LIBREQUEST.LIBREQUEST_TYPE = LM_LIBTYPE.LIBTYPE_ID
+                        WHERE LIBREQUEST_ID = ?";
 
         sql:Parameter paraLibraryId = {sqlType:"integer", value:id};
         sql:Parameter[] parameterArray = [paraLibraryId];
