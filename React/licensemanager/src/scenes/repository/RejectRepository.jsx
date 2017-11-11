@@ -76,39 +76,37 @@ class RejectRepository extends Component {
         if (confirm("Are you sure to reject repository request?") === false ) {// eslint-disable-line
             return false;
         }
+        this.setState(() => {
+            return {
+                displayFieldset: 'none',
+                displayLoader: 'block',
+            };
+        });
         const reasonForRejecting = this.textReasonForRejecting.value.toString();
-        const rejectBy = this.state.userDetails.userEmail;
-        const data = [
-            rejectBy,
-            reasonForRejecting,
-            this.state.repositoryDetails.REPOSITORY_ID,
-        ];
-        const variables = [
-            {
-                name: 'outputType',
-                value: 'Reject',
-            },
-            {
-                name: 'rejectBy',
-                value: rejectBy,
-            },
-            {
-                name: 'reasonForReject',
-                value: reasonForRejecting,
-            },
-        ];
-        console.log(data);// eslint-disable-line
-        console.log(variables);// eslint-disable-line
+        const taskId = this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID;
+        const repoId = this.state.repositoryDetails.REPOSITORY_ID;
         try {
-            Repository.updateRejectDetails(data);
-            GitHubRepositoryCreation.completeUserTask(this.state.repositoryDetails.REPOSITORY_BPMN_TASK_ID, variables);
-            this.setState(() => {
-                return {
-                    displaySuceessBox: 'block',
-                    displayAlrearyAccept: 'none',
-                    displayFieldset: 'none',
-                    displayErrorBox: 'none',
-                };
+            GitHubRepositoryCreation.rejectRequest(reasonForRejecting, repoId, taskId).then((response) => {
+                console.log(response);//eslint-disable-line
+                if (response.data.responseType === 'Done') {
+                    this.setState(() => {
+                        return {
+                            displayFieldset: 'none',
+                            displayLoader: 'none',
+                            displaySuceessBox: 'block',
+                            displayErrorBox: 'none',
+                        };
+                    });
+                } else {
+                    this.setState(() => {
+                        return {
+                            displayFieldset: 'none',
+                            displayLoader: 'none',
+                            displaySuceessBox: 'none',
+                            displayErrorBox: 'block',
+                        };
+                    });
+                }
             });
         } catch (err) {
             this.setState(() => {

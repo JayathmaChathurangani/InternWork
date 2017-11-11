@@ -19,28 +19,70 @@ function setBpmnConnection(){
 
 }
 
-function acceptRepositoryProcess(string taskId, string repoId)(json){
+function bpmnRequestRepository(json requestData,json mailData)(json){
     message requestMessage = {};
     message responseFromBpmn = {};
     json requestPayloadJson;
+    json responseFromBpmnJson;
+    json repositoryMainUsers;
     json variables;
     json response;
     string url;
+    string sendToList = " ";
+    string repositoryName;
+    int taskId;
+    int processInstanceId;
+    int i = 0;
+    int repositoryMainUsersJsonLength;
+    int databaseUpdateReturnValue;
+    boolean completed = true;
 
     try{
         if(httpConnectorBpmn == null){
             setBpmnConnection();
         }
+        repositoryMainUsers = database:roleSelectRepositoryMainUsers();
+        repositoryMainUsersJsonLength = lengthof repositoryMainUsers;
+        while(i < repositoryMainUsersJsonLength){
+            sendToList = sendToList + jsons:toString(repositoryMainUsers[i].ROLE_EMAIL) + ", ";
+            i = i + 1;
+        }
+        system:println(sendToList);
         url = "bpmn/runtime/process-instances/";
-        variables = [{"name": "outputType","value":"Done"},{"name": "repositoryId","value":repoId}];
-        requestPayloadJson = {"action":"complete","variables":variables};
+        variables = [
+                        {"name": "data","value":requestData},
+                        {"name": "mailData","value":mailData},
+                        {"name": "sendToList","value":sendToList}
+                    ];
+        messages:setHeader(requestMessage,"Authorization",bpmnBasicAuthToken);
+        requestPayloadJson = {
+                                 "processDefinitionKey": "repositoryCreationProcess",
+                                 "businessKey": "myBusinessKey",
+                                 "tenantId": "-1234",
+                                 "variables":variables
+                             };
         messages:setJsonPayload(requestMessage,requestPayloadJson);
-        system:println(url);
-        system:println(requestMessage);
-        system:println(bpmnStartUrl);
-        responseFromBpmn = httpConnectorBpmn.get(url,requestMessage);
-        system:println("done");
-        response = {"responseType":"Done","responseMessage":"done"};
+        responseFromBpmn = http:ClientConnector.post(httpConnectorBpmn,url,requestMessage);
+        responseFromBpmnJson = messages:getJsonPayload(responseFromBpmn);
+        completed, _ = <boolean> jsons:toString(responseFromBpmnJson.completed);
+        system:println(completed);
+        if(!completed){
+            processInstanceId,_ = <int>jsons:toString(responseFromBpmnJson.id);
+            taskId = getTaskIdFromProcessId(processInstanceId);
+            repositoryName = jsons:toString(requestData[0]);
+            databaseUpdateReturnValue = database:repositoryUpdateTaskAndProcessIds(taskId,processInstanceId,repositoryName);
+
+            if(databaseUpdateReturnValue > 0){
+                response = {"responseType":"Done","responseMessage":"done"};
+            }else{
+                response = {"responseType":"Error","responseMessage":"Task ID and Process ID update fails"};
+            }
+
+        }else{
+            response = {"responseType":"Error","responseMessage":"BPMN Error occurs"};
+        }
+
+
     }catch(errors:Error err){
         response = {"responseType":"Error","responseMessage":err.msg};
         system:println(err);
@@ -49,33 +91,92 @@ function acceptRepositoryProcess(string taskId, string repoId)(json){
     return response;
 }
 
-function rejectRepositoryProcess(string taskId, string repoId)(json){
-    message requestMessage = {};
-    message responseFromBpmn = {};
-    json requestPayloadJson;
+function acceptRepositoryRequest(string repoId, string taskId)(json responseJson){
+    message response = {};
+    message request = {};
+    json requestJson;
     json variables;
-    json response;
     string url;
-
     try{
-        if(httpConnector == null){
+        if(httpConnectorBpmn == null){
             setBpmnConnection();
         }
-        url = "bpmn/runtime/process-instances/" + taskId;
-        variables = [{"name": "outputType","value":"Done"},{"name": "repositoryId","value":repoId}];
-        requestPayloadJson = {"action":"complete","variables":variables};
-        messages:setJsonPayload(requestMessage,requestPayloadJson);
-        system:println(url);
-        system:println(requestMessage);
-        responseFromBpmn = httpConnector.post(url,requestMessage);
-        system:println(responseFromBpmn);
-        response = {"responseType":"Done","responseMessage":"done"};
+        variables = [
+                        {
+                            "name": "outputType",
+                            "value": "Done"
+                        },
+                        {
+                            "name": "repositoryId",
+                            "value": repoId
+                        }
+                    ];
+        requestJson = {
+                          "action": "complete",
+                          "variables": variables
+                      };
+        system:println(requestJson);
+        messages:setJsonPayload(request,requestJson);
+        messages:setHeader(request,"Authorization",bpmnBasicAuthToken);
+        url = "bpmn/runtime/tasks/" + taskId;
+        response = httpConnectorBpmn.post(url,request);
+
+        system:println(response);
+
+        responseJson = {"responseType":"Done","responseMessage":"done"};
+
     }catch(errors:Error err){
-        response = {"responseType":"Error","responseMessage":err.msg};
         system:println(err);
+        responseJson = {"responseType":"Error","responseMessage":err.msg};
 
     }
-    return response;
+    return;
+}
+
+function rejectRepositoryRequest(string taskId, string rejectBy, string reasonForRejecting )(json responseJson){
+    message response = {};
+    message request = {};
+    json requestJson;
+    json variables;
+    string url;
+    try{
+        if(httpConnectorBpmn == null){
+            setBpmnConnection();
+        }
+        variables = [
+                        {
+                            "name": "outputType",
+                            "value": "Reject"
+                        },
+                        {
+                            "name": "rejectBy",
+                            "value": rejectBy
+                        },
+                        {
+                            "name": "reasonForReject",
+                            "value": reasonForRejecting
+                        }
+                    ];
+        requestJson = {
+                          "action": "complete",
+                          "variables": variables
+                      };
+        system:println(requestJson);
+        messages:setJsonPayload(request,requestJson);
+        messages:setHeader(request,"Authorization",bpmnBasicAuthToken);
+        url = "bpmn/runtime/tasks/" + taskId;
+        response = httpConnectorBpmn.post(url,request);
+
+        system:println(response);
+
+        responseJson = {"responseType":"Done","responseMessage":"done"};
+
+    }catch(errors:Error err){
+        system:println(err);
+        responseJson = {"responseType":"Error","responseMessage":err.msg};
+
+    }
+    return;
 }
 
 function bpmnRequestLibrary(json requestData)(json){

@@ -28,7 +28,7 @@ import Team from '../../services/github/Team';
 import Common from '../../services/github/Common';
 import StringValidations from '../../services/validations/StringValidations';
 import GitHubRepositoryCreation from '../../services/bpmn/GitHubRepositoryCreation';
-import GitHubRepositoryTask from '../../services/bpmn/GitHubRepositoryTask';
+
 /**
  * @class RequestRepository
  * @extends {Component}
@@ -218,7 +218,6 @@ class RequestRepository extends Component {
         const teamText = teamOptions[teamOptions.selectedIndex].text;
         const licenseText = licenseOptions[licenseOptions.selectedIndex].text;
         const languageText = languageOptions[languageOptions.selectedIndex].text;
-        const repoName = StringValidations.escapeCharacters(this.inputRepositoryName.value.toString());
         const repositoryName = StringValidations.escapeCharacters(this.inputRepositoryName.value.toString());
         const repositoryType = this.selectRepositoryType.value;
         const organization = this.selectOrganization.value;
@@ -268,52 +267,28 @@ class RequestRepository extends Component {
                 displayLoader: 'block',
             };
         });
-        GitHubRepositoryCreation.startProcess(data, mailData, this.state.mainUsers).then((response) => {
-            console.log('response');//eslint-disable-line
+        GitHubRepositoryCreation.startProcess(data, mailData).then((response) => {
+            console.log("response");//eslint-disable-line
             console.log(response);//eslint-disable-line
-            if (response.data.completed === false) {
-                try {
-                    GitHubRepositoryTask.getTasks().then((responseTasks) => {
-                        console.log('tasks');//eslint-disable-line
-                        console.log(response);//eslint-disable-line
-                        let i = 0;
-                        const taskArraylength = responseTasks.data.length;
-                        let task;
-                        for (i = 0; i < taskArraylength; i++) {
-                            task = responseTasks.data[i];
-                            if (task.processInstanceId === response.data.id) {
-                                Repository.updateTaskAndProcessIds([task.id, response.data.id, repoName]);
-                                this.setState(() => {
-                                    return {
-                                        displayLoader: 'none',
-                                        displaySuceessBox: 'block',
-                                    };
-                                });
-                                break;
-                            }
-                        }
-                    });
-                } catch (err) {
-                    this.setState(() => {
-                        return {
-                            displayLoader: 'none',
-                            displayErrorBox: 'block',
-                        };
-                    });
-                }
+            if (response.data.responseType === 'Done') {
+                this.setState(() => {
+                    return {
+                        displayFieldset: 'none',
+                        displayLoader: 'none',
+                        displaySuceessBox: 'block',
+                        displayErrorBox: 'none',
+                    };
+                });
             } else {
                 this.setState(() => {
                     return {
+                        displayFieldset: 'none',
                         displayLoader: 'none',
+                        displaySuceessBox: 'none',
                         displayErrorBox: 'block',
                     };
                 });
             }
-            this.setState(() => {
-                return {
-                    displayLoader: 'none',
-                };
-            });
         });
         return false;
     }

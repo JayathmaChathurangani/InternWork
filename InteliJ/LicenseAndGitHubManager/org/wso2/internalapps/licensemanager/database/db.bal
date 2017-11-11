@@ -686,7 +686,7 @@ function roleGetUserDetails(string email)(json ){
                             LM_ROLE.*,
                             LM_LIBCATEGORY.LIBCATEGORY_NAME AS ROLE_LIB_CATEGORY_NAME
                         FROM LM_ROLE
-                        INNER JOIN LM_LIBCATEGORY ON LM_ROLE.ROLE_LIB_CATEGORY = LM_LIBCATEGORY.LIBCATEGORY_ID
+                        LEFT JOIN LM_LIBCATEGORY ON LM_ROLE.ROLE_LIB_CATEGORY = LM_LIBCATEGORY.LIBCATEGORY_ID
                         WHERE ROLE_EMAIL=?";
         sql:Parameter paraEmail = {sqlType:"varchar", value:email};
         sql:Parameter[] parameterArray = [paraEmail];

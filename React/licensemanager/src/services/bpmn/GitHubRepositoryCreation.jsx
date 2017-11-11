@@ -12,43 +12,15 @@ class GitHubRepositoryCreation extends Component {
     * escape charachters
     * @param {String} requestData requestData
     * @param {String} mailData mailData
-    * @param {String} mainUsers mainUsers
     * @returns {String} str
     */
-    startProcess(requestData, mailData, mainUsers) {
-        const url = MainData.bpmnStartURL;
-        let i = 0;
-        let sendToList = ' ';
-        for (i = 0; i < mainUsers.length; i++) {
-            sendToList = sendToList + mainUsers[i].ROLE_EMAIL + ',';
-        }
-        const variablesArray = [
-            {
-                name: 'data',
-                value: requestData,
-            },
-            {
-                name: 'mailData',
-                value: mailData,
-            },
-            {
-                name: 'sendToList',
-                value: sendToList,
-            },
-        ];
+    startProcess(requestData, mailData) {
+        const url = MainData.ballerinaURL + 'bpmn/repository/request';
         const data = {
-            processDefinitionKey: 'repositoryCreationProcess',
-            businessKey: 'myBusinessKey',
-            tenantId: '-1234',
-            variables: variablesArray,
+            repositoryData: requestData,
+            repositoryMailData: mailData,
         };
-        const headers = {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-        };
-        console.log(data);//eslint-disable-line
-        return axios.post(url, data, headers).then((response) => {
+        return axios.post(url, data).then((response) => {
             return response;
         }).catch((error) => {
             throw new Error(error);
@@ -77,20 +49,39 @@ class GitHubRepositoryCreation extends Component {
     }
     /**
     * acceptUserTask
-    * @param {String} bpmnTaskId bpmnTaskId
+    * @param {JSON} updateData data
     * @param {String} repoId repositoryId
+    * @param {String} taskId bpmnTaskId
     * @returns {Promise} promise
     */
-    acceptUserTask(bpmnTaskId, repoId) {
-        const url = MainData.ballerinaURL + 'bpmn/acceptRepository';
+    acceptRequest(updateData, repoId, taskId) {
+        const url = MainData.ballerinaURL + 'bpmn/repository/accept';
         const data = {
-            taskId: bpmnTaskId,
+            repositoryData: updateData,
             repositoryId: repoId,
+            repositoryTaskId: taskId,
         };
-        const headers = {
-            'Content-Type': 'application/json',
+        return axios.post(url, data).then((response) => {
+            return (response);
+        }).catch((error) => {
+            throw new Error(error);
+        });
+    }
+    /**
+    * acceptUserTask
+    * @param {String} reasonForRejecting rejereasonForRejectingctBy
+    * @param {String} repoId repositoryId
+    * @param {String} taskId taskId
+    * @returns {Promise} promise
+    */
+    rejectRequest(reasonForRejecting, repoId, taskId) {
+        const url = MainData.ballerinaURL + 'bpmn/repository/reject';
+        const data = {
+            repositoryRejectReason: reasonForRejecting,
+            repositoryId: repoId,
+            repositoryTaskId: taskId,
         };
-        return axios.post(url, data, headers).then((response) => {
+        return axios.post(url, data).then((response) => {
             return (response);
         }).catch((error) => {
             throw new Error(error);

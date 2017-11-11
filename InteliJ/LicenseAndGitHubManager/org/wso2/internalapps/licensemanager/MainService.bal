@@ -977,6 +977,145 @@ service<http> MainService {
         reply response;
     }
 
+    @http:POST {}
+    @http:Path {value:"/bpmn/repository/request"}
+    resource requestRepositoryResource(message m){
+
+        message response = {};
+        json requestJson = messages:getJsonPayload(m);
+        json data;
+        json mailData;
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        system:println(m);
+
+        if(services:getIsValidUser()){
+            data = requestJson.repositoryData;
+            mailData = requestJson.repositoryMailData;
+            responseJson = services:bpmnRequestRepository(data,mailData);
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:POST {}
+    @http:Path {value:"/bpmn/repository/accept"}
+    resource acceptRepositoryRequestResource(message m){
+
+        message response = {};
+        json requestJson = messages:getJsonPayload(m);
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        json userDetails;
+        string acceptBy;
+        string description;
+        string groupId;
+        string name;
+        string language;
+        string repoIdString;
+        string taskIdString;
+        int taskId;
+        int license;
+        int team;
+        int organization;
+        int repoType;
+        int repositoryId;
+        int responseValue;
+        int id;
+        int dbResponseValue;
+        boolean buildable;
+        boolean nexus;
+        boolean private;
+        boolean accept;
+        boolean valid = false;
+
+
+        id,_ = <int>jsons:toString(requestJson.repositoryId);
+        userDetails = services:getSessionDetails();
+        valid, _ = <boolean>jsons:toString(userDetails.isRepositoryAdmin);
+        acceptBy = jsons:toString(userDetails.userEmail);
+        system:println(userDetails);
+        system:println(valid);
+
+        if(valid){
+
+            name = jsons:toString(requestJson.repositoryData[0]);
+            language = jsons:toString(requestJson.repositoryData[1]);
+            buildable,_ =  <boolean>(jsons:toString(requestJson.repositoryData[2]));
+            nexus,_ = <boolean>(jsons:toString(requestJson.repositoryData[3]));
+            private,_ = <boolean>(jsons:toString(requestJson.repositoryData[4]));
+            description = jsons:toString(requestJson.repositoryData[5]);
+            groupId = jsons:toString(requestJson.repositoryData[6]);
+            license,_ = <int>(jsons:toString(requestJson.repositoryData[7]));
+            team,_ = <int>(jsons:toString(requestJson.repositoryData[8]));
+            organization,_ = <int>(jsons:toString(requestJson.repositoryData[9]));
+            repoType,_ = <int>(jsons:toString(requestJson.repositoryData[10]));
+            accept,_ = <boolean>(jsons:toString(requestJson.repositoryData[11]));
+            repositoryId,_ = <int>(jsons:toString(requestJson.repositoryId));
+            taskId,_ = <int>(jsons:toString(requestJson.repositoryTaskId));
+            repoIdString = jsons:toString(requestJson.repositoryId);
+            taskIdString = jsons:toString(requestJson.repositoryTaskId);
+
+            dbResponseValue = database:repositoryUpdateAll(name,language,buildable,nexus,private,description,groupId,license,team,organization,repoType,accept,acceptBy,repositoryId);
+
+            responseJson = services:acceptRepositoryRequest(repoIdString,taskIdString);
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:POST {}
+    @http:Path {value:"/bpmn/repository/reject"}
+    resource rejectRepositoryRequestResource(message m){
+
+        message response = {};
+        json requestJson = messages:getJsonPayload(m);
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        json userDetails;
+        string repoIdString;
+        string taskIdString;
+        string rejectReason;
+        string rejectBy;
+        int id;
+        int dbResponseValue;
+        boolean valid = false;
+
+
+        id,_ = <int>jsons:toString(requestJson.repositoryId);
+        userDetails = services:getSessionDetails();
+        valid, _ = <boolean>jsons:toString(userDetails.isRepositoryAdmin);
+        rejectBy = jsons:toString(userDetails.userEmail);
+        system:println(userDetails);
+        system:println(valid);
+
+        if(valid){
+
+            repoIdString = jsons:toString(requestJson.repositoryId);
+            taskIdString = jsons:toString(requestJson.repositoryTaskId);
+            rejectReason = jsons:toString(requestJson.repositoryRejectReason);
+
+
+            dbResponseValue = database:repositoryUpdateRejectDetails(rejectBy,rejectReason,id);
+
+            responseJson = services:rejectRepositoryRequest(taskIdString,rejectBy,rejectReason);
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
+
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
     @http:GET {}
     @http:Path {value:"/databaseService/libraryAndRequest/selectFromNameAndVersion"}
     resource librarySelectFromNameResource(@http:QueryParam {value:"name"} string name,@http:QueryParam {value:"version"} string version){

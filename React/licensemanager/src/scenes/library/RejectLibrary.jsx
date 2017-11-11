@@ -100,6 +100,12 @@ class RejectLibrary extends Component {
         if (confirm("Are you sure to reject repository request?") === false ) {// eslint-disable-line
             return false;
         }
+        this.setState(() => {
+            return {
+                displayFieldset: 'none',
+                displayLoader: 'block',
+            };
+        });
         const reasonForRejecting = StringValidations.escapeCharacters(this.textReasonForRejecting.value.toString());
         LibraryProcess.rejectRequest(this.state.libraryId, reasonForRejecting).then((response) => {
             console.log(response);//eslint-disable-line

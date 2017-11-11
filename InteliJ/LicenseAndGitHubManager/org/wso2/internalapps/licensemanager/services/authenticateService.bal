@@ -51,10 +51,13 @@ function validateUser(message request)(message){
         if((strings:hasSuffix(email,"@wso2.com")) && (currentTimeInt < (epocTime + 86400)) ){
             userSession = http:createSessionIfAbsent(request);
             returnJson = database:roleGetUserDetails(email);
+            system:println("JSON");
+            system:println(returnJson);
             returnJsonLength = lengthof returnJson;
-            while(i<returnJsonLength){
+            while(i < returnJsonLength){
                 if(jsons:toString(returnJson[i].ROLE_TYPE) == "REPOSITORY" && jsons:toString(returnJson[i].ROLE_PERMISSION) == "ADMIN"){
                     isRepositoryAdmin = true;
+                    system:println("if");
 
                 }
                 if(jsons:toString(returnJson[i].ROLE_TYPE) == "LIBRARY"){
@@ -80,9 +83,8 @@ function validateUser(message request)(message){
             http:setAttribute(userSession,"isRepositoryAdmin",isRepositoryAdmin);
             http:setAttribute(userSession,"libraryUserDetails",userLibraryPermissionJsonArray);
             sessionId = http:getId(userSession);
-            system:println("post "+sessionId);
             responseJson = {"isValid":isValid,"isRepositoryAdmin":isRepositoryAdmin,"libraryUserDetails":userLibraryPermissionJsonArray,"userEmail":email};
-
+            system:println(responseJson);
         }else{
             userSession = null;
             isValid = false;
