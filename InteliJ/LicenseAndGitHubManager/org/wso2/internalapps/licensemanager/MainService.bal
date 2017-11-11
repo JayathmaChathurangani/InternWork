@@ -875,21 +875,30 @@ service<http> MainService {
         int id;
         int i = 0;
         int userDetailsLength;
+        int dbResponseValue;
         boolean valid = false;
         json requestJson = messages:getJsonPayload(m);
         json responseJson;
         json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
         json userDetails;
         json libraryRequestDetails;
+        string taskId;
+        string accept;
+        string acceptBy;
 
         id,_ = <int>jsons:toString(requestJson.libraryRequestId);
         userDetails = services:getSessionDetails();
+        acceptBy = jsons:toString(userDetails.userEmail);
         userDetails = userDetails.libraryUserDetails;
         userDetailsLength = lengthof userDetails;
         libraryRequestDetails = database:libraryRequestSelectFromId(id);
+        system:println(userDetails);
+        system:println(libraryRequestDetails);
         while(i < userDetailsLength){
             if((jsons:toString(userDetails[i].roleLibType) == jsons:toString(libraryRequestDetails[0].LIBCATEGORY_NAME)) && jsons:toString(userDetails[i].rolePermission) == "ADMIN" ){
                 valid = true;
+                taskId = jsons:toString(libraryRequestDetails[0].LIBREQUEST_BPMN_TASK_ID);
+
                 break;
             }else{
                 valid = false;
@@ -899,8 +908,67 @@ service<http> MainService {
 
 
         if(valid){
-            system:println("ok");
+            system:println(taskId);
+            accept = "ACCEPT";
+            dbResponseValue = database:libraryRequestUpdateAcceptOrRejectDetails(accept,acceptBy,"",id);
+            responseJson = services:acceptLibraryRequest(taskId);
+            messages:setJsonPayload(response,responseJson);
+        }else{
+            messages:setJsonPayload(response,inValidUserJson);
+        }
 
+        messages:setHeader(response,"Access-Control-Allow-Origin","*");
+        reply response;
+    }
+
+    @http:POST {}
+    @http:Path {value:"/bpmn/library/reject"}
+    resource rejectLibraryRequestResource(message m){
+
+        message response = {};
+        int id;
+        int i = 0;
+        int userDetailsLength;
+        int dbResponseValue;
+        boolean valid = false;
+        json requestJson = messages:getJsonPayload(m);
+        json responseJson;
+        json inValidUserJson = {"responseType":"Error","responseMessage":"Invalid user"};
+        json userDetails;
+        json libraryRequestDetails;
+        string taskId;
+        string accept;
+        string acceptBy;
+        string rejectReason;
+
+        id,_ = <int>jsons:toString(requestJson.libraryRequestId);
+        rejectReason = jsons:toString(requestJson.libraryRejectReason);
+        userDetails = services:getSessionDetails();
+        acceptBy = jsons:toString(userDetails.userEmail);
+        userDetails = userDetails.libraryUserDetails;
+        userDetailsLength = lengthof userDetails;
+        libraryRequestDetails = database:libraryRequestSelectFromId(id);
+        system:println(userDetails);
+        system:println(libraryRequestDetails);
+        while(i < userDetailsLength){
+            if((jsons:toString(userDetails[i].roleLibType) == jsons:toString(libraryRequestDetails[0].LIBCATEGORY_NAME)) && jsons:toString(userDetails[i].rolePermission) == "ADMIN" ){
+                valid = true;
+                taskId = jsons:toString(libraryRequestDetails[0].LIBREQUEST_BPMN_TASK_ID);
+
+                break;
+            }else{
+                valid = false;
+            }
+            i = i + 1;
+        }
+
+
+        if(valid){
+            system:println(taskId);
+            accept = "REJECT";
+            dbResponseValue = database:libraryRequestUpdateAcceptOrRejectDetails(accept,acceptBy,rejectReason,id);
+            responseJson = services:rejectLibraryRequest(taskId);
+            messages:setJsonPayload(response,responseJson);
         }else{
             messages:setJsonPayload(response,inValidUserJson);
         }
@@ -1062,6 +1130,8 @@ service<http> MainService {
         string version;
         string fileName;
         string description;
+        string groupId;
+        string artifactId;
         int responseValue;
 
 
@@ -1072,7 +1142,9 @@ service<http> MainService {
             version = jsons:toString(requestJson.libVersion);
             fileName = jsons:toString(requestJson.libFileName);
             description = jsons:toString(requestJson.libDescription);
-            responseValue = database:libraryInsertData(name,libType,version,fileName,description);
+            groupId = jsons:toString(requestJson.libGroupId);
+            artifactId = jsons:toString(requestJson.libArtifactId);
+            responseValue = database:libraryInsertData(name,libType,version,fileName,description,groupId,artifactId);
 
             if(responseValue > 0){
                 responseJson = {"responseType":"Done","responseMessage":" "};

@@ -948,7 +948,7 @@ function libraryRequestInsertData(string name,int libType,int category,string gr
 
 }
 
-function libraryInsertData(string name,string libType,string useVersion,string fileName,string description)(int){
+function libraryInsertData(string name,string libType,string useVersion,string fileName,string description,string groupId,string artifactId)(int){
 
     int returnValue;
     if(connection == null){
@@ -963,22 +963,29 @@ function libraryInsertData(string name,string libType,string useVersion,string f
                                                     LIB_TYPE,
                                                     LIB_VERSION,
                                                     LIB_FILE_NAME,
-                                                    LIB_DESCRIPTION
+                                                    LIB_DESCRIPTION,
+                                                    LIB_GROUP_ID,
+                                                    LIB_ARTIFACT_ID
                                               )
-                                               VALUES (?,?,?,?,?)";
+                                               VALUES (?,?,?,?,?,?,?)";
 
         sql:Parameter paraName = {sqlType:"varchar", value:name};
         sql:Parameter paraType = {sqlType:"varchar", value:libType};
         sql:Parameter paraUseVersion = {sqlType:"varchar", value:useVersion};
         sql:Parameter paraFileName = {sqlType:"varchar", value:fileName};
         sql:Parameter paraDescription = {sqlType:"varchar", value:description};
+        sql:Parameter paraGroupId = {sqlType:"varchar", value:groupId};
+        sql:Parameter paraArtifactId = {sqlType:"varchar", value:artifactId};
 
         sql:Parameter[] parameterArray = [
                                              paraName,
                                              paraType,
                                              paraUseVersion,
                                              paraFileName,
-                                             paraDescription
+                                             paraDescription,
+                                             paraGroupId,
+                                             paraArtifactId
+
                                          ];
 
         returnValue = connection.update(query,parameterArray);
@@ -1042,6 +1049,37 @@ function libraryRequestUpdateTaskAndProcessIds(int taskId,int processId,string l
     }catch(errors:Error err){
         json errorMessage = {"responseType":"Error","responseMessage":err.msg};
         messages:setJsonPayload(response,errorMessage);
+
+    }
+
+    return returnValue;
+}
+
+function libraryRequestUpdateAcceptOrRejectDetails(string accept,string acceptOrRejectBy,string rejectReason,int libRequestId)(int){
+    message response = {};
+    int returnValue;
+
+    if(connection == null){
+
+        setConnection();
+    }
+    try{
+
+        string query = "UPDATE
+                            LM_LIBREQUEST SET LIBREQUEST_ACCEPTED = ? ,
+                            LIBREQUEST_ACCEPT_OR_REJECT_BY = ? ,
+                            LIBREQUEST_REJECT_REASON = ?
+                        WHERE LIBREQUEST_ID = ?";
+        sql:Parameter paraAccept = {sqlType:"varchar", value:accept};
+        sql:Parameter paraAcceptOrRejectBy = {sqlType:"varchar", value:acceptOrRejectBy};
+        sql:Parameter paraRejectReason = {sqlType:"varchar", value:rejectReason};
+        sql:Parameter paraRequestId = {sqlType:"integer", value:libRequestId};
+        sql:Parameter[] parameterArray = [paraAccept,paraAcceptOrRejectBy,paraRejectReason,paraRequestId];
+        returnValue = connection.update(query,parameterArray);
+
+    }catch(errors:Error err){
+        returnValue = 0;
+        system:println(err);
 
     }
 

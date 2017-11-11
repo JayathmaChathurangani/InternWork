@@ -160,7 +160,7 @@ function getTaskIdFromProcessId(int processId)(int taskId){
     int i = 0;
 
     try{
-        if(httpConnector == null){
+        if(httpConnectorBpmn == null){
             setBpmnConnection();
         }
         messages:setHeader(requestForBpmn,"Authorization",bpmnBasicAuthToken);
@@ -186,7 +186,81 @@ function getTaskIdFromProcessId(int processId)(int taskId){
     return;
 }
 
-function acceptLibraryRequest(string taskId){
+function acceptLibraryRequest(string taskId)(json responseJson){
+    message response = {};
+    message request = {};
+    json requestJson;
+    json variables;
+    string url;
+    string headerStatus;
+    try{
+        if(httpConnectorBpmn == null){
+            setBpmnConnection();
+        }
+        variables = [
+                        {
+                            "name": "outputType",
+                            "value": "Done"
+                        }
+                    ];
+        requestJson = {
+                          "action": "complete",
+                          "variables": variables
+                      };
+        system:println(requestJson);
+        messages:setJsonPayload(request,requestJson);
+        messages:setHeader(request,"Authorization",bpmnBasicAuthToken);
+        url = "bpmn/runtime/tasks/" + taskId;
+        response = httpConnectorBpmn.post(url,request);
 
+        system:println(response);
+
+        responseJson = {"responseType":"Done","responseMessage":"done"};
+
+    }catch(errors:Error err){
+        system:println(err);
+        responseJson = {"responseType":"Error","responseMessage":err.msg};
+
+    }
+    return;
+}
+
+function rejectLibraryRequest(string taskId)(json responseJson){
+    message response = {};
+    message request = {};
+    json requestJson;
+    json variables;
+    string url;
+    string headerStatus;
+    try{
+        if(httpConnectorBpmn == null){
+            setBpmnConnection();
+        }
+        variables = [
+                        {
+                            "name": "outputType",
+                            "value": "Reject"
+                        }
+                    ];
+        requestJson = {
+                          "action": "complete",
+                          "variables": variables
+                      };
+        system:println(requestJson);
+        messages:setJsonPayload(request,requestJson);
+        messages:setHeader(request,"Authorization",bpmnBasicAuthToken);
+        url = "bpmn/runtime/tasks/" + taskId;
+        response = httpConnectorBpmn.post(url,request);
+
+        system:println(response);
+
+        responseJson = {"responseType":"Done","responseMessage":"done"};
+
+    }catch(errors:Error err){
+        system:println(err);
+        responseJson = {"responseType":"Error","responseMessage":err.msg};
+
+    }
+    return;
 }
 

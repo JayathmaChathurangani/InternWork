@@ -19,9 +19,10 @@
 import React, { Component } from 'react';
 import { Link, hashHistory } from 'react-router';
 import ValidateUser from '../../services/authentication/ValidateUser';
-import User from '../../services/database/User';
 import LibraryRequest from '../../services/database/LibraryRequest';
 import StringValidations from '../../services/validations/StringValidations';
+import LibraryProcess from '../../services/bpmn/LibraryProcess';
+import Alert from '../common/Alert';
 
 /**
  * @class RequestRepository
@@ -38,7 +39,6 @@ class AcceptLibrary extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            libraryMainUsers: [],
             libraryTypes: [],
             libraryCategories: [],
             libraryId: props.location.query.libRequestId,// eslint-disable-line
@@ -50,6 +50,8 @@ class AcceptLibrary extends Component {
             displaySuceessBox: 'none',
             displayErrorBox: 'none',
             displayIds: 'none',
+            displayAlrearyAccept: 'none',
+            displayAlrearyMessage: '',
             validateLibrary: '',
             userDetails: [],
         };
@@ -69,15 +71,49 @@ class AcceptLibrary extends Component {
                 };
             });
         });
-        User.getLibraryMainUsers().then((response) => {
-            this.setState(() => {
-                return {
-                    libraryMainUsers: response,
-                };
-            });
+        Promise.all([ValidateUser.getUserDetails(), LibraryRequest.selectLibraryRequestFromId(this.state.libraryId)]).then((response) => {
+            let i = 0;
+            for (i = 0; i < response[0].libraryUserDetails.length; i++) {
+                if (response[0].libraryUserDetails[i].roleLibType === response[1].LIBCATEGORY_NAME && response[0].libraryUserDetails[i].rolePermission === 'ADMIN') {
+                    this.setState(() => {
+                        return {
+                            displayFieldset: 'block',
+                            displayLoader: 'none',
+                            displaySuceessBox: 'none',
+                            displayErrorBox: 'none',
+                        };
+                    });
+                    return;
+                }
+            }
+            hashHistory.push('/errorPage');
         });
         LibraryRequest.selectLibraryRequestFromId(this.state.libraryId).then((response) => {
-            console.log("res ",response);//eslint-disable-line
+            if (response.LIBREQUEST_ACCEPTED === 'ACCEPT') {
+                this.setState(() => {
+                    return {
+                        displayAlrearyAccept: 'block',
+                        displayAlrearyMessage: 'This request is already accepted by ' + response.LIBREQUEST_ACCEPT_OR_REJECT_BY,
+                        displayFieldset: 'none',
+                        displayLoader: 'none',
+                        displaySuceessBox: 'none',
+                        displayErrorBox: 'none',
+                    };
+                });
+                return;
+            } else if (response.LIBREQUEST_ACCEPTED === 'REJECT') {
+                this.setState(() => {
+                    return {
+                        displayAlrearyAccept: 'block',
+                        displayAlrearyMessage: 'This request is rejected accepted by ' + response.LIBREQUEST_ACCEPT_OR_REJECT_BY + ' because ' + response.LIBREQUEST_REJECT_REASON,
+                        displayFieldset: 'none',
+                        displayLoader: 'none',
+                        displaySuceessBox: 'none',
+                        displayErrorBox: 'none',
+                    };
+                });
+                return;
+            }
             this.setState(() => {
                 return {
                     libraryRequestDetails: response,
@@ -85,7 +121,6 @@ class AcceptLibrary extends Component {
                 };
             });
             if (response.LIBCATEGORY_NAME === 'Java') {
-                console.log('if');//eslint-disable-line
                 this.setState(() => {
                     return {
                         displayIds: 'block',
@@ -112,23 +147,6 @@ class AcceptLibrary extends Component {
             this.textPurpose.value = StringValidations.setStringToShow(response.LIBREQUEST_PURPOSE);
             this.textDescription.value = StringValidations.setStringToShow(response.LIBREQUEST_DESCRIPTION);
             this.textAlternatives.value = StringValidations.setStringToShow(response.LIBREQUEST_ALTERNATIVES);
-        });
-        Promise.all([ValidateUser.getUserDetails(), LibraryRequest.selectLibraryRequestFromId(this.state.libraryId)]).then((response) => {
-            let i = 0;
-            for (i = 0; i < response[0].libraryUserDetails.length; i++) {
-                if (response[0].libraryUserDetails[i].roleLibType === response[1].LIBCATEGORY_NAME && response[0].libraryUserDetails[i].rolePermission === 'ADMIN') {
-                    this.setState(() => {
-                        return {
-                            displayFieldset: 'block',
-                            displayLoader: 'none',
-                            displaySuceessBox: 'none',
-                            displayErrorBox: 'none',
-                        };
-                    });
-                    return;
-                }
-            }
-            hashHistory.push('/errorPage');
         });
     }
     /**
@@ -170,6 +188,28 @@ class AcceptLibrary extends Component {
                 displayFieldset: 'none',
                 displayLoader: 'block',
             };
+        });
+        LibraryProcess.acceptRequest(this.state.libraryId).then((response) => {
+            console.log(response);//eslint-disable-line
+            if (response.data.responseType === 'Done') {
+                this.setState(() => {
+                    return {
+                        displayFieldset: 'none',
+                        displayLoader: 'none',
+                        displaySuceessBox: 'block',
+                        displayErrorBox: 'none',
+                    };
+                });
+            } else {
+                this.setState(() => {
+                    return {
+                        displayFieldset: 'none',
+                        displayLoader: 'none',
+                        displaySuceessBox: 'none',
+                        displayErrorBox: 'block',
+                    };
+                });
+            }
         });
 
         return false;
@@ -476,6 +516,8 @@ class AcceptLibrary extends Component {
                         </div>
                     </div>
                 </div>
+
+                <Alert message={this.state.displayAlrearyMessage} display={this.state.displayAlrearyAccept} />
             </form>
         );
     }

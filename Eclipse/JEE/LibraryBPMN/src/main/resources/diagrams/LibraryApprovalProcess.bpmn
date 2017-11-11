@@ -87,6 +87,8 @@
           <activiti:expression>{
 	"libName":"${data.libName}",
 	"libType":"${data.libType}",
+	"libGroupId":"${data.libGroupId}",
+  	"libArtifactId":"${data.libArtifactId}",
 	"libVersion":"${data.libVersion}",
 	"libFileName":"${data.libFileName}",
 	"libDescription":"${data.libDescription}"
@@ -126,7 +128,7 @@
   </p>]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sendToList}${data.requestBy}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sendToList}${data.libRequestBy}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[project@gmail.com]]></activiti:string>
@@ -149,7 +151,7 @@
     <serviceTask id="sendRejectAck" name="Send Acknowledgement" activiti:type="mail">
       <extensionElements>
         <activiti:field name="html">
-          <activiti:expression><![CDATA[  <p>
+          <activiti:expression><![CDATA[<p>
   Hi all!<br /><br />
 
   The 3rd party library request with following details is rejected<br /><br />
@@ -175,7 +177,7 @@
   </p>]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sendToList}${data.requestBy}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sendToList}${data.libRequestBy}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[project@gmail.com]]></activiti:string>
