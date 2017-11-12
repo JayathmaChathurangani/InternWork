@@ -24,9 +24,18 @@ class LeftNav extends Component {
                         <br />
                     </Link>
                     <ul className="dropdown-menu">
-                        <li><Link to={'/root/requestRepository'} ><span><i className="fa fa-plus-square-o" aria-hidden="true" /></span>&nbsp;&nbsp;Request</Link></li>
-                        <li className="divider" />
-                        <li><Link to={'/root/searchRepository?character=null'}><span><i className="fa fa-search" aria-hidden="true" /></span>&nbsp;&nbsp;Search</Link></li>
+                        <li><Link to={'/app/requestRepository'} ><span><i className="fa fa-plus-square-o" aria-hidden="true" /></span>&nbsp;&nbsp;Request</Link></li>
+                    </ul>
+                </li>
+                <li className="dropdown">
+                    <Link className="dropdown-toggle" data-toggle="dropdown" id="leftNavBarLink">
+                        <span><i className="fa fa-book" /></span>
+                          &nbsp;&nbsp;License&nbsp;&nbsp;
+                        <span className="caret" />
+                        <br />
+                    </Link>
+                    <ul className="dropdown-menu">
+                        <li><Link to={'/app/requestLibrary'} ><span><i className="fa fa-plus-square-o" aria-hidden="true" /></span>&nbsp;&nbsp;Request</Link></li>
                     </ul>
                 </li>
             </ul>

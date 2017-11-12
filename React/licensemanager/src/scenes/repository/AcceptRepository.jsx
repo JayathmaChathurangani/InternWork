@@ -497,7 +497,7 @@ class AcceptRepository extends Component {
                             </div>
                             <div className="modal-footer">
                                 <Link to={'/'}><button type="button" className="btn btn-default" data-dismiss="modal">Back to main page</button>&nbsp;&nbsp;</Link>
-                                <Link to={'/waitingRequests'}><button type="button" className="btn btn-primary" data-dismiss="modal">Waiting Requests</button>&nbsp;&nbsp;</Link>
+                                <Link to={'/app/waitingRequests'}><button type="button" className="btn btn-primary" data-dismiss="modal">Waiting Requests</button>&nbsp;&nbsp;</Link>
                             </div>
                         </div>
                     </div>

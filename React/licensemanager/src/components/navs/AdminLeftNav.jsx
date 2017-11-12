@@ -25,13 +25,11 @@ class AdminLeftNav extends Component {
                     </Link>
                     <ul className="dropdown-menu">
                         <li><Link to={'/app/requestRepository'} ><span><i className="fa fa-plus-square-o" aria-hidden="true" /></span>&nbsp;&nbsp;Request</Link></li>
-                        <li className="divider" />
-                        <li><Link to={'/app/searchRepository?character=null'}><span><i className="fa fa-search" aria-hidden="true" /></span>&nbsp;&nbsp;Search</Link></li>
                     </ul>
                 </li>
                 <li className="dropdown">
                     <Link className="dropdown-toggle" data-toggle="dropdown" id="leftNavBarLink">
-                        <span><i className="fa fa-files-o" /></span>
+                        <span><i className="fa fa-book" /></span>
                           &nbsp;&nbsp;License&nbsp;&nbsp;
                         <span className="caret" />
                         <br />

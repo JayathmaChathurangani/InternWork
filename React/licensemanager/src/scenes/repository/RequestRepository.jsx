@@ -63,6 +63,7 @@ class RequestRepository extends Component {
         this.validateInputRepositoryName = this.validateInputRepositoryName.bind(this);
         this.submitRequest = this.submitRequest.bind(this);
         this.makeGroupIdRequired = this.makeGroupIdRequired.bind(this);
+        this.goBackToRequest = this.goBackToRequest.bind(this);
     }
     /**
     * @class RequestRepository
@@ -182,6 +183,7 @@ class RequestRepository extends Component {
         e.preventDefault();
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
+        console.log('call');//eslint-disable-line
         this.setState(() => {
             return {
                 displayFieldset: 'block',
@@ -189,6 +191,7 @@ class RequestRepository extends Component {
                 displaySuceessBox: 'none',
             };
         });
+        console.log('call2');//eslint-disable-line
     }
     /**
     * reload page
@@ -523,10 +526,11 @@ class RequestRepository extends Component {
                                     type="button"
                                     className="btn btn-default"
                                     data-dismiss="modal"
-                                    name="Back"
-                                />
+                                >
+                                    Back
+                                </button>
                                 &nbsp;&nbsp;
-                                <Link to={'/requestRepository'} >
+                                <Link to={'/app/requestRepository'} >
                                     <button type="button" className="btn btn-success">
                                         New Request
                                     </button>

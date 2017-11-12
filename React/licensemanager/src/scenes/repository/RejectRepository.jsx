@@ -164,7 +164,7 @@ class RejectRepository extends Component {
                 >
                     <button type="button" className="close" data-dismiss="alert">&times;</button>
                     {/* eslint-disable */}
-                    <strong>This repository request already {((this.state.repositoryDetails !== null))? ((this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY === null)?(' deactivated by ' + this.state.repositoryDetails.REPOSITORY_DEACTIVATED_BY):(' accepted by ' + this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY)):' '}</strong>
+                    <strong>This repository request already {((this.state.repositoryDetails !== null))? ((this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY === null)?(' deactivated by ' + this.state.repositoryDetails.REPOSITORY_DEACTIVATED_BY + ' because of ' + this.state.repositoryDetails.REPOSITORY_DEACTIVATED_REASON):(' accepted by ' + this.state.repositoryDetails.REPOSITORY_ACCEPTED_BY)):' '}</strong>
                     {/* eslint-enable */}
                 </div>
 
@@ -187,7 +187,7 @@ class RejectRepository extends Component {
                                     <span>
                                         <i className="fa fa-check" aria-hidden="true" />
                                     </span>
-                                    &nbsp;Request successfully accepted
+                                    &nbsp;Request successfully rejected
                                 </p>
                             </div>
                             <div className="modal-footer">
